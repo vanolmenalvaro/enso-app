@@ -12,18 +12,6 @@ const styles = theme => ({
 });
 
 class App extends React.Component {
-  state = {
-    open: true,
-  };
-
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
   render() {
     const { classes } = this.props;
 
