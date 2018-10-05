@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from './layout/AppBar';
+import BottomNav from './layout/BottomNav';
 import Content from './content/Content.js'
 
 const styles = theme => ({
@@ -20,7 +21,8 @@ class App extends React.Component {
         <CssBaseline />
         <div className={classes.root}>
           <AppBar />
-          <Content />   
+          <Content />
+          <BottomNav />
         </div>
       </React.Fragment>
     );

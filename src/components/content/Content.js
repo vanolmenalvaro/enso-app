@@ -174,6 +174,7 @@ class Content extends React.Component {
                 }
               ]
             }/>
+            <div className={classes.appBarSpacer} />
           </main>
       </React.Fragment>
     );

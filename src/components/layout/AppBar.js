@@ -56,6 +56,7 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1,
+    textAlign: 'center'
   },
   drawerPaper: {
     position: 'relative',
@@ -81,7 +82,7 @@ const styles = theme => ({
 
 class AppBar extends React.Component {
   state = {
-    open: true,
+    open: false,
   };
 
   handleDrawerOpen = () => {
@@ -99,12 +100,12 @@ class AppBar extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <Hidden xsDown>
-            <MuiAppBar
-              position="absolute"
-              className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-            >
-              <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+          <MuiAppBar
+            position="absolute"
+            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+          >
+            <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+              <Hidden xsDown> 
                 <IconButton
                   color="inherit"
                   aria-label="Open drawer"
@@ -116,14 +117,16 @@ class AppBar extends React.Component {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="title" color="inherit" noWrap className={classes.title}>
-                  Enso App
-                </Typography>
-                <IconButton color="inherit">
-                  <MoreVert />
-                </IconButton>
-              </Toolbar>
-            </MuiAppBar>
+              </Hidden>
+              <Typography variant="title" color="inherit" noWrap className={classes.title}>
+                Enso App
+              </Typography>
+              <IconButton color="inherit">
+                <MoreVert />
+              </IconButton>
+            </Toolbar>
+          </MuiAppBar>
+          <Hidden xsDown>
             <Drawer
               variant="permanent"
               classes={{

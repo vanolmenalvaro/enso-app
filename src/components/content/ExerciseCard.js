@@ -130,7 +130,7 @@ class CheckboxList extends React.Component {
                                 <TableCell className={classes.cellSm}>
                                     {obj.segs && //if(obj.segs){ ... }
                                         <Typography className={classes.heading} noWrap>
-                                            {obj.segs} s.
+                                            ({obj.segs} s.)
                                         </Typography>
                                     }
                                 </TableCell>          
