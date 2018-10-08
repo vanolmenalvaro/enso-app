@@ -93,6 +93,25 @@ class AppBar extends React.Component {
     this.setState({ open: false });
   };
 
+  handleStateOnScreenResize = () => {
+    if(window.innerWidth > 1280){
+      this.setState({ open: true });
+    }
+    else if (window.innerWidth < 600){
+      this.setState({ open: false });
+    }
+  };
+
+  componentDidMount = () => {
+    this.handleStateOnScreenResize();
+    window.addEventListener('resize', this.handleStateOnScreenResize);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleStateOnScreenResize);
+  }
+ 
+
   render() {
     const { classes } = this.props;
 

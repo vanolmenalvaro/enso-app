@@ -111,7 +111,7 @@ class CheckboxList extends React.Component {
                         </TableHead>
                         <TableBody>
                         {this.props.exercises.map(obj => (
-                            <TableRow key={obj.name} >
+                            <TableRow key={obj.name}>
                                 <TableCell component="th" scope="row" className={classes.cellLg}>
                                     <Typography className={classes.heading}>
                                         {obj.name}
