@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Hidden from '@material-ui/core/Hidden';
 import ExerciseCard from './ExerciseCard'
 
 const styles = theme => ({
@@ -174,7 +175,9 @@ class Content extends React.Component {
                 }
               ]
             }/>
-            <div className={classes.appBarSpacer} />
+            <Hidden smUp>
+              <div className={classes.appBarSpacer} />
+            </Hidden>
           </main>
       </React.Fragment>
     );

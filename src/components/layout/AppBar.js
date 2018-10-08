@@ -13,7 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ChevronLeft, MoreVert } from '@material-ui/icons/';
-import { mainListItems, secondaryListItems } from './ListItems.js'
+import { mainListItems, secondaryListItems } from './NavItems.js'
 
 const drawerWidth = 240;
 
