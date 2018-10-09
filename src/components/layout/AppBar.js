@@ -154,9 +154,11 @@ class AppBar extends React.Component {
               open={this.state.open}
             >
               <div className={classes.toolbarIcon}>
-                <IconButton onClick={this.handleDrawerClose}>
-                  <ChevronLeft />
-                </IconButton>
+                <Hidden lgUp>
+                  <IconButton onClick={this.handleDrawerClose}>
+                    <ChevronLeft />
+                  </IconButton>
+                </Hidden>
               </div>
               <Divider />
               <List>{mainListItems}</List>
