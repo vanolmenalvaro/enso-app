@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
+//eslint-disable-next-line
 import TrainingView from './TrainingView/TrainingView.js'
 import CalendarView from './CalendarView/CalendarView.js'
 
@@ -10,7 +11,7 @@ const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing.unit,
     height: '100vh',
     overflow: 'auto',
   },
@@ -27,8 +28,8 @@ class Content extends React.Component {
         <CssBaseline />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-              <TrainingView />
-              {/* <CalendarView /> */}
+            {/* <TrainingView /> */}
+              <CalendarView />
             <Hidden smUp>
               <div className={classes.appBarSpacer} />
             </Hidden>
