@@ -1,25 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   paper: {
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    padding: 15    
+    height: '100%',
+    boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+    border: '1px solid',
+    borderBottom: '2px solid #474747',
+    backgroundColor: 'white'
+    
+  },
+  headerRow: {
+    display: 'table',
+    width: '100%',
+    height: 20,
+    tableLayout: 'fixed',
   },
   row: {
     display: 'table',
     width: '100%',
+    height: `calc((100% - 19px) / 6)`,
     tableLayout: 'fixed',
-    padding: 10
   },
   cell: {
-    width: '14%',
+    width: `calc(100% / 7)`,
     display: 'table-cell',
-    textAlign: 'center'
+    textAlign: 'center',
+    border: '1px solid #474747'
+  },
+  cellLastRow: {
+    width: `calc(100% / 7)`,
+    display: 'table-cell',
+    textAlign: 'center',
+    border: '1px solid #474747',
+    borderBottom: '0px'
   }
 });
 
@@ -37,19 +55,30 @@ export class Calendar extends Component {
           let children = []
           //Inner loop to create children
           for (let j = 0; j < 7; j++) {
-            children.push(
-                <div className={classes.cell}>
-                    <Typography variant="subheading" noWrap>
-                        {((j + i * 7) % 31) +1}
-                    </Typography>
-                </div>
-            )
+            if(i === 5) {
+                children.push(
+                    <div className={classes.cellLastRow} key={(j + i * 7)+1}>
+                        <Typography variant="subheading" noWrap>
+                            {((j + i * 7) % 31) +1}
+                        </Typography>
+                    </div>
+                )
+            }else{
+                children.push(
+                    <div className={classes.cell} key={(j + i * 7)+1}>
+                        <Typography variant="subheading" noWrap>
+                            {((j + i * 7) % 31) +1}
+                        </Typography>
+                    </div>
+                )
+            }
           }
           //Create the parent and add the children
           cycleDays.push(
-            <div className={classes.row}>
+            <div className={classes.row} key={i}>
                 {children}
             </div>)
+          
         }
         return cycleDays
       }
@@ -58,11 +87,11 @@ export class Calendar extends Component {
         const { classes } = this.props;
 
         return (
-        <div className={classes.row}>
-            <Paper className={classes.paper}>
-                <div className={classes.row}>
+        <Fragment>
+            <div className={classes.paper}>
+                <div className={classes.headerRow}>
                     {this.weekDays.map(name => (
-                        <div className={classes.cell}>
+                        <div className={classes.cell} key={name}>
                             <Typography variant="caption" noWrap>
                                 {name}
                             </Typography>
@@ -70,8 +99,8 @@ export class Calendar extends Component {
                     ))}
                 </div>
                 {this.createCycleDays()}
-            </Paper>         
-        </div>
+            </div>         
+        </Fragment>
         )
     }
 }

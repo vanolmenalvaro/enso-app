@@ -120,7 +120,7 @@ class AppBar extends React.Component {
         <CssBaseline />
         <div className={classes.root}>
           <MuiAppBar
-            position="absolute"
+            position="fixed"
             className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
           >
             <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>

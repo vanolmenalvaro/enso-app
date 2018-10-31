@@ -18,7 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 const styles = theme => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   panelSummary: {
     height: 80,

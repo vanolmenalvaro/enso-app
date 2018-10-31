@@ -9,10 +9,15 @@ import CalendarView from './CalendarView/CalendarView.js'
 
 const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
+  main: {
+    width: '100%',
+    height: '100%'
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit,
-    height: '100vh',
+    height: `calc(100% - 112px)`,
+    width: '100%',
     overflow: 'auto',
   },
 });
@@ -26,10 +31,12 @@ class Content extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-          <main className={classes.content}>
+          <main className={classes.main}>
             <div className={classes.appBarSpacer} />
-            {/* <TrainingView /> */}
-              <CalendarView />
+            <div className={classes.content}>
+              {/* <TrainingView /> */}
+                <CalendarView />
+            </div>
             <Hidden smUp>
               <div className={classes.appBarSpacer} />
             </Hidden>

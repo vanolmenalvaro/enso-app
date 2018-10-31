@@ -1,26 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
 import Calendar from './Calendar'
 
-const styles = theme => ({
-    root: {
-      flexGrow: 1,
-    },
-});
 
-function CalendarView(props) {
-  const { classes } = props;
+function CalendarView() {
 
   return (
-    <div className={classes.root}>
+    <Fragment>
         <Calendar />
-    </div>
+    </Fragment>
   );
 }
 
-CalendarView.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(CalendarView);
+export default CalendarView;

@@ -9,6 +9,7 @@ import Content from './content/Content.js'
 const styles = theme => ({
   root: {
     display: 'flex',
+    height: '100vh'
   },
 });
 
