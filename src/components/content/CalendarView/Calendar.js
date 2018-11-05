@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 
+import DayDetails from './DayDetails'
+
 const styles = theme => ({
   paper: {
     textAlign: 'center',
@@ -38,11 +40,18 @@ const styles = theme => ({
     textAlign: 'center',
     border: '1px solid #474747',
     borderBottom: '0px'
+  },
+  typography: {
+    fontSize: 14,
   }
 });
 
-export class Calendar extends Component {
+class Calendar extends Component {
     state = {}
+
+    //mock date, real one should come as props
+    initialDate="1/11/2018"
+    dateFormat="DD-MM-YYYY"
 
     weekDays = [ "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM" ]
     
@@ -54,24 +63,8 @@ export class Calendar extends Component {
         for (let i = 0; i < 6; i++) {
           let children = []
           //Inner loop to create children
-          for (let j = 0; j < 7; j++) {
-            if(i === 5) {
-                children.push(
-                    <div className={classes.cellLastRow} key={(j + i * 7)+1}>
-                        <Typography variant="subheading" noWrap>
-                            {((j + i * 7) % 31) +1}
-                        </Typography>
-                    </div>
-                )
-            }else{
-                children.push(
-                    <div className={classes.cell} key={(j + i * 7)+1}>
-                        <Typography variant="subheading" noWrap>
-                            {((j + i * 7) % 31) +1}
-                        </Typography>
-                    </div>
-                )
-            }
+          for (let j = 0; j < 7; j++) {   
+            children.push(<DayDetails day={j + i * 7} rowNum={i} initialDate={this.initialDate} dateFormat={this.dateFormat} key={j + i * 7}/>)
           }
           //Create the parent and add the children
           cycleDays.push(
