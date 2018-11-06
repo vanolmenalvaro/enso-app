@@ -56,7 +56,8 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingLeft: 40
   },
   drawerPaper: {
     position: 'relative',

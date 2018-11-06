@@ -6,6 +6,8 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 
+import constants from '../../../constants'
+
 const styles = () => ({
   cell: {
     width: `calc(100% / 7)`,
@@ -14,35 +16,57 @@ const styles = () => ({
     border: '1px solid #474747'
   },
   cellSelected: {
-    backgroundColor: '#d8d8d8'
+    backgroundColor: '#d8d8d8',
   },
   cellLastRow: {
     borderBottom: '0px'
   },
   typography: {
-    fontSize: 14,
+    fontSize: 12,
+    '@media (min-height:650px)': {
+      fontSize: 14,
+    }
+  },
+  typographySm: {
+    fontSize: 8,
+    '@media (min-height:650px)': {
+      fontSize: 10,
+    },
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  chip: {
+    fontSize: 10,
+    width: '100%',
+    borderRadius: 3
   }
 });
 
 class DayDetails extends Component {
 
   render() { 
-
     const { classes } = this.props
-
+    
     return (
       <div className={classNames(
                     classes.cell,
                     this.props.rowNum === 5 && classes.cellLastRow,
-                    moment(this.props.initialDate, this.props.dateFormat).add(this.props.day, 'days').isSame(new Date(), "day") && classes.cellSelected
+                    moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').isSame(new Date(), "day") && classes.cellSelected
                   )} 
                   key={this.props.day}>
           <Typography variant="subheading" className={classes.typography} noWrap>
-              {moment(this.props.initialDate, this.props.dateFormat).add(this.props.day, 'days').format('D')}
-              {moment(this.props.initialDate, this.props.dateFormat).add(this.props.day, 'days').format('D')==="1" &&
-                  moment(this.props.initialDate, this.props.dateFormat).locale('es').add(this.props.day, 'days').format('MMM')
+              {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')}
+              {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')==="1" &&
+                  moment(this.props.initialDate, constants.dateFormat).locale('es').add(this.props.day, 'days').format('MMM')
               }
           </Typography>
+          {this.props.exercises.map(obj => (
+            <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
+              <Typography variant="subheading" className={classes.typographySm} noWrap>
+                {obj.name.split(" ").map((n)=>n[0]).join(".").concat(".")} {/* gets the initials */}
+              </Typography>
+            </div>
+          ))}
       </div>
     )
   } 

@@ -7,25 +7,27 @@ import { Chat,
         FitnessCenter,
         Dashboard } from '@material-ui/icons/';
 
+import constants from '../../constants'
+
 export const mainListItems = (
   <div>
     <ListItem button>
       <ListItemIcon>
         <Chat />
       </ListItemIcon>
-      <ListItemText primary="Chat" />
+      <ListItemText primary={constants.chat} />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <Today />
       </ListItemIcon>
-      <ListItemText primary="Calendario" />
+      <ListItemText primary={constants.calendar} />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <FitnessCenter />
       </ListItemIcon>
-      <ListItemText primary="Entreno" />
+      <ListItemText primary={constants.training} />
     </ListItem>
   </div>
 );
@@ -36,7 +38,7 @@ export const secondaryListItems = (
       <ListItemIcon>
         <Dashboard />
       </ListItemIcon>
-      <ListItemText primary="Admin" />
+      <ListItemText primary={constants.admin} />
     </ListItem>
   </div>
 );

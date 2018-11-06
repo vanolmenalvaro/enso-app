@@ -4,12 +4,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 
 import DayDetails from './DayDetails'
+import constants from '../../../constants'
 
 const styles = theme => ({
   paper: {
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    height: '100%',
+    //minHeight: '100%',
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     border: '1px solid',
     borderBottom: '2px solid #474747',
@@ -25,7 +26,7 @@ const styles = theme => ({
   row: {
     display: 'table',
     width: '100%',
-    height: `calc((100% - 19px) / 6)`,
+    minHeight: `calc((100% - 19px) / 6)`,
     tableLayout: 'fixed',
   },
   cell: {
@@ -49,31 +50,98 @@ const styles = theme => ({
 class Calendar extends Component {
     state = {}
 
-    //mock date, real one should come as props
+    //mock date, real one should be fetched
     initialDate="1/11/2018"
-    dateFormat="DD-MM-YYYY"
 
-    weekDays = [ "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM" ]
+    //should be fetched
+    exercises=[
+        [
+            {
+            name: "Fuerza Tren Inferior",
+            color: "#e91e63"
+            },{
+            name: "Protocolo Squat 2.0",
+            color: "#8bc34a"
+            },{
+            name: "Handstands",
+            color: "#673ab7"
+            },{
+            name: "Movilidad 1",
+            color: "#ff9800"
+            }
+        ],
+        [
+            {
+            name: "Fuerza Tren Superior",
+            color: "#2196f3"
+            },{
+            name: "Protocolo Squat 2.0",
+            color: "#8bc34a"
+            },{
+            name: "Core",
+            color: "#009688"
+            },{
+            name: "Handstands",
+            color: "#673ab7"
+            }
+        ],
+        [],
+        [],
+        [
+            {
+            name: "Fuerza Tren Inferior",
+            color: "#e91e63"
+            },{
+            name: "Protocolo Squat 2.0",
+            color: "#8bc34a"
+            },{
+            name: "Handstands",
+            color: "#673ab7"
+            },{
+            name: "Movilidad 1",
+            color: "#ff9800"
+            }
+        ],
+        [
+            {
+            name: "Fuerza Tren Superior",
+            color: "#2196f3"
+            },{
+            name: "Protocolo Squat 2.0",
+            color: "#8bc34a"
+            },{
+            name: "Core",
+            color: "#009688"
+            },{
+            name: "Handstands",
+            color: "#673ab7"
+            },{
+                name: "Movilidad 1",
+                color: "#ff9800"
+            }
+        ],
+        []
+    ]
     
-    createCycleDays = () => {
+    createCycle = () => {
         const { classes } = this.props;
-        let cycleDays = []
+        let weeks = []
     
-        // Outer loop to create parent
+        // Outer loop to create week row
         for (let i = 0; i < 6; i++) {
-          let children = []
-          //Inner loop to create children
+          let days = []
+          //Inner loop to create each day
           for (let j = 0; j < 7; j++) {   
-            children.push(<DayDetails day={j + i * 7} rowNum={i} initialDate={this.initialDate} dateFormat={this.dateFormat} key={j + i * 7}/>)
+            days.push(<DayDetails day={j + i * 7} rowNum={i} initialDate={this.initialDate} key={j + i * 7} exercises={this.exercises[j]} />)
           }
-          //Create the parent and add the children
-          cycleDays.push(
+          //Create the week and add the days
+          weeks.push(
             <div className={classes.row} key={i}>
-                {children}
+                {days}
             </div>)
           
         }
-        return cycleDays
+        return weeks
       }
 
     render() {
@@ -83,7 +151,7 @@ class Calendar extends Component {
         <Fragment>
             <div className={classes.paper}>
                 <div className={classes.headerRow}>
-                    {this.weekDays.map(name => (
+                    {constants.weekDays.map(name => (
                         <div className={classes.cell} key={name}>
                             <Typography variant="caption" noWrap>
                                 {name}
@@ -91,7 +159,7 @@ class Calendar extends Component {
                         </div>
                     ))}
                 </div>
-                {this.createCycleDays()}
+                {this.createCycle()}
             </div>         
         </Fragment>
         )
