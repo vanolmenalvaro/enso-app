@@ -6,7 +6,7 @@ window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 function ChatView (props){
     return (
         <div {...props}>
-            <Typography variant="h1" align='center'>
+            <Typography variant="h1" align='center' style={{position: 'absolute'}}>
                 This is the Chat view
             </Typography>
         </div>
