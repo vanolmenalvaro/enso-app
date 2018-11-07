@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
-import SwipeableViews from 'react-swipeable-views';
+import Fade from '@material-ui/core/Fade';
 
 import TrainingView from './TrainingView/TrainingView.js'
 import CalendarView from './CalendarView/CalendarView.js'
@@ -18,14 +18,13 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit,
-    height: `calc(100% - 112px)`,
     width: '100%',
     overflow: 'auto',
   },
 });
 
 class Content extends React.Component {
-  
+
   render() {
     const { classes } = this.props
 
@@ -35,16 +34,15 @@ class Content extends React.Component {
           <main className={classes.main}>
             <div className={classes.appBarSpacer} />
             <div className={classes.content}>
-              <SwipeableViews
-                axis="x"
-                index={this.props.tabIndex}
-                onChange={this.props.onChange}
-                onChangeIndex={this.props.onChangeIndex}
-              >
+              <Fade in={this.props.tabIndex === 0} mountOnEnter unmountOnExit>
                 <ChatView />
+              </Fade>
+              <Fade in={this.props.tabIndex === 1} mountOnEnter unmountOnExit> 
                 <CalendarView />
+              </Fade>   
+              <Fade in={this.props.tabIndex === 2} mountOnEnter unmountOnExit>
                 <TrainingView />
-              </SwipeableViews>
+              </Fade> 
             </div>
             <Hidden smUp>
               <div className={classes.appBarSpacer} />

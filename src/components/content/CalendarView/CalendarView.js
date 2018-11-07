@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Calendar from './Calendar'
 
 
-function CalendarView() {
+function CalendarView(props) {
 
   return (
-    <Fragment>
+    <div {...props}>
         <Calendar />
         {/* trainingview on the right half of the screen on big screens */}
-    </Fragment>
+    </div>
   );
 }
 

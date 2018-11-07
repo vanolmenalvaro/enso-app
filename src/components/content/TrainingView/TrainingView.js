@@ -1,9 +1,9 @@
 import React from 'react'
 import ExerciseCard from './ExerciseCard'
 
-function TrainingView() {
+function TrainingView(props) {
   return(
-    <div>
+    <div {...props}>
       <ExerciseCard name="Fuerza Tren Superior" exercises={
             [
               {
