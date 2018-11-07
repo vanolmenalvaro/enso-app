@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 
 import constants from '../../../constants'
 
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
+
 const styles = () => ({
   cell: {
     width: `calc(100% / 7)`,
@@ -54,7 +56,7 @@ class DayDetails extends Component {
                     moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').isSame(new Date(), "day") && classes.cellSelected
                   )} 
                   key={this.props.day}>
-          <Typography variant="subheading" className={classes.typography} noWrap>
+          <Typography variant="subtitle1" className={classes.typography} noWrap>
               {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')}
               {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')==="1" &&
                   moment(this.props.initialDate, constants.dateFormat).locale('es').add(this.props.day, 'days').format('MMM')
@@ -62,7 +64,7 @@ class DayDetails extends Component {
           </Typography>
           {this.props.exercises.map(obj => (
             <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
-              <Typography variant="subheading" className={classes.typographySm} noWrap>
+              <Typography variant="subtitle1" className={classes.typographySm} noWrap>
                 {obj.name.split(" ").map((n)=>n[0]).join(".").concat(".")} {/* gets the initials */}
               </Typography>
             </div>

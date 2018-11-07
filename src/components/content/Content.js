@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
-//eslint-disable-next-line
+import SwipeableViews from 'react-swipeable-views';
+
 import TrainingView from './TrainingView/TrainingView.js'
 import CalendarView from './CalendarView/CalendarView.js'
+import ChatView from './ChatView/ChatView.js'
 
 const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -23,10 +25,9 @@ const styles = theme => ({
 });
 
 class Content extends React.Component {
-  state = {}
-
+  
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <React.Fragment>
@@ -34,8 +35,16 @@ class Content extends React.Component {
           <main className={classes.main}>
             <div className={classes.appBarSpacer} />
             <div className={classes.content}>
-              {/* <TrainingView /> */}
+              <SwipeableViews
+                axis="x"
+                index={this.props.tabIndex}
+                onChange={this.props.onChange}
+                onChangeIndex={this.props.onChangeIndex}
+              >
+                <ChatView />
                 <CalendarView />
+                <TrainingView />
+              </SwipeableViews>
             </div>
             <Hidden smUp>
               <div className={classes.appBarSpacer} />

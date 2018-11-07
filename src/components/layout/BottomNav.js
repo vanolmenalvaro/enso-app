@@ -20,23 +20,15 @@ const styles = {
 };
 
 class BottomNav extends React.Component {
-  state = {
-    value: 0,
-  };
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
 
     return (
         <Hidden smUp>
             <BottomNavigation
-                value={value}
-                onChange={this.handleChange}
+                value={this.props.tabIndex}
+                onChange={this.props.onChange}
                 showLabels
                 className={classes.stickToBottom}
             >

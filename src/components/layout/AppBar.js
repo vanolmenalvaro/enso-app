@@ -13,7 +13,18 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ChevronLeft, MoreVert } from '@material-ui/icons/';
-import { mainListItems, secondaryListItems } from './NavItems.js'
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { Chat, 
+        Today,
+        FitnessCenter,
+        Dashboard } from '@material-ui/icons/';
+
+import constants from '../../constants'
+
+
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 const drawerWidth = 240;
 
@@ -103,6 +114,11 @@ class AppBar extends React.Component {
     }
   };
 
+  handleClick = (num) => {
+    this.setState({ selected: num }) 
+    this.props.onChangeIndex(num)
+  }
+
   componentDidMount = () => {
     this.handleStateOnScreenResize();
     window.addEventListener('resize', this.handleStateOnScreenResize);
@@ -138,7 +154,7 @@ class AppBar extends React.Component {
                   <MenuIcon />
                 </IconButton>
               </Hidden>
-              <Typography variant="title" color="inherit" noWrap className={classes.title}>
+              <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                 Enso App
               </Typography>
               <IconButton color="inherit">
@@ -161,10 +177,38 @@ class AppBar extends React.Component {
                   </IconButton>
                 </Hidden>
               </div>
+
               <Divider />
-              <List>{mainListItems}</List>
-              <Divider />
-              <List>{secondaryListItems}</List>
+
+              <List>
+                <MenuItem button onClick={this.handleClick.bind(this, 0)} selected={this.props.tabIndex === 0}>
+                  <ListItemIcon>
+                    <Chat />
+                  </ListItemIcon>
+                  <ListItemText primary={constants.chat} />
+                </MenuItem>
+                <MenuItem button onClick={this.handleClick.bind(this, 1)} selected={this.props.tabIndex === 1}>
+                  <ListItemIcon>
+                    <Today />
+                  </ListItemIcon>
+                  <ListItemText primary={constants.calendar} />
+                </MenuItem>
+                <MenuItem button onClick={this.handleClick.bind(this, 2)} selected={this.props.tabIndex === 2}>
+                  <ListItemIcon>
+                    <FitnessCenter />
+                  </ListItemIcon>
+                  <ListItemText primary={constants.training} />
+                </MenuItem>
+
+                <Divider />
+
+                <MenuItem button onClick={this.handleClick.bind(this, 3)} selected={this.props.tabIndex === 3}>
+                  <ListItemIcon>
+                    <Dashboard />
+                  </ListItemIcon>
+                  <ListItemText primary={constants.admin} />
+                </MenuItem>
+              </List>
             </Drawer>
           </Hidden>
         </div>

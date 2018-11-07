@@ -51,7 +51,7 @@ class Calendar extends Component {
     state = {}
 
     //mock date, real one should be fetched
-    initialDate="1/11/2018"
+    initialDate="29/10/2018"
 
     //should be fetched
     exercises=[

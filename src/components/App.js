@@ -14,6 +14,18 @@ const styles = theme => ({
 });
 
 class App extends React.Component {
+  state = {
+    tabIndex: 1,
+  }
+
+  handleChange = (event, tabIndex) => {
+    this.setState({ tabIndex });
+  };
+
+  handleChangeIndex = index => {
+    this.setState({ tabIndex: index })
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -21,9 +33,9 @@ class App extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <AppBar />
-          <Content />
-          <BottomNav />
+          <AppBar tabIndex={this.state.tabIndex} onChange={this.handleChange} onChangeIndex={this.handleChangeIndex} />
+          <Content tabIndex={this.state.tabIndex} onChange={this.handleChange} onChangeIndex={this.handleChangeIndex} />
+          <BottomNav tabIndex={this.state.tabIndex} onChange={this.handleChange} onChangeIndex={this.handleChangeIndex} />
         </div>
       </React.Fragment>
     );
