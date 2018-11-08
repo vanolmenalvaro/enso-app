@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
+import Hidden from '@material-ui/core/Hidden';
 
-import constants from '../../../constants'
+import constants from '../../config/constants'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
@@ -19,9 +20,6 @@ const styles = () => ({
   },
   cellSelected: {
     backgroundColor: '#d8d8d8',
-  },
-  cellLastRow: {
-    borderBottom: '0px'
   },
   typography: {
     fontSize: 12,
@@ -40,7 +38,7 @@ const styles = () => ({
   chip: {
     fontSize: 10,
     width: '100%',
-    borderRadius: 3
+    borderRadius: 6
   }
 });
 
@@ -52,20 +50,20 @@ class DayDetails extends Component {
     return (
       <div className={classNames(
                     classes.cell,
-                    this.props.rowNum === 5 && classes.cellLastRow,
-                    moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').isSame(new Date(), "day") && classes.cellSelected
+                    moment(this.props.day, constants.dateFormat).isSame(new Date(), "day") && classes.cellSelected
                   )} 
                   key={this.props.day}>
           <Typography variant="subtitle1" className={classes.typography} noWrap>
-              {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')}
-              {moment(this.props.initialDate, constants.dateFormat).add(this.props.day, 'days').format('D')==="1" &&
-                  moment(this.props.initialDate, constants.dateFormat).locale('es').add(this.props.day, 'days').format('MMM')
+              {moment(this.props.day, constants.dateFormat).format('D')}
+              {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
+                  moment(this.props.day, constants.dateFormat).locale('es').format('MMM')
               }
           </Typography>
-          {this.props.exercises.map(obj => (
+          { this.props.exercises && this.props.exercises.map(obj => (
             <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
               <Typography variant="subtitle1" className={classes.typographySm} noWrap>
-                {obj.name.split(" ").map((n)=>n[0]).join(".").concat(".")} {/* gets the initials */}
+                <Hidden mdUp> {obj.shortName} </Hidden>
+                <Hidden smDown> {obj.name} </Hidden>
               </Typography>
             </div>
           ))}

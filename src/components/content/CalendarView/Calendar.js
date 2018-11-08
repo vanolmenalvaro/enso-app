@@ -4,9 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment';
 
 import DayDetails from './DayDetails'
-import constants from '../../../constants'
+import constants from '../../config/constants'
 
 const styles = theme => ({
   paper: {
@@ -15,10 +16,10 @@ const styles = theme => ({
     //minHeight: '100%',
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     border: '1px solid',
-    borderBottom: '2px solid #474747',
     backgroundColor: 'white',
-    position: 'absolute'
-    
+    position: 'absolute',
+    marginRight: 8,
+    marginBottom: 65
   },
   headerRow: {
     display: 'table',
@@ -38,13 +39,6 @@ const styles = theme => ({
     textAlign: 'center',
     border: '1px solid #474747'
   },
-  cellLastRow: {
-    width: `calc(100% / 7)`,
-    display: 'table-cell',
-    textAlign: 'center',
-    border: '1px solid #474747',
-    borderBottom: '0px'
-  },
   typography: {
     fontSize: 14,
   }
@@ -60,8 +54,9 @@ class Calendar extends Component {
         for (let i = 0; i < 6; i++) {
           let days = []
           //Inner loop to create each day
-          for (let j = 0; j < 7; j++) {   
-            days.push(<DayDetails day={j + i * 7} rowNum={i} initialDate={this.props.initialDate} key={j + i * 7} exercises={this.props.cycle[j]} />)
+          for (let j = 0; j < 7; j++) { 
+            let dayNumber = moment(this.props.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
+            days.push(<DayDetails day={dayNumber} key={j + i * 7} exercises={this.props.program[dayNumber]} />)
           }
           //Create the week and add the days
           weeks.push(
@@ -71,6 +66,10 @@ class Calendar extends Component {
           
         }
         return weeks
+    }
+
+    componentDidMount() {
+        window.scrollTo(0, 0)
     }
 
     render() {
@@ -102,8 +101,9 @@ Calendar.propTypes = {
 
 const mapStateToProps = (state) => {
     return{
-        initialDate: state.project.initialDate,
-        cycle: state.project.cycle
+        initialDate: state.cycle.initialDate,
+        program: state.cycle.content.program,
+        blocks: state.cycle.content.blocks
     }
 }
 
