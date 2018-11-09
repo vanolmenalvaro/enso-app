@@ -21,7 +21,7 @@ import { Chat,
         FitnessCenter,
         Dashboard } from '@material-ui/icons/';
 
-import constants from '../config/constants'
+import constants from '../../config/constants'
 
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true

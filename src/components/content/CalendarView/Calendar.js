@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 import moment from 'moment';
 
 import DayDetails from './DayDetails'
-import constants from '../../config/constants'
+import constants from '../../../config/constants'
+import { getCycle } from '../../../store/actions/cycleActions'
 
 const styles = theme => ({
   paper: {
@@ -49,27 +50,35 @@ class Calendar extends Component {
     createCycle = () => {
         const { classes } = this.props;
         let weeks = []
-    
+        let dayNumber = ''
+        let exercises = {}
+        
         // Outer loop to create week row
         for (let i = 0; i < 6; i++) {
-          let days = []
-          //Inner loop to create each day
-          for (let j = 0; j < 7; j++) { 
-            let dayNumber = moment(this.props.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
-            days.push(<DayDetails day={dayNumber} key={j + i * 7} exercises={this.props.program[dayNumber]} />)
-          }
-          //Create the week and add the days
-          weeks.push(
+        let days = []
+        //Inner loop to create each day
+        for (let j = 0; j < 7; j++) { 
+            if(this.props.initialDate && this.props.program){
+                dayNumber = moment(this.props.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
+                if(this.props.program){
+                    exercises = this.props.program[dayNumber]
+                }
+            }
+            days.push(<DayDetails day={dayNumber} key={j + i * 7} exercises={exercises} />)
+        }
+        //Create the week and add the days
+        weeks.push(
             <div className={classes.row} key={i}>
                 {days}
             </div>)
-          
+        
         }
         return weeks
     }
 
     componentDidMount() {
         window.scrollTo(0, 0)
+        this.props.getCycle()
     }
 
     render() {
@@ -100,14 +109,23 @@ Calendar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    return{
-        initialDate: state.cycle.initialDate,
-        program: state.cycle.content.program,
-        blocks: state.cycle.content.blocks
+    if(state.cycle) {
+        return{
+            initialDate: state.cycle.initialDate,
+            program: state.cycle.content.program,
+            blocks: state.cycle.content.blocks
+        }
+    }
+    else return {}
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCycle: () => dispatch(getCycle())
     }
 }
 
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
 )(Calendar);

@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import Hidden from '@material-ui/core/Hidden';
 
-import constants from '../../config/constants'
+import constants from '../../../config/constants'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
