@@ -9,6 +9,7 @@ import moment from 'moment';
 import DayDetails from './DayDetails'
 import constants from '../../../config/constants'
 import { getCycle } from '../../../store/actions/cycleActions'
+import { switchDay } from '../../../store/actions/tabActions'
 
 const styles = theme => ({
   paper: {
@@ -46,12 +47,12 @@ const styles = theme => ({
 });
 
 class Calendar extends Component {
-    
+
     createCycle = () => {
         const { classes } = this.props;
         let weeks = []
         let dayNumber = ''
-        let exercises = {}
+        let blocks = {}
         
         // Outer loop to create week row
         for (let i = 0; i < 6; i++) {
@@ -61,10 +62,10 @@ class Calendar extends Component {
             if(this.props.initialDate && this.props.program){
                 dayNumber = moment(this.props.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
                 if(this.props.program){
-                    exercises = this.props.program[dayNumber]
+                    blocks = this.props.program[dayNumber]
                 }
             }
-            days.push(<DayDetails day={dayNumber} key={j + i * 7} exercises={exercises} />)
+            days.push(<DayDetails day={dayNumber} key={j + i * 7} blocks={blocks} switchDay={this.props.switchDay}/>)
         }
         //Create the week and add the days
         weeks.push(
@@ -109,19 +110,19 @@ Calendar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    if(state.cycle) {
-        return{
-            initialDate: state.cycle.initialDate,
-            program: state.cycle.content.program,
-            blocks: state.cycle.content.blocks
-        }
+
+    return{
+        initialDate: state.cycle.initialDate,
+        program: state.cycle.content.program,
+        blocks: state.cycle.content.blocks,
     }
-    else return {}
+
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCycle: () => dispatch(getCycle())
+        getCycle: () => dispatch(getCycle()),
+        switchDay: (day) => dispatch(switchDay(day))
     }
 }
 

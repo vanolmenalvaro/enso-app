@@ -8,6 +8,10 @@ import { Chat,
     Today,
     FitnessCenter,
     Dashboard } from '@material-ui/icons/';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+
+import { switchTab } from '../../store/actions/tabActions'
 
 const styles = {
   root: {
@@ -23,19 +27,18 @@ class BottomNav extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    
     return (
         <Hidden smUp>
             <BottomNavigation
-                value={this.props.tabIndex}
-                onChange={this.props.onChange}
+                value={this.props.tab}
                 showLabels
                 className={classes.stickToBottom}
             >
-                <BottomNavigationAction label="Chat" icon={<Chat />} />
-                <BottomNavigationAction label="Calendario" icon={<Today />} />
-                <BottomNavigationAction label="Entreno" icon={<FitnessCenter />} />
-                <BottomNavigationAction label="Admin" icon={<Dashboard />} />
+                <BottomNavigationAction label="Chat" icon={<Chat />} onClick={() => this.props.switchTab(0)} />
+                <BottomNavigationAction label="Calendario" icon={<Today />} onClick={() => this.props.switchTab(1)} />
+                <BottomNavigationAction label="Entreno" icon={<FitnessCenter />} onClick={() => this.props.switchTab(2)} />
+                <BottomNavigationAction label="Admin" icon={<Dashboard />} onClick={() => this.props.switchTab(3)} />
             </BottomNavigation>
         </Hidden>
     );
@@ -46,4 +49,19 @@ BottomNav.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(BottomNav);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    switchTab: (tab) => dispatch(switchTab(tab))
+  }
+}
+
+const mapStateToProps = (state) => {
+  return{
+    tab: state.tab.tab
+  }
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles)
+)(BottomNav)

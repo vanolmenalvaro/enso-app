@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Table from '@material-ui/core/Table';
@@ -12,8 +11,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import DoneIcon from "@material-ui/icons/Done";
-import IconButton from "@material-ui/core/IconButton";
 
 const styles = theme => ({
   root: {
@@ -110,7 +107,7 @@ class CheckboxList extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {this.props.exercises.map(obj => (
+                        {this.props.exercises && this.props.exercises.map(obj => (
                             <TableRow key={obj.name}>
                                 <TableCell component="th" scope="row" className={classes.cellLg}>
                                     <Typography className={classes.heading}>
@@ -128,7 +125,7 @@ class CheckboxList extends React.Component {
                                     </Typography>
                                 </TableCell>
                                 <TableCell className={classes.cellSm}>
-                                    {obj.segs && //if(obj.segs){ ... }
+                                    {obj.segs && 
                                         <Typography className={classes.heading} noWrap>
                                             ({obj.segs} s.)
                                         </Typography>
@@ -139,11 +136,6 @@ class CheckboxList extends React.Component {
                         </TableBody>
                     </Table>
                 </ExpansionPanelDetails>
-                <ExpansionPanelActions>
-                <IconButton color="primary">
-                    <DoneIcon style={{ fontSize: 32 }} />
-                </IconButton>
-                </ExpansionPanelActions>
             </ExpansionPanel>
         </div>
     );

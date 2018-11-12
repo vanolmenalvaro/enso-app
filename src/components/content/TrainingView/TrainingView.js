@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Typography from "@material-ui/core/Typography";
+
 import ExerciseCard from './ExerciseCard'
 
 class TrainingView extends Component{
@@ -8,161 +11,42 @@ class TrainingView extends Component{
   }
 
   render() {
+    const { dispatch, ...restOfProps} = this.props
+
+    let blocksThisDay = []
+    this.props.blocks.map(block => (
+      this.props.program[this.props.day] && this.props.program[this.props.day].map(programBlock => (
+        programBlock.name === block.name &&
+          blocksThisDay.push(block)
+      ))
+    ))
+
+    var renderReturn = blocksThisDay.length !== 0
+    ? blocksThisDay.map(obj => (
+      <div key={obj.name}> 
+        <ExerciseCard key={obj.name} name={obj.name} shortName={obj.shortName} color={obj.color} exercises={obj.exercises}  />
+      </div>))
+    : <Typography variant="h2">
+        Rest Day! <span role="img" aria-label='party emoji'>🎉</span>
+      </Typography>
+
     return(
-      <div {...this.props}>
-        <ExerciseCard name="Fuerza Tren Superior" exercises={
-              [
-                {
-                  name: "Pullups",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Hangs en activo",
-                  sets: 5,
-                  reps: 5,
-                  segs: 10
-                }, {
-                  name: "Dips",
-                  sets: 6,
-                  reps: 3
-                }, {
-                  name: "Back lever",
-                  sets: 5,
-                  reps: 1,
-                  segs: 30
-                }
-              ]
-            } />
-            <ExerciseCard name="Fuerza Tren Inferior" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
-            <ExerciseCard name="Movilidad de Cadera" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 4",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 5",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
-            <ExerciseCard name="Protocolo Squat 3" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 4",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
-            <ExerciseCard name="Protocolo GH y ET" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 4",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
-            <ExerciseCard name="Carrera" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 4",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
-            <ExerciseCard name="Prehabilitación HS" exercises={
-              [
-                {
-                  name: "Ejercicio 1",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 2",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 3",
-                  sets: 5,
-                  reps: 5
-                }, {
-                  name: "Ejercicio 4",
-                  sets: 5,
-                  reps: 5
-                }
-              ]
-            } />
+      <div {...restOfProps}>
+        {renderReturn}
       </div>
     )
   }
 
 }
 
-export default TrainingView
+const mapStateToProps = (state) => {
+
+  return{
+      program: state.cycle.content.program,
+      blocks: state.cycle.content.blocks,
+      day: state.tab.day
+  }
+
+}
+
+export default connect(mapStateToProps)(TrainingView)

@@ -44,6 +44,10 @@ const styles = () => ({
 
 class DayDetails extends Component {
 
+  handleClick = () => {
+    if(this.props.blocks !== undefined) this.props.switchDay(this.props.day)
+  }
+
   render() { 
     const { classes } = this.props
     
@@ -52,14 +56,15 @@ class DayDetails extends Component {
                     classes.cell,
                     moment(this.props.day, constants.dateFormat).isSame(new Date(), "day") && classes.cellSelected
                   )} 
-                  key={this.props.day}>
+                  key={this.props.day}
+                  onClick={this.handleClick}>
           <Typography variant="subtitle1" className={classes.typography} noWrap>
               {moment(this.props.day, constants.dateFormat).format('D')}
               {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
                   moment(this.props.day, constants.dateFormat).locale('es').format('MMM')
               }
           </Typography>
-          { this.props.exercises && this.props.exercises.map(obj => (
+          { this.props.blocks && this.props.blocks.map(obj => (
             <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
               <Typography variant="subtitle1" className={classes.typographySm} noWrap>
                 <Hidden mdUp> {obj.shortName} </Hidden>

@@ -19,9 +19,13 @@ const cycleReducer = (state = initState, action) => {
             return state
         case 'GET_CYCLE':
             //console.log('got cycle', action.cycle)
-            state = action.cycle
-            return state
+            return Object.assign({}, state, {
+                program: {...action.cycle.program},
+                blocks: {...action.cycle.blocks},
+                ...action.cycle,
+            })
         case 'GET_CYCLE_ERROR':
+
             console.log('getting cycle error', action.error)
             return state
         default:

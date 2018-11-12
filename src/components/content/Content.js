@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Fade from '@material-ui/core/Fade';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 
 import TrainingView from './TrainingView/TrainingView.js'
 import CalendarView from './CalendarView/CalendarView.js'
@@ -34,13 +36,13 @@ class Content extends React.Component {
           <main className={classes.main}>
             <div className={classes.appBarSpacer} />
             <div className={classes.content}>
-              <Fade in={this.props.tabIndex === 0} mountOnEnter unmountOnExit>
+              <Fade in={this.props.tab === 0} mountOnEnter unmountOnExit>
                 <ChatView />
               </Fade>
-              <Fade in={this.props.tabIndex === 1} mountOnEnter unmountOnExit> 
+              <Fade in={this.props.tab === 1} mountOnEnter > 
                 <CalendarView />
               </Fade>   
-              <Fade in={this.props.tabIndex === 2} mountOnEnter unmountOnExit>
+              <Fade in={this.props.tab === 2} mountOnEnter unmountOnExit>
                 <TrainingView />
               </Fade> 
             </div>
@@ -55,6 +57,15 @@ class Content extends React.Component {
 
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(Content);
+const mapStateToProps = (state) => {
+  return{
+    tab: state.tab.tab
+  }
+}
+
+export default compose(
+  connect(mapStateToProps),
+  withStyles(styles)
+)(Content)

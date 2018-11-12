@@ -20,8 +20,11 @@ import { Chat,
         Today,
         FitnessCenter,
         Dashboard } from '@material-ui/icons/';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 
 import constants from '../../config/constants'
+import { switchTab } from '../../store/actions/tabActions'
 
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
@@ -114,11 +117,6 @@ class AppBar extends React.Component {
     }
   };
 
-  handleClick = (num) => {
-    this.setState({ selected: num }) 
-    this.props.onChangeIndex(num)
-  }
-
   componentDidMount = () => {
     this.handleStateOnScreenResize();
     window.addEventListener('resize', this.handleStateOnScreenResize);
@@ -181,19 +179,19 @@ class AppBar extends React.Component {
               <Divider />
 
               <List>
-                <MenuItem button onClick={this.handleClick.bind(this, 0)} selected={this.props.tabIndex === 0}>
+                <MenuItem button onClick={() => this.props.switchTab(0)} selected={this.props.tab === 0}>
                   <ListItemIcon>
                     <Chat />
                   </ListItemIcon>
                   <ListItemText primary={constants.chat} />
                 </MenuItem>
-                <MenuItem button onClick={this.handleClick.bind(this, 1)} selected={this.props.tabIndex === 1}>
+                <MenuItem button onClick={() => this.props.switchTab(1)} selected={this.props.tab === 1}>
                   <ListItemIcon>
                     <Today />
                   </ListItemIcon>
                   <ListItemText primary={constants.calendar} />
                 </MenuItem>
-                <MenuItem button onClick={this.handleClick.bind(this, 2)} selected={this.props.tabIndex === 2}>
+                <MenuItem button onClick={() => this.props.switchTab(2)} selected={this.props.tab === 2}>
                   <ListItemIcon>
                     <FitnessCenter />
                   </ListItemIcon>
@@ -202,7 +200,7 @@ class AppBar extends React.Component {
 
                 <Divider />
 
-                <MenuItem button onClick={this.handleClick.bind(this, 3)} selected={this.props.tabIndex === 3}>
+                <MenuItem button onClick={() => this.props.switchTab(3)} selected={this.props.tab === 3}>
                   <ListItemIcon>
                     <Dashboard />
                   </ListItemIcon>
@@ -217,8 +215,23 @@ class AppBar extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    switchTab: (tab) => dispatch(switchTab(tab))
+  }
+}
+
+const mapStateToProps = (state) => {
+  return{
+    tab: state.tab.tab
+  }
+}
+
 AppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AppBar);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles)
+)(AppBar)
