@@ -9,7 +9,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 const styles = theme => ({
@@ -90,44 +89,23 @@ class CheckboxList extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Table padding="none">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className={classes.cellLg}/>
-                                <TableCell className={classes.cellMd} numeric>
-                                    <Typography className={classes.subheading2}>
-                                        SETS
-                                    </Typography>
-                                </TableCell>
-                                <TableCell className={classes.cellMd} numeric>
-                                    <Typography className={classes.subheading2}>
-                                        REPS
-                                    </Typography>
-                                </TableCell>
-                                <TableCell className={classes.cellSm} numeric />
-                            </TableRow>
-                        </TableHead>
                         <TableBody>
                         {this.props.exercises && this.props.exercises.map(obj => (
                             <TableRow key={obj.name}>
                                 <TableCell component="th" scope="row" className={classes.cellLg}>
                                     <Typography className={classes.heading}>
-                                        {obj.name}
+                                        {obj.block}{obj.block && ' - '}{obj.name}
                                     </Typography>
                                 </TableCell>
                                 <TableCell className={classes.cellMd} numeric>
                                     <Typography className={classes.heading}>
-                                        {obj.sets}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell className={classes.cellMd} numeric>
-                                    <Typography className={classes.heading}>
-                                        {obj.reps}
+                                        {obj.sets}x{obj.reps}
                                     </Typography>
                                 </TableCell>
                                 <TableCell className={classes.cellSm}>
-                                    {obj.segs && 
+                                    {obj.tempo && 
                                         <Typography className={classes.heading} noWrap>
-                                            ({obj.segs} s.)
+                                            {obj.tempo}
                                         </Typography>
                                     }
                                 </TableCell>          
