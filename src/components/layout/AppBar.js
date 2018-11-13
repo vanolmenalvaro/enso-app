@@ -1,35 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import MuiAppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Hidden from '@material-ui/core/Hidden';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { ChevronLeft, MoreVert } from '@material-ui/icons/';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import React from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Drawer from '@material-ui/core/Drawer'
+import MuiAppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import Hidden from '@material-ui/core/Hidden'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuIcon from '@material-ui/icons/Menu'
+import { ChevronLeft, MoreVert } from '@material-ui/icons/'
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import { Chat, 
         Today,
         FitnessCenter,
-        Dashboard } from '@material-ui/icons/';
+        Dashboard } from '@material-ui/icons/'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import constants from '../../config/constants'
 import { switchTab } from '../../store/actions/tabActions'
+import { signOut } from '../../store/actions/authActions'
 
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const styles = theme => ({
   root: {
@@ -93,42 +95,53 @@ const styles = theme => ({
       width: theme.spacing.unit * 9,
     },
   }
-});
+})
 
 class AppBar extends React.Component {
   state = {
     open: false,
-  };
+    anchorEl: null
+  }
 
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true })
   };
 
   handleDrawerClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false })
   };
 
   handleStateOnScreenResize = () => {
     if(window.innerWidth > 1280){
-      this.setState({ open: true });
+      this.setState({ open: true })
     }
     else if (window.innerWidth < 600){
-      this.setState({ open: false });
+      this.setState({ open: false })
     }
   };
 
   componentDidMount = () => {
     this.handleStateOnScreenResize();
-    window.addEventListener('resize', this.handleStateOnScreenResize);
+    window.addEventListener('resize', this.handleStateOnScreenResize)
   }
   
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleStateOnScreenResize);
+    window.removeEventListener('resize', this.handleStateOnScreenResize)
   }
- 
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget })
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null })
+    this.props.signOut()
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
 
     return (
       <React.Fragment>
@@ -155,9 +168,25 @@ class AppBar extends React.Component {
               <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                 Enso App
               </Typography>
-              <IconButton color="inherit">
+              <IconButton 
+                color="inherit"
+                aria-label="More"
+                aria-owns={open ? 'long-menu' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+              >
                 <MoreVert />
               </IconButton>
+              <Menu
+                id="menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={this.handleClose}
+              >
+                  <MenuItem onClick={this.handleClose}>
+                    {constants.logout}
+                  </MenuItem>
+              </Menu>
             </Toolbar>
           </MuiAppBar>
           <Hidden xsDown>
@@ -217,13 +246,15 @@ class AppBar extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    switchTab: (tab) => dispatch(switchTab(tab))
+    switchTab: (tab) => dispatch(switchTab(tab)),
+    signOut: () => dispatch(signOut())
   }
 }
 
 const mapStateToProps = (state) => {
   return{
-    tab: state.tab.tab
+    tab: state.tab.tab,
+    firebase: state.firebase
   }
 }
 
