@@ -1,6 +1,9 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import AppBar from './layout/AppBar';
 import BottomNav from './layout/BottomNav';
@@ -17,6 +20,11 @@ const styles = theme => ({
 function AppView(props) {
     const { classes } = props;
     
+    //Route guarding
+    if(!props.auth.uid){
+        return <Redirect to='/app/login' />
+    }
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -29,4 +37,13 @@ function AppView(props) {
     )
 }
 
-export default withStyles(styles)(AppView)
+const mapStateToProps = (state) => {
+    return{
+        auth: state.firebase.auth
+    }
+}
+
+export default compose(
+    connect(mapStateToProps),
+    withStyles(styles)
+)(AppView)

@@ -10,7 +10,6 @@ const constants = {
     signin: "Entrar",
     email: "Correo electrónico",
     password: "Contraseña",
-    rememberMe: "Recuérdame",
     loginError: "Error: mail o contraseña incorrectos",
 }
 

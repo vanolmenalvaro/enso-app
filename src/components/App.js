@@ -14,6 +14,7 @@ class App extends React.Component {
           <Route exact path="/app" component={AppView} />
           <Route path="/app/login" component={Login} />
           <Route path="/app/admin" component={AdminView} />
+          <Route component={AppView} />
         </Switch>
       </BrowserRouter>
     )

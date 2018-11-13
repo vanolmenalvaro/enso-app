@@ -135,6 +135,9 @@ class AppBar extends React.Component {
 
   handleClose = () => {
     this.setState({ anchorEl: null })
+  };
+
+  handleSignout = () => {
     this.props.signOut()
   };
 
@@ -183,7 +186,7 @@ class AppBar extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
-                  <MenuItem onClick={this.handleClose}>
+                  <MenuItem onClick={this.handleSignout}>
                     {constants.logout}
                   </MenuItem>
               </Menu>
@@ -254,7 +257,6 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return{
     tab: state.tab.tab,
-    firebase: state.firebase
   }
 }
 
