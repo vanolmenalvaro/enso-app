@@ -1,40 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react'
+import { BrowserRouter, Route, Switch } from "react-router-dom"
 
-import AppBar from './layout/AppBar';
-import BottomNav from './layout/BottomNav';
-import Content from './content/Content.js'
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    height: '100vh'
-  },
-});
+import AppView from './AppView'
+import Login from './login/Login'
+import AdminView from './admin/AdminView'
 
 class App extends React.Component {
 
-  render() {
-    const { classes } = this.props;
-
+  render(){
     return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar />
-          <Content />
-          <BottomNav />
-        </div>
-      </React.Fragment>
-    );
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/app" component={AppView} />
+          <Route path="/app/login" component={Login} />
+          <Route path="/app/admin" component={AdminView} />
+        </Switch>
+      </BrowserRouter>
+    )
   }
 }
 
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles)(App);
+export default (App)
 

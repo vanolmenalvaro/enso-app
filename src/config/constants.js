@@ -5,7 +5,13 @@ const constants = {
     calendar: "Calendario",
     training: "Entreno",
     admin: "Admin",
-    logout: "Cerrar sesión"
+    logout: "Cerrar sesión",
+    login: "Login",
+    signin: "Entrar",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    rememberMe: "Recuérdame",
+    loginError: "Error: mail o contraseña incorrectos"
 }
 
 export default constants;
