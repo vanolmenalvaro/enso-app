@@ -5,7 +5,9 @@ import { getFirebase } from 'react-redux-firebase'
 import Button from "@material-ui/core/Button"
 
 export class AdminView extends Component {
-  
+  state = {
+    isAdmin: true
+  }
   handleClick = () => {
     const firebase = getFirebase()
     var listAllUsers = firebase.functions().httpsCallable('listAllUsers');
@@ -16,21 +18,27 @@ export class AdminView extends Component {
     });
   }
 
-  render() {
-    //Route guarding
-    if(!this.props.auth.uid){
-      return <Redirect to='/app/login' />
+  componentDidMount = () => {
+    let firebase = getFirebase()
+    if(firebase.auth().currentUser){
+      firebase.auth().currentUser.getIdTokenResult()
+      .then((token) => {
+        if(token.claims.admin === false) {
+          this.setState({ isAdmin: false })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
+  }
 
-    const firebase = getFirebase()
-    firebase.auth().currentUser.getIdTokenResult()
-    .then((idTokenResult) => {
-      console.log(idTokenResult)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    
+  render() {
+    console.log(this.state)
+      //Route guarding
+      if(!this.props.auth.uid || this.state.isAdmin !== true) {
+        return <Redirect to='/app/login' />
+      }  
 
     return (
       <div>

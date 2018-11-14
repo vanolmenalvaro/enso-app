@@ -23,6 +23,8 @@ import { Chat,
         Dashboard } from '@material-ui/icons/'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { getFirebase } from 'react-redux-firebase'
+import { withRouter } from 'react-router-dom'
 
 import constants from '../../config/constants'
 import { switchTab } from '../../store/actions/tabActions'
@@ -100,7 +102,8 @@ const styles = theme => ({
 class AppBar extends React.Component {
   state = {
     open: false,
-    anchorEl: null
+    anchorEl: null,
+    isAdmin: false
   }
 
   handleDrawerOpen = () => {
@@ -123,6 +126,7 @@ class AppBar extends React.Component {
   componentDidMount = () => {
     this.handleStateOnScreenResize();
     window.addEventListener('resize', this.handleStateOnScreenResize)
+    this.isAdmin()
   }
   
   componentWillUnmount() {
@@ -141,11 +145,29 @@ class AppBar extends React.Component {
     this.props.signOut()
   };
 
+  handleAdmin = () => {
+    this.props.history.push('/app/admin');
+  };
+
+  isAdmin = () => {
+    let firebase = getFirebase()
+    firebase.auth().currentUser.getIdTokenResult()
+    .then((token) => {
+      if(token.claims.admin) {
+        this.setState({ isAdmin: true })
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   render() {
     const { classes } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
 
+    console.log(this.props)
     return (
       <React.Fragment>
         <CssBaseline />
@@ -186,6 +208,11 @@ class AppBar extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
+                  {this.state.isAdmin && 
+                    <MenuItem onClick={this.handleAdmin}>
+                      {constants.admin}
+                    </MenuItem>
+                  }
                   <MenuItem onClick={this.handleSignout}>
                     {constants.logout}
                   </MenuItem>
@@ -266,5 +293,6 @@ AppBar.propTypes = {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles)
+  withStyles(styles),
+  withRouter
 )(AppBar)
