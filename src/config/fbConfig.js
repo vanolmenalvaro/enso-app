@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/firebase-functions'
 
 // Initialize Firebase
 var config = {
@@ -16,6 +17,7 @@ var config = {
 
   firebase.initializeApp(config)
   firebase.firestore().settings(settings)
+  firebase.functions()
   firebase.firestore().enablePersistence()
     .then(function() {
       // Initialize Cloud Firestore through firebase
