@@ -25,9 +25,9 @@ import { connect } from 'react-redux'
 import { getFirebase } from 'react-redux-firebase'
 import { withRouter } from 'react-router-dom'
 
-import constants from '../../config/constants'
-import { switchTab } from '../../store/actions/tabActions'
-import { signOut } from '../../store/actions/authActions'
+import constants from '../../../config/constants'
+import { switchTab } from '../../../store/actions/tabActions'
+import { signOut } from '../../../store/actions/authActions'
 
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true

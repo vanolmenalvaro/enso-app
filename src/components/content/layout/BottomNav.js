@@ -11,8 +11,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { switchTab } from '../../store/actions/tabActions'
-import constants from '../../config/constants'
+import { switchTab } from '../../../store/actions/tabActions'
+import constants from '../../../config/constants'
 
 const styles = {
   root: {

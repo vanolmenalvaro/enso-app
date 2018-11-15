@@ -12,6 +12,7 @@ import CalendarView from './CalendarView/CalendarView.js'
 import ChatView from './ChatView/ChatView.js'
 import ToolsView from './ToolsView/ToolsView.js'
 import { switchTab } from '../../store/actions/tabActions'
+import { getCycle } from '../../store/actions/cycleActions'
 
 const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -30,6 +31,8 @@ const styles = theme => ({
 class Content extends React.Component {
 
   componentDidMount = () => {
+    this.props.getCycle()
+  
     switch (this.props.location.pathname) {
       case '/app/chat':
         return this.props.switchTab(0)
@@ -80,6 +83,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getCycle: () => dispatch(getCycle()),
     switchTab: (tab, props) => dispatch(switchTab(tab, props))
   }
 }

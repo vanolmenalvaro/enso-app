@@ -5,8 +5,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import AppBar from './layout/AppBar';
-import BottomNav from './layout/BottomNav';
+import AppBar from './content/layout/AppBar';
+import BottomNav from './content/layout/BottomNav';
 import Content from './content/Content'
 
 const styles = theme => ({

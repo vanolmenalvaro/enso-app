@@ -8,7 +8,6 @@ import moment from 'moment';
 
 import DayDetails from './DayDetails'
 import constants from '../../../config/constants'
-import { getCycle } from '../../../store/actions/cycleActions'
 import { switchTab } from '../../../store/actions/tabActions'
 
 const styles = theme => ({
@@ -78,7 +77,6 @@ class Calendar extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
-        this.props.getCycle()
     }
 
     render() {
@@ -120,7 +118,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCycle: () => dispatch(getCycle()),
         switchTab: (day, props) => dispatch(switchTab(day, props))
     }
 }
