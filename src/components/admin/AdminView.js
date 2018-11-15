@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { getFirebase } from 'react-redux-firebase'
-import Button from "@material-ui/core/Button"
+
+import AppBar from './layout/AppBar'
 
 export class AdminView extends Component {
   state = {
@@ -40,11 +41,9 @@ export class AdminView extends Component {
       }  
 
     return (
-      <div>
-        <Button variant="contained" color="primary" onClick={this.handleClick}>
-          Send
-        </Button> 
-      </div>
+      <Fragment>
+        <AppBar />
+      </Fragment>
     )
   }
 }
