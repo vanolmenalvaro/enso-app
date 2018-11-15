@@ -6,6 +6,8 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import Hidden from '@material-ui/core/Hidden';
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
 
 import constants from '../../../config/constants'
 
@@ -45,7 +47,7 @@ const styles = () => ({
 class DayDetails extends Component {
 
   handleClick = () => {
-    if(this.props.blocks !== undefined) this.props.switchDay(this.props.day)
+    if(this.props.blocks !== undefined) this.props.switchTab(3, this.props)
   }
 
   render() { 
@@ -81,4 +83,7 @@ DayDetails.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DayDetails);
+export default compose(
+  withStyles(styles),
+  withRouter
+)(DayDetails);

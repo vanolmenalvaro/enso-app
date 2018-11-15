@@ -6,12 +6,13 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Hidden from '@material-ui/core/Hidden';
 import { Chat, 
     Today,
-    FitnessCenter,
-    Dashboard } from '@material-ui/icons/';
+    Build} from '@material-ui/icons/';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import { switchTab } from '../../store/actions/tabActions'
+import constants from '../../config/constants'
 
 const styles = {
   root: {
@@ -27,18 +28,17 @@ class BottomNav extends React.Component {
 
   render() {
     const { classes } = this.props;
-    
+
     return (
         <Hidden smUp>
             <BottomNavigation
-                value={this.props.tab}
+                value={this.props.tab === 3 ? 1 : this.props.tab} //if it is day view calendar tab is still selected
                 showLabels
                 className={classes.stickToBottom}
             >
-                <BottomNavigationAction label="Chat" icon={<Chat />} onClick={() => this.props.switchTab(0)} />
-                <BottomNavigationAction label="Calendario" icon={<Today />} onClick={() => this.props.switchTab(1)} />
-                <BottomNavigationAction label="Entreno" icon={<FitnessCenter />} onClick={() => this.props.switchTab(2)} />
-                <BottomNavigationAction label="Admin" icon={<Dashboard />} onClick={() => this.props.switchTab(3)} />
+                <BottomNavigationAction label={constants.chat} icon={<Chat />} onClick={() => this.props.switchTab(0, this.props)} />
+                <BottomNavigationAction label={constants.calendar} icon={<Today />} onClick={() => this.props.switchTab(1, this.props)} />
+                <BottomNavigationAction label={constants.tools} icon={<Build />} onClick={() => this.props.switchTab(2, this.props)} />
             </BottomNavigation>
         </Hidden>
     );
@@ -51,7 +51,7 @@ BottomNav.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    switchTab: (tab) => dispatch(switchTab(tab))
+    switchTab: (tab, props) => dispatch(switchTab(tab, props))
   }
 }
 
@@ -63,5 +63,6 @@ const mapStateToProps = (state) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles)
+  withStyles(styles),
+  withRouter
 )(BottomNav)

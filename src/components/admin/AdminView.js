@@ -34,7 +34,6 @@ export class AdminView extends Component {
   }
 
   render() {
-    console.log(this.state)
       //Route guarding
       if(!this.props.auth.uid || this.state.isAdmin !== true) {
         return <Redirect to='/app/login' />

@@ -9,7 +9,7 @@ import moment from 'moment';
 import DayDetails from './DayDetails'
 import constants from '../../../config/constants'
 import { getCycle } from '../../../store/actions/cycleActions'
-import { switchDay } from '../../../store/actions/tabActions'
+import { switchTab } from '../../../store/actions/tabActions'
 
 const styles = theme => ({
   paper: {
@@ -65,14 +65,13 @@ class Calendar extends Component {
                     blocks = this.props.program[dayNumber]
                 }
             }
-            days.push(<DayDetails day={dayNumber} key={j + i * 7} blocks={blocks} switchDay={this.props.switchDay}/>)
+            days.push(<DayDetails day={dayNumber} key={j + i * 7} blocks={blocks} switchTab={this.props.switchTab}/>)
         }
         //Create the week and add the days
         weeks.push(
             <div className={classes.row} key={i}>
                 {days}
             </div>)
-        
         }
         return weeks
     }
@@ -122,7 +121,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getCycle: () => dispatch(getCycle()),
-        switchDay: (day) => dispatch(switchDay(day))
+        switchTab: (day, props) => dispatch(switchTab(day, props))
     }
 }
 

@@ -11,11 +11,10 @@ class TrainingView extends Component{
   }
 
   render() {
-    const { dispatch, ...restOfProps} = this.props
-
+    const day = this.props.match.params.day.replace(/-/g, '/')
     let blocksThisDay = []
     this.props.blocks.map(block => (
-      this.props.program[this.props.day] && this.props.program[this.props.day].map(programBlock => (
+      this.props.program[day] && this.props.program[day].map(programBlock => (
         programBlock.name === block.name &&
           blocksThisDay.push(block)
       ))
@@ -31,7 +30,10 @@ class TrainingView extends Component{
       </Typography>
 
     return(
-      <div {...restOfProps}>
+      <div>
+        <Typography variant="h4" align='center'>
+          {day}
+        </Typography> 
         {renderReturn}
       </div>
     )

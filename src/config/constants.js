@@ -3,7 +3,7 @@ const constants = {
     weekDays: [ "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM" ],
     chat: "Chat",
     calendar: "Calendario",
-    training: "Entreno",
+    tools: "Herramientas",
     admin: "Admin",
     logout: "Cerrar sesión",
     login: "Login",

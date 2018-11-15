@@ -19,8 +19,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { Chat, 
         Today,
-        FitnessCenter,
-        Dashboard } from '@material-ui/icons/'
+        Build} from '@material-ui/icons/'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { getFirebase } from 'react-redux-firebase'
@@ -167,7 +166,6 @@ class AppBar extends React.Component {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
 
-    console.log(this.props)
     return (
       <React.Fragment>
         <CssBaseline />
@@ -238,32 +236,23 @@ class AppBar extends React.Component {
               <Divider />
 
               <List>
-                <MenuItem button onClick={() => this.props.switchTab(0)} selected={this.props.tab === 0}>
+                <MenuItem button onClick={() => this.props.switchTab(0, this.props)} selected={this.props.tab === 0}>
                   <ListItemIcon>
                     <Chat />
                   </ListItemIcon>
                   <ListItemText primary={constants.chat} />
                 </MenuItem>
-                <MenuItem button onClick={() => this.props.switchTab(1)} selected={this.props.tab === 1}>
+                <MenuItem button onClick={() => this.props.switchTab(1, this.props)} selected={this.props.tab === 1}>
                   <ListItemIcon>
                     <Today />
                   </ListItemIcon>
                   <ListItemText primary={constants.calendar} />
                 </MenuItem>
-                <MenuItem button onClick={() => this.props.switchTab(2)} selected={this.props.tab === 2}>
+                <MenuItem button onClick={() => this.props.switchTab(2, this.props)} selected={this.props.tab === 2}>
                   <ListItemIcon>
-                    <FitnessCenter />
+                    <Build />
                   </ListItemIcon>
-                  <ListItemText primary={constants.training} />
-                </MenuItem>
-
-                <Divider />
-
-                <MenuItem button onClick={() => this.props.switchTab(3)} selected={this.props.tab === 3}>
-                  <ListItemIcon>
-                    <Dashboard />
-                  </ListItemIcon>
-                  <ListItemText primary={constants.admin} />
+                  <ListItemText primary={constants.tools} />
                 </MenuItem>
               </List>
             </Drawer>
@@ -276,7 +265,7 @@ class AppBar extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    switchTab: (tab) => dispatch(switchTab(tab)),
+    switchTab: (tab, props) => dispatch(switchTab(tab, props)),
     signOut: () => dispatch(signOut())
   }
 }

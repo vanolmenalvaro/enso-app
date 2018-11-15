@@ -15,9 +15,8 @@ class ChatView extends Component{
     }
     
     render() {
-        const { createCycle, ...restOfProps} = this.props
         return (
-            <div {...restOfProps}>
+            <div>
                 <Typography variant="h1" align='center' style={{position: 'absolute'}}>
                     This is the Chat view
                 </Typography>

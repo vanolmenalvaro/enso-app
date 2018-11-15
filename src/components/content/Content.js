@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
-import Fade from '@material-ui/core/Fade';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { withRouter, Route, Switch } from "react-router-dom"
 
 import TrainingView from './TrainingView/TrainingView.js'
 import CalendarView from './CalendarView/CalendarView.js'
 import ChatView from './ChatView/ChatView.js'
+import ToolsView from './ToolsView/ToolsView.js'
+import { switchTab } from '../../store/actions/tabActions'
 
 const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -27,24 +29,35 @@ const styles = theme => ({
 
 class Content extends React.Component {
 
+  componentDidMount = () => {
+    switch (this.props.location.pathname) {
+      case '/app/chat':
+        return this.props.switchTab(0)
+      case '/app/calendar':
+        return this.props.switchTab(1)
+      case '/app/tools':
+        return this.props.switchTab(2)
+      default:
+        return this.props.switchTab(1)
+      }
+  }
+
   render() {
     const { classes } = this.props
-
+    
     return (
       <React.Fragment>
         <CssBaseline />
           <main className={classes.main}>
             <div className={classes.appBarSpacer} />
             <div className={classes.content}>
-              <Fade in={this.props.tab === 0} mountOnEnter unmountOnExit>
-                <ChatView />
-              </Fade>
-              <Fade in={this.props.tab === 1} mountOnEnter > 
-                <CalendarView />
-              </Fade>   
-              <Fade in={this.props.tab === 2} mountOnEnter unmountOnExit>
-                <TrainingView />
-              </Fade> 
+              <Switch>
+                <Route path="/app/chat" component={ChatView} />
+                <Route exact path="/app/calendar" component={CalendarView} />
+                <Route path="/app/calendar/:day" component={TrainingView} />
+                <Route path="/app/tools" component={ToolsView} />
+                <Route component={CalendarView} />
+              </Switch>
             </div>
             <Hidden smUp>
               <div className={classes.appBarSpacer} />
@@ -65,7 +78,14 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    switchTab: (tab, props) => dispatch(switchTab(tab, props))
+  }
+}
+
 export default compose(
-  connect(mapStateToProps),
-  withStyles(styles)
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles),
+  withRouter
 )(Content)
