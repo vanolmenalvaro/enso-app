@@ -36,17 +36,25 @@ const drawerWidth = 240
 
 const styles = theme => ({
   root: {
-    display: 'flex',
+    display: 'flex'
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
+  appBarSpacer: theme.mixins.toolbar,
+  toolbar: theme.mixins.toolbar,
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  menuButton: {
+    marginLeft: 12,
+    marginRight: 36,
+  },
+  title: {
+    flexGrow: 1,
+    textAlign: 'center',
+    paddingLeft: 40
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -64,38 +72,37 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
   menuButtonHidden: {
     display: 'none',
   },
-  title: {
-    flexGrow: 1,
-    textAlign: 'center',
-    paddingLeft: 40
-  },
-  drawerPaper: {
-    position: 'relative',
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
     whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  drawerPaperClose: {
-    overflowX: 'hidden',
+  drawerClose: {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 7,
+    overflowX: 'hidden',
+    width: theme.spacing.unit * 7 + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
+      width: theme.spacing.unit * 9 + 1,
     },
-  }
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 1,
+  },
 })
 
 class AppBar extends React.Component {
@@ -220,8 +227,15 @@ class AppBar extends React.Component {
           <Hidden xsDown>
             <Drawer
               variant="permanent"
+              className={classNames(classes.drawer, {
+                [classes.drawerOpen]: this.state.open,
+                [classes.drawerClose]: !this.state.open,
+              })}
               classes={{
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                paper: classNames({
+                  [classes.drawerOpen]: this.state.open,
+                  [classes.drawerClose]: !this.state.open,
+                }),
               }}
               open={this.state.open}
             >
@@ -232,9 +246,7 @@ class AppBar extends React.Component {
                   </IconButton>
                 </Hidden>
               </div>
-
               <Divider />
-
               <List>
                 <MenuItem button onClick={() => this.props.switchTab(0, this.props)} selected={this.props.tab === 0}>
                   <ListItemIcon>
@@ -257,6 +269,13 @@ class AppBar extends React.Component {
               </List>
             </Drawer>
           </Hidden>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            {this.props.children}
+            <Hidden smUp>
+              <div className={classes.appBarSpacer} />
+            </Hidden>
+          </main>
         </div>
       </React.Fragment>
     );

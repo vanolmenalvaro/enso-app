@@ -45,7 +45,7 @@ const styles = theme => ({
   }
 });
 
-class Calendar extends Component {
+class CalendarView extends Component {
 
     createCycle = () => {
         const { classes } = this.props;
@@ -102,7 +102,7 @@ class Calendar extends Component {
     }
 }
 
-Calendar.propTypes = {
+CalendarView.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
@@ -125,4 +125,4 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
-)(Calendar);
+)(CalendarView);
