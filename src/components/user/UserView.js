@@ -2,12 +2,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { withRouter, Route, Switch } from "react-router-dom"
+import { withRouter, Redirect } from "react-router-dom"
 
-import TrainingView from './TrainingView/TrainingView.js'
-import CalendarView from './CalendarView/CalendarView.js'
-import ChatView from './ChatView/ChatView.js'
-import ToolsView from './ToolsView/ToolsView.js'
 import AppBar from './layout/AppBar'
 import BottomNav from './layout/BottomNav'
 import { switchTab } from '../../store/actions/tabActions'
@@ -20,11 +16,11 @@ class UserView extends React.Component {
     this.props.getCycle()
   
     switch (this.props.location.pathname) {
-      case '/app/chat':
+      case '/app/user/chat':
         return this.props.switchTab(0)
-      case '/app/calendar':
+      case '/app/user/calendar':
         return this.props.switchTab(1)
-      case '/app/tools':
+      case '/app/user/tools':
         return this.props.switchTab(2)
       default:
         return this.props.switchTab(1)
@@ -32,19 +28,16 @@ class UserView extends React.Component {
   }
 
   render() {  
+    //Route guarding
+    if(!this.props.auth.uid) {
+      return <Redirect to='/app/login' />
+    }
+    console.log(this.props)
     return (
       <React.Fragment>
         <main>
           <CssBaseline />
-            <AppBar children={
-              <Switch>
-                <Route path="/app/chat" component={ChatView} />
-                <Route exact path="/app/calendar" component={CalendarView} />
-                <Route path="/app/calendar/:day" component={TrainingView} />
-                <Route path="/app/tools" component={ToolsView} />
-                <Route component={CalendarView} />
-              </Switch>
-            }/>
+            <AppBar children={this.props.children}/>
             <BottomNav />
         </main>
       </React.Fragment>
@@ -54,7 +47,8 @@ class UserView extends React.Component {
 
 const mapStateToProps = (state) => {
   return{
-    tab: state.tab.tab
+    tab: state.tab.tab,
+    auth: state.firebase.auth
   }
 }
 

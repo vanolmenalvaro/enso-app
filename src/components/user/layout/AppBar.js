@@ -152,7 +152,7 @@ class AppBar extends React.Component {
   };
 
   handleAdmin = () => {
-    this.props.history.push('/app/admin');
+    this.props.history.push('/app/admin/users');
   };
 
   isAdmin = () => {
@@ -248,19 +248,19 @@ class AppBar extends React.Component {
               </div>
               <Divider />
               <List>
-                <MenuItem button onClick={() => this.props.switchTab(0, this.props)} selected={this.props.tab === 0}>
+                <MenuItem button onClick={() => this.props.switchTab(0, this.props, '/app/user/chat')} selected={this.props.tab === 0}>
                   <ListItemIcon>
                     <Chat />
                   </ListItemIcon>
                   <ListItemText primary={constants.chat} />
                 </MenuItem>
-                <MenuItem button onClick={() => this.props.switchTab(1, this.props)} selected={this.props.tab === 1}>
+                <MenuItem button onClick={() => this.props.switchTab(1, this.props, '/app/user/calendar')} selected={this.props.tab === 1}>
                   <ListItemIcon>
                     <Today />
                   </ListItemIcon>
                   <ListItemText primary={constants.calendar} />
                 </MenuItem>
-                <MenuItem button onClick={() => this.props.switchTab(2, this.props)} selected={this.props.tab === 2}>
+                <MenuItem button onClick={() => this.props.switchTab(2, this.props, '/app/user/tools')} selected={this.props.tab === 2}>
                   <ListItemIcon>
                     <Build />
                   </ListItemIcon>
@@ -284,7 +284,7 @@ class AppBar extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    switchTab: (tab, props) => dispatch(switchTab(tab, props)),
+    switchTab: (tab, props, route) => dispatch(switchTab(tab, props, route)),
     signOut: () => dispatch(signOut())
   }
 }

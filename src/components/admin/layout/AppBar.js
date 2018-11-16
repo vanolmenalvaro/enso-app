@@ -64,8 +64,7 @@ const styles = theme => ({
 class AppBar extends Component {
     state = {
         open: false,
-        anchorEl: null,
-        isAdmin: false
+        anchorEl: null
     }
 
     handleClick = event => {
@@ -81,7 +80,7 @@ class AppBar extends Component {
     };
     
     handleUser = () => {
-        this.props.history.push('/app/calendar');
+        this.props.history.push('/app/user/calendar');
     };
 
     render() {
@@ -132,17 +131,17 @@ class AppBar extends Component {
                     <div className={classes.toolbar} />
                     <Divider />
                     <List>
-                        <ListItem button>
+                        <ListItem onClick={() => this.props.switchTab(0, this.props, '/app/admin/users')} selected={this.props.tab === 0}>
                             <ListItemIcon><People /></ListItemIcon>
-                            <ListItemText primary='Usuarios' />
+                            <ListItemText primary={constants.users} />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem onClick={() => this.props.switchTab(1, this.props, '/app/admin/blueprints')} selected={this.props.tab === 1}>
                             <ListItemIcon><LibraryBooks /></ListItemIcon>
-                            <ListItemText primary='Plantillas' />
+                            <ListItemText primary={constants.blueprints} />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem onClick={() => this.props.switchTab(2, this.props, '/app/admin/chat')} selected={this.props.tab === 2}>
                             <ListItemIcon><Chat /></ListItemIcon>
-                            <ListItemText primary='Chat' />
+                            <ListItemText primary={constants.chat} />
                         </ListItem>
                     </List>
                 </Drawer>
@@ -157,7 +156,7 @@ class AppBar extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      switchTab: (tab, props) => dispatch(switchTab(tab, props)),
+      switchTab: (tab, props, route) => dispatch(switchTab(tab, props, route)),
       signOut: () => dispatch(signOut())
     }
   }

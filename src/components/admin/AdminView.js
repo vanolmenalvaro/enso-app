@@ -1,20 +1,18 @@
 import React, { Component, Fragment } from 'react'
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { getFirebase } from 'react-redux-firebase'
-import { withRouter, Route, Switch } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 
 import AppBar from './layout/AppBar'
-import CalendarView from '../user/CalendarView/CalendarView'
+import { switchTab } from '../../store/actions/tabActions'
 
 export class AdminView extends Component {
-  state = {
-    isAdmin: true
-  }
   handleClick = () => {
     const firebase = getFirebase()
-    var listAllUsers = firebase.functions().httpsCallable('listAllUsers');
+    var listAllUsers = firebase.functions().httpsCallable('listAllUsers')
     listAllUsers().then((response) => {
       console.log(response)
     }).catch(function(error) {
@@ -27,33 +25,36 @@ export class AdminView extends Component {
     if(firebase.auth().currentUser){
       firebase.auth().currentUser.getIdTokenResult()
       .then((token) => {
-        if(token.claims.admin === false) {
-          this.setState({ isAdmin: false })
-        }
+        if(!token.claims.admin) this.props.history.push('/app/calendar')
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
+    }
+
+    switch (this.props.location.pathname) {
+      case '/app/admin/users':
+        return this.props.switchTab(0)
+      case '/app/admin/blueprints':
+        return this.props.switchTab(1)
+      case '/app/admin/chat':
+        return this.props.switchTab(2)
+      default:
+        return this.props.switchTab(0)
     }
   }
 
   render() {
       //Route guarding
-      if(!this.props.auth.uid || this.state.isAdmin !== true) {
+      if(!this.props.auth.uid) {
         return <Redirect to='/app/login' />
       }  
 
     return (
       <Fragment>
-        <AppBar children={
-        <Switch>
-          {/* <Route path="/app/chat" component={ChatView} />
-          <Route exact path="/app/calendar" component={CalendarView} />
-          <Route path="/app/calendar/:day" component={TrainingView} />
-          <Route path="/app/tools" component={ToolsView} /> */}
-          <Route component={CalendarView} />
-        </Switch>
-        }/>
+        <main>
+          <CssBaseline />
+        <AppBar children={this.props.children}/></main>
       </Fragment>
     )
   }
@@ -65,7 +66,13 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    switchTab: (tab, props) => dispatch(switchTab(tab, props))
+  }
+}
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter
 )(AdminView)

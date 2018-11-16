@@ -47,7 +47,7 @@ const styles = () => ({
 class DayDetails extends Component {
 
   handleClick = () => {
-    if(this.props.blocks !== undefined) this.props.switchTab(3, this.props)
+    if(this.props.blocks !== undefined) this.props.switchTab(3, this.props, '/app/user/calendar/'+this.props.day.replace(/\//g, '-'))
   }
 
   render() { 

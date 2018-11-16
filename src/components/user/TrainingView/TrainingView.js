@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import Typography from "@material-ui/core/Typography"
+import { compose } from 'redux'
 import { connect } from 'react-redux'
-import Typography from "@material-ui/core/Typography";
+import { withRouter } from 'react-router-dom'
 
 import ExerciseCard from './ExerciseCard'
 
@@ -38,17 +40,17 @@ class TrainingView extends Component{
       </div>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
-
   return{
       program: state.cycle.content.program,
       blocks: state.cycle.content.blocks,
       day: state.tab.day
   }
-
 }
 
-export default connect(mapStateToProps)(TrainingView)
+export default compose(
+  connect(mapStateToProps),
+  withRouter
+)(TrainingView)

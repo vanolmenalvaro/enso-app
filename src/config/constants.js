@@ -4,6 +4,8 @@ const constants = {
     chat: "Chat",
     calendar: "Calendario",
     tools: "Herramientas",
+    users: 'Usuarios',
+    blueprints: 'Plantillas',
     admin: "Vista Admin",
     user: "Vista Usuario",
     logout: "Cerrar sesión",
