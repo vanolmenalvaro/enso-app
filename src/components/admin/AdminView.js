@@ -10,15 +10,6 @@ import AppBar from './layout/AppBar'
 import { switchTab } from '../../store/actions/tabActions'
 
 export class AdminView extends Component {
-  handleClick = () => {
-    const firebase = getFirebase()
-    var listAllUsers = firebase.functions().httpsCallable('listAllUsers')
-    listAllUsers().then((response) => {
-      console.log(response)
-    }).catch(function(error) {
-      console.log(error.message)
-    });
-  }
 
   componentDidMount = () => {
     let firebase = getFirebase()

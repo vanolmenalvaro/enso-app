@@ -25,7 +25,6 @@ const cycleReducer = (state = initState, action) => {
                 ...action.cycle,
             })
         case 'GET_CYCLE_ERROR':
-
             console.log('getting cycle error', action.error)
             return state
         default:

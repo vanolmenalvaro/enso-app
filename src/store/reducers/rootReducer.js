@@ -1,6 +1,7 @@
 import authReducer from './authReducer'
 import cycleReducer from './cycleReducer'
 import tabReducer from './tabReducer'
+import adminReducer from './adminReducer'
 import { combineReducers } from 'redux'
 import { firebaseReducer } from 'react-redux-firebase'
 
@@ -8,7 +9,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     cycle: cycleReducer,
     tab: tabReducer,
-    firebase: firebaseReducer
+    firebase: firebaseReducer,
+    admin: adminReducer
 })
 
 export default rootReducer
