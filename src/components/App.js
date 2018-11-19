@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 
 import Login from './login/Login'
 import AdminView from './admin/AdminView'
@@ -28,7 +28,7 @@ class App extends React.Component {
           <Route exact path="/app/user/calendar" render={(props) => <UserView {...props} children={<CalendarView />} />} />
           <Route path="/app/user/calendar/:day" render={(props) => <UserView {...props} children={<TrainingView />} />} />
           <Route path="/app/user/tools" render={(props) => <UserView {...props} children={<ToolsView />} />} />
-          <Route component={CalendarView} />
+          <Redirect to="/app/user/calendar" />
         </Switch>
       </BrowserRouter>
     )
