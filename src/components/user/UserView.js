@@ -32,7 +32,7 @@ class UserView extends React.Component {
     if(!this.props.auth.uid) {
       return <Redirect to='/app/login' />
     }
-    console.log(this.props)
+    
     return (
       <React.Fragment>
         <main>

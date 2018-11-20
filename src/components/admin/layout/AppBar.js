@@ -112,7 +112,7 @@ class AppBar extends Component {
                             onClose={this.handleClose}
                         >
                             <MenuItem onClick={this.handleUser}>
-                                {constants.user}
+                                {constants.userView}
                             </MenuItem>
                             <MenuItem onClick={this.handleSignout}>
                                 {constants.logout}

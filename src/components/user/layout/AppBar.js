@@ -215,7 +215,7 @@ class AppBar extends React.Component {
               >
                   {this.state.isAdmin && 
                     <MenuItem onClick={this.handleAdmin}>
-                      {constants.admin}
+                      {constants.adminView}
                     </MenuItem>
                   }
                   <MenuItem onClick={this.handleSignout}>

@@ -12,6 +12,7 @@ import { switchTab } from '../../store/actions/tabActions'
 export class AdminView extends Component {
 
   componentDidMount = () => {
+    //Route guarding
     let firebase = getFirebase()
     if(firebase.auth().currentUser){
       firebase.auth().currentUser.getIdTokenResult()
