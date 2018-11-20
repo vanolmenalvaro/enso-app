@@ -139,23 +139,25 @@ export class UserCard extends Component {
                         open={open}
                         onClose={this.handleClose}
                     >
-                        <MenuItem onClick={() => this.sendPasswordResetEmail(user.email)}>
-                            {constants.sendPasswordRetrievingEmail}
-                        </MenuItem>
-
-                        {user.customClaims.accessLevel !== 2 &&
+                        {user.disabled === false &&
+                            <MenuItem onClick={() => this.sendPasswordResetEmail(user.email)}>
+                                {constants.sendPasswordRetrievingEmail}
+                            </MenuItem>
+                        }
+                        
+                        {user.customClaims.accessLevel !== 2 && user.disabled === false &&
                             <MenuItem onClick={() => this.setSuperAdminPrivileges(user.uid)}>
                                 {constants.setAsSuperadmin}
                             </MenuItem>
                         }
 
-                        {user.customClaims.accessLevel !== 1 &&
+                        {user.customClaims.accessLevel !== 1 && user.disabled === false &&
                             <MenuItem onClick={() => this.setAdminPrivileges(user.uid)}>
                                 {constants.setAsAdmin}
                             </MenuItem>
                         }
 
-                        {user.customClaims.accessLevel !== 0 &&
+                        {user.customClaims.accessLevel !== 0 && user.disabled === false &&
                             <MenuItem onClick={() => this.setUserPrivileges(user.uid)}>
                                 {constants.setAsUser}
                             </MenuItem>

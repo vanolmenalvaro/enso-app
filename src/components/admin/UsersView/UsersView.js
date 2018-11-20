@@ -61,14 +61,30 @@ class UsersView extends Component {
 
   sortUsers = (users) => {
     users.sort((a,b) => {
-      if (a.customClaims.accessLevel < b.customClaims.accessLevel) {
+      // sort depending on disabled state
+      if (a.disabled === true && b.disabled === false) {
         return 1
       }
-      if (a.customClaims.accessLevel > b.customClaims.accessLevel) {
+      else if (a.disabled === false && b.disabled === true) {
         return -1
+      }else {// if disabled state is equal sort depending on accessLevel
+        if (a.customClaims.accessLevel < b.customClaims.accessLevel) {
+          return 1
+        }
+        else if (a.customClaims.accessLevel > b.customClaims.accessLevel) {
+          return -1
+        }else { // if accessLevel is equal sort depending on email
+          if (a.email > b.email) {
+            return 1
+          }
+          else if (a.email < b.email) {
+            return -1
+          }else { // they are equal
+            return 0
+          }
+        }
       }
-      // a must be equal to b
-      return 0
+      
     })
   }
 

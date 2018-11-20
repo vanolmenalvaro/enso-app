@@ -36,9 +36,9 @@ class BottomNav extends React.Component {
                 showLabels
                 className={classes.stickToBottom}
             >
-                <BottomNavigationAction label={constants.chat} icon={<Chat />} onClick={() => this.props.switchTab(0, this.props)} />
-                <BottomNavigationAction label={constants.calendar} icon={<Today />} onClick={() => this.props.switchTab(1, this.props)} />
-                <BottomNavigationAction label={constants.tools} icon={<Build />} onClick={() => this.props.switchTab(2, this.props)} />
+                <BottomNavigationAction label={constants.chat} icon={<Chat />} onClick={() => this.props.switchTab(0, this.props, '/app/user/chat')} />
+                <BottomNavigationAction label={constants.calendar} icon={<Today />} onClick={() => this.props.switchTab(1, this.props, '/app/user/calendar')} />
+                <BottomNavigationAction label={constants.tools} icon={<Build />} onClick={() => this.props.switchTab(2, this.props, '/app/user/tools')} />
             </BottomNavigation>
         </Hidden>
     );
@@ -51,7 +51,7 @@ BottomNav.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    switchTab: (tab, props) => dispatch(switchTab(tab, props))
+    switchTab: (tab, props, route) => dispatch(switchTab(tab, props, route))
   }
 }
 
