@@ -1,4 +1,4 @@
-const initState = { shouldRefresh: true }
+const initState = { shouldRefresh: true, createUserError: null }
 
 const adminReducer = (state = initState, action) => {
    switch (action.type) {
@@ -12,7 +12,6 @@ const adminReducer = (state = initState, action) => {
             console.log('getting users error', action.error)
             return state
         case 'ENABLE_USER_SUCCESS':
-            //console.log(action.data)
             return {
                 ...state,
                 shouldRefresh: true
@@ -20,8 +19,15 @@ const adminReducer = (state = initState, action) => {
         case 'ENABLE_USER_ERROR':
             console.log('enable user error', action.error)
             return state
+        case 'DELETE_USER_SUCCESS':
+            return {
+                ...state,
+                shouldRefresh: true
+            }
+        case 'DELETE_USER_ERROR':
+            console.log('disable user error', action.error)
+            return state
         case 'DISABLE_USER_SUCCESS':
-            //console.log(action.data)
             return {
                 ...state,
                 shouldRefresh: true
@@ -29,8 +35,24 @@ const adminReducer = (state = initState, action) => {
         case 'DISABLE_USER_ERROR':
             console.log('disable user error', action.error)
             return state
+        case 'CREATE_USER_SUCCESS':
+            if(action.resp.data.errorInfo) {
+                return {
+                    ...state,
+                    shouldRefresh: false,
+                    createUserError: action.resp.data.errorInfo.message
+                }
+            }else {
+               return {
+                    ...state,
+                    shouldRefresh: true,
+                    createUserError: null
+                } 
+            }  
+        case 'CREATE_USER_ERROR':
+            console.log('creating user error', action.error)
+            return state
         case 'SET_USER_PRIVS_SUCCESS':
-            //console.log(action.data)
             return {
                 ...state,
                 shouldRefresh: true
@@ -39,7 +61,6 @@ const adminReducer = (state = initState, action) => {
             console.log('set user privileges error', action.error)
             return state
         case 'SET_ADMIN_PRIVS_SUCCESS':
-            //console.log(action.data)
             return {
                 ...state,
                 shouldRefresh: true
@@ -48,7 +69,6 @@ const adminReducer = (state = initState, action) => {
             console.log('set admin privileges error', action.error)
             return state
         case 'SET_SUPER_ADMIN_PRIVS_SUCCESS':
-            //console.log(action.data)
             return {
                 ...state,
                 shouldRefresh: true
@@ -57,7 +77,6 @@ const adminReducer = (state = initState, action) => {
             console.log('set super admin privileges error', action.error)
             return state
         case 'SEND_PASSWORD_RESET_EMAIL_SUCCESS':
-            //console.log(action)
             return state
         case 'SEND_PASSWORD_RESET_EMAIL_ERROR':
             console.log('sending password reset email error', action.error)

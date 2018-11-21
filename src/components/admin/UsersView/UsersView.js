@@ -1,20 +1,32 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { getFirebase } from 'react-redux-firebase'
 
 import UserCard from './UserCard'
-import { getUsers } from '../../../store/actions/adminActions'
+import { getUsers, createUser } from '../../../store/actions/adminActions'
+import constants from '../../../config/constants'
 
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  button: {
+    margin: theme.spacing.unit,
   },
   placeholder: {
     height: 40,
@@ -24,7 +36,25 @@ const styles = () => ({
 
 class UsersView extends Component {
   state = {
-    accessLevel: 0
+    accessLevel: 0,
+    open: false,
+    email: '',
+  };
+
+  handleChange = (event) => {
+    this.setState({email: event.target.value})
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
+  handleAccept = () => {
+    this.props.createUser(this.state.email)
   }
 
   componentDidMount = () => {
@@ -47,6 +77,9 @@ class UsersView extends Component {
   componentDidUpdate = () => {
     if(this.props.admin.shouldRefresh === true){
       this.props.getUsers()
+      if(this.state.open === true){
+        this.setState({ open: false })
+      }
     }
   }
 
@@ -103,6 +136,47 @@ class UsersView extends Component {
             </div>
           </Fade>
         {this.props.admin.users && this.cardReturn()}
+        {this.state.accessLevel === 2 && //only superadmins can manage users
+          <Fragment>
+            <Button color="primary" className={this.props.classes.button} onClick={this.handleClickOpen} >
+              {constants.addUser}
+            </Button>
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">{constants.addUser}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                {constants.addUserText}
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="email"
+                  label={constants.email}
+                  type="email"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+                { this.props.admin.createUserError && 
+                  <Typography align='center' color='error'>
+                      {this.props.admin.createUserError}
+                  </Typography>
+                }
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  {constants.cancel}
+                </Button>
+                <Button onClick={this.handleAccept} color="primary">
+                  {constants.accept}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Fragment>
+        }
       </div>
     )
   }
@@ -117,6 +191,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUsers: () => dispatch(getUsers()),
+    createUser: (email) => dispatch(createUser(email))
   }
 }
 

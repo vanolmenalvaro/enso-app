@@ -12,6 +12,7 @@ exports.onSignUp = functions.auth.user().onCreate(user => {
     return admin.auth().setCustomUserClaims(user.uid, customClaims)
     .catch(error => {
         console.log(error);
+        return error;
     });
 });
 
@@ -111,6 +112,47 @@ exports.disableUser = functions.https.onCall((data, context) => {
           return userRecord;
         }).catch((error) => {
           console.log("Error disabling user:", error);
+        });
+});
+
+
+exports.deleteUser = functions.https.onCall((data, context) => {
+    const uid = data;
+    
+    if (context.auth.token.admin !== true || context.auth.token.accessLevel < 2 ) {
+        console.log(uid, "Request not authorized. User must be a superadmin to fulfill request.");
+        return { error: "Request not authorized. User must be a superadmin to fulfill request."};
+    }
+
+    return admin.auth().deleteUser(uid).then((userRecord) => {
+          console.log("Successfully deleted user", uid);
+          return userRecord;
+        }).catch((error) => {
+          console.log("Error deleting user:", error);
+        });
+});
+
+exports.createUser = functions.https.onCall((data, context) => {
+    const email = data;
+    
+    if (context.auth.token.admin !== true || context.auth.token.accessLevel < 2 ) {
+        console.log(uid, "Request not authorized. User must be a superadmin to fulfill request.");
+        return { error: "Request not authorized. User must be a superadmin to fulfill request."};
+    }
+
+    return admin.auth().createUser({
+            email: email
+        }).then((userRecord) => {
+            console.log("Successfully created user", email);
+            admin.auth().setCustomUserClaims(userRecord.uid, {
+                admin: false,
+                accessLevel: 0
+            })
+            return userRecord;
+            
+        }).catch((error) => {
+            console.log("Error creating user:", error);
+            return error;
         });
 });
 
