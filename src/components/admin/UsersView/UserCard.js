@@ -200,7 +200,7 @@ export class UserCard extends Component {
             console.log(error)
           })
         }
-      }
+    }
 
     render() {
         const user = this.props.user

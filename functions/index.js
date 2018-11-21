@@ -10,7 +10,10 @@ exports.onSignUp = functions.auth.user().onCreate(user => {
     };
     // Set custom user claims on this newly created user.
     return admin.auth().setCustomUserClaims(user.uid, customClaims)
-    .catch(error => {
+    .then(userRecord => {
+        console.log("Successfully gave User rights to user", userRecord);
+        return userRecord;
+    }).catch(error => {
         console.log(error);
         return error;
     });
@@ -28,7 +31,7 @@ exports.setUserPrivileges = functions.https.onCall((data, context) => {
         admin: false,
         accessLevel: 0
     }).then(userRecord => {
-        console.log("Successfully gave User rights to user", userRecord.toJSON());
+        console.log("Successfully gave User rights to user", userRecord);
         return userRecord;
     }).catch(error => {
         console.log(error);
@@ -49,7 +52,7 @@ exports.setAdminPrivileges = functions.https.onCall((data, context) => {
         admin: true,
         accessLevel: 1
     }).then(userRecord => {
-        console.log("Successfully gave Admin rights to user", userRecord.toJSON());
+        console.log("Successfully gave Admin rights to user", userRecord);
         return userRecord;
     }).catch(error => {
         console.log(error);
@@ -70,7 +73,7 @@ exports.setSuperAdminPrivileges = functions.https.onCall((data, context) => {
         admin: true,
         accessLevel: 2
     }).then(userRecord => {
-        console.log("Successfully gave Superadmin rights to user", userRecord.toJSON());
+        console.log("Successfully gave Superadmin rights to user", userRecord);
         return userRecord;
     }).catch(error => {
         console.log(error);
@@ -90,7 +93,7 @@ exports.enableUser = functions.https.onCall((data, context) => {
     return admin.auth().updateUser(uid, {
         disabled: false
         }).then((userRecord) => {
-          console.log("Successfully enabled user", userRecord.toJSON());
+          console.log("Successfully enabled user", userRecord);
           return userRecord;
         }).catch((error) => {
           console.log("Error enabling user:", error);
@@ -108,7 +111,7 @@ exports.disableUser = functions.https.onCall((data, context) => {
     return admin.auth().updateUser(uid, {
         disabled: true
         }).then((userRecord) => {
-          console.log("Successfully disabled user", userRecord.toJSON());
+          console.log("Successfully disabled user", userRecord);
           return userRecord;
         }).catch((error) => {
           console.log("Error disabling user:", error);

@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import moment from 'moment';
-import 'moment/locale/es';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from "@material-ui/core/Typography";
-import Hidden from '@material-ui/core/Hidden';
+import moment from 'moment'
+import 'moment/locale/es'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import Typography from "@material-ui/core/Typography"
+import Hidden from '@material-ui/core/Hidden'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import Grid from '@material-ui/core/Grid'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 
@@ -19,6 +21,9 @@ const styles = () => ({
     display: 'table-cell',
     textAlign: 'center',
     border: '1px solid #474747'
+  },
+  cellChildren: {
+    width: '100%'
   },
   cellSelected: {
     backgroundColor: '#d8d8d8',
@@ -58,22 +63,39 @@ class DayDetails extends Component {
                     classes.cell,
                     moment(this.props.day, constants.dateFormat).isSame(new Date(), "day") && classes.cellSelected
                   )} 
-                  key={this.props.day}
-                  onClick={this.handleClick}>
-          <Typography variant="subtitle1" className={classes.typography} noWrap>
-              {moment(this.props.day, constants.dateFormat).format('D')}
-              {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
-                  moment(this.props.day, constants.dateFormat).locale('es').format('MMM')
-              }
-          </Typography>
-          { this.props.blocks && this.props.blocks.map(obj => (
-            <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
-              <Typography variant="subtitle1" className={classes.typographySm} noWrap>
-                <Hidden mdUp> {obj.shortName} </Hidden>
-                <Hidden smDown> {obj.name} </Hidden>
+                  key={this.props.day}>
+          {this.props.blocks !== undefined && 
+          <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <Typography variant="subtitle1" className={classes.typography} noWrap>
+                  {moment(this.props.day, constants.dateFormat).format('D')}
+                  {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
+                      moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
+                  
               </Typography>
-            </div>
-          ))}
+              {this.props.blocks.map(obj => (
+                <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
+                  <Typography variant="subtitle1" className={classes.typographySm} noWrap>
+                    <Hidden mdUp> {obj.shortName} </Hidden>
+                    <Hidden smDown> {obj.name} </Hidden>
+                  </Typography>
+                </div>
+              ))}
+            </Grid>
+          </ButtonBase>
+          }
+          {this.props.blocks === undefined &&
+            <Typography variant="subtitle1" className={classes.typography} noWrap>
+                {moment(this.props.day, constants.dateFormat).format('D')}
+                {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
+                    moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
+            </Typography>
+          }
       </div>
     )
   } 

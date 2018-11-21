@@ -10,6 +10,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Tooltip from '@material-ui/core/Tooltip'
+import IconButton from '@material-ui/core/IconButton'
+import Add  from '@material-ui/icons/Add'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { getFirebase } from 'react-redux-firebase'
@@ -31,7 +34,12 @@ const styles = (theme) => ({
   placeholder: {
     height: 40,
     margin: 5
-  }  
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
 })
 
 class UsersView extends Component {
@@ -138,9 +146,13 @@ class UsersView extends Component {
         {this.props.admin.users && this.cardReturn()}
         {this.state.accessLevel === 2 && //only superadmins can manage users
           <Fragment>
-            <Button color="primary" className={this.props.classes.button} onClick={this.handleClickOpen} >
-              {constants.addUser}
-            </Button>
+            {this.props.admin.users && 
+              <Tooltip title={constants.addUser}>
+                <IconButton color="primary" variant="fab" className={this.props.classes.button} onClick={this.handleClickOpen} >
+                  <Add className={this.props.classes.icon} />
+                </IconButton>
+              </Tooltip>
+            }
             <Dialog
               open={this.state.open}
               onClose={this.handleClose}
