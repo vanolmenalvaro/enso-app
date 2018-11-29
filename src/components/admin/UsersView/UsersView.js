@@ -11,7 +11,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '@material-ui/core/Tooltip'
-import IconButton from '@material-ui/core/IconButton'
 import Add  from '@material-ui/icons/Add'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -45,7 +44,7 @@ const styles = (theme) => ({
 class UsersView extends Component {
   state = {
     accessLevel: 0,
-    open: false,
+    dialogOpen: false,
     email: '',
   };
 
@@ -54,11 +53,11 @@ class UsersView extends Component {
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true })
+    this.setState({ dialogOpen: true })
   }
 
   handleClose = () => {
-    this.setState({ open: false })
+    this.setState({ dialogOpen: false })
   }
 
   handleAccept = () => {
@@ -66,7 +65,7 @@ class UsersView extends Component {
   }
 
   componentDidMount = () => {
-    if(!this.props.admin.users || this.props.admin.shouldRefresh === true){
+    if(!this.props.admin.users){
       this.props.getUsers()
     }
     //check superadmin status
@@ -83,16 +82,12 @@ class UsersView extends Component {
   }
 
   componentDidUpdate = () => {
-    if(this.props.admin.shouldRefresh === true){
-      this.props.getUsers()
-      if(this.state.open === true){
-        this.setState({ open: false })
-      }
+    if(this.state.dialogOpen && this.props.admin.createUserResp === 200) {
+      this.setState({ dialogOpen: false })
     }
   }
 
   cardReturn = () => {
-    //sort users depending on accessLevel
     this.sortUsers(this.props.admin.users)
     //show a card for each user
     return this.props.admin.users.map(user => (
@@ -133,7 +128,7 @@ class UsersView extends Component {
     return (
       <div className={this.props.classes.root}>
           <Fade
-            in={!this.props.admin.users || this.props.admin.shouldRefresh}
+            in={!this.props.admin.users || this.props.admin.processing}
             style={{
               transitionDelay: !this.props.admin.users ? '800ms' : '0ms',
             }}
@@ -148,13 +143,13 @@ class UsersView extends Component {
           <Fragment>
             {this.props.admin.users && 
               <Tooltip title={constants.addUser}>
-                <IconButton color="primary" variant="fab" className={this.props.classes.button} onClick={this.handleClickOpen} >
+                <Button color="primary" variant="fab" className={this.props.classes.fab} onClick={this.handleClickOpen} >
                   <Add className={this.props.classes.icon} />
-                </IconButton>
+                </Button>
               </Tooltip>
             }
             <Dialog
-              open={this.state.open}
+              open={this.state.dialogOpen}
               onClose={this.handleClose}
               aria-labelledby="form-dialog-title"
             >
@@ -172,9 +167,9 @@ class UsersView extends Component {
                   fullWidth
                   onChange={this.handleChange}
                 />
-                { this.props.admin.createUserError && 
+                { this.props.admin.createUserResp && this.props.admin.createUserResp.error && 
                   <Typography align='center' color='error'>
-                      {this.props.admin.createUserError}
+                      {this.props.admin.createUserResp.error}
                   </Typography>
                 }
               </DialogContent>
