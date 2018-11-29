@@ -106,20 +106,18 @@ export class UserCard extends Component {
     }
 
     returnSubheader = (user) => {
-        let disabled = ''
+        let disabled
         if (user.disabled) {
           disabled = <Chip key={user.uid+'-chip'} label={constants.disabled} /> 
         }
         if(user.customClaims.admin) {
           if(user.customClaims.accessLevel === 1) {
-            return constants.admin + disabled
+            return [constants.admin + '   ' , disabled]
           }else if(user.customClaims.accessLevel === 2){
-            return constants.superAdmin + disabled
+            return [constants.superAdmin + '   ' , disabled]
           }
         }else {
-          return (
-              [constants.user + '   ' , disabled]
-            )
+          return [constants.user + '   ' , disabled]
         }
     }
 

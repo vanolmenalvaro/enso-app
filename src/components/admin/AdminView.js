@@ -27,7 +27,7 @@ export class AdminView extends Component {
     switch (this.props.location.pathname) {
       case '/app/admin/users':
         return this.props.switchTab(0)
-      case '/app/admin/blueprints':
+      case '/app/admin/templates':
         return this.props.switchTab(1)
       case '/app/admin/chat':
         return this.props.switchTab(2)

@@ -7,7 +7,7 @@ import { withRouter, Redirect } from "react-router-dom"
 import AppBar from './layout/AppBar'
 import BottomNav from './layout/BottomNav'
 import { switchTab } from '../../store/actions/tabActions'
-import { getCycle } from '../../store/actions/cycleActions'
+import { getCycle } from '../../store/actions/programActions'
 
 
 class UserView extends React.Component {

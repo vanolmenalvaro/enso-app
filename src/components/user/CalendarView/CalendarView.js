@@ -108,9 +108,9 @@ CalendarView.propTypes = {
 const mapStateToProps = (state) => {
 
     return{
-        initialDate: state.cycle.initialDate,
-        program: state.cycle.content.program,
-        blocks: state.cycle.content.blocks,
+        initialDate: state.program.cycle.initialDate,
+        program: state.program.cycle.content.program,
+        blocks: state.program.cycle.content.blocks,
     }
 
 }

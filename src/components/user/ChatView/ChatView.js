@@ -3,8 +3,6 @@ import Typography from "@material-ui/core/Typography"
 //import Button from "@material-ui/core/Button"
 import { connect } from 'react-redux'
 
-import { createCycle } from '../../../store/actions/cycleActions'
-
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 class ChatView extends Component{
@@ -28,16 +26,10 @@ class ChatView extends Component{
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createCycle: (cycle) => dispatch(createCycle(cycle))
-    }
-}
-
 const mapStateToProps = (state) => {
     return{
         cycle: state.cycle
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatView)
+export default connect(mapStateToProps)(ChatView)

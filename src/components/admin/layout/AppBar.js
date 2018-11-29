@@ -135,9 +135,9 @@ class AppBar extends Component {
                             <ListItemIcon><People /></ListItemIcon>
                             <ListItemText primary={constants.users} />
                         </ListItem>
-                        <ListItem onClick={() => this.props.switchTab(1, this.props, '/app/admin/blueprints')} selected={this.props.tab === 1}>
+                        <ListItem onClick={() => this.props.switchTab(1, this.props, '/app/admin/templates')} selected={this.props.tab === 1}>
                             <ListItemIcon><LibraryBooks /></ListItemIcon>
-                            <ListItemText primary={constants.blueprints} />
+                            <ListItemText primary={constants.templates} />
                         </ListItem>
                         <ListItem onClick={() => this.props.switchTab(2, this.props, '/app/admin/chat')} selected={this.props.tab === 2}>
                             <ListItemIcon><Chat /></ListItemIcon>

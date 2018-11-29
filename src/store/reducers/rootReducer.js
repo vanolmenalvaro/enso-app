@@ -1,5 +1,5 @@
 import authReducer from './authReducer'
-import cycleReducer from './cycleReducer'
+import programReducer from './programReducer'
 import tabReducer from './tabReducer'
 import adminReducer from './adminReducer'
 import { combineReducers } from 'redux'
@@ -7,7 +7,7 @@ import { firebaseReducer } from 'react-redux-firebase'
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    cycle: cycleReducer,
+    program: programReducer,
     tab: tabReducer,
     firebase: firebaseReducer,
     admin: adminReducer

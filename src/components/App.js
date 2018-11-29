@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Login from './login/Login'
 import AdminView from './admin/AdminView'
 import UsersView from './admin/UsersView/UsersView'
-import BlueprintsView from './admin/BlueprintsView/BlueprintsView'
+import TemplatesView from './admin/TemplatesView/TemplatesView'
 import UserView from './user/UserView'
 import ChatView from './user/ChatView/ChatView'
 import CalendarView from './user/CalendarView/CalendarView'
@@ -21,7 +21,7 @@ class App extends React.Component {
           <Route path="/app/login" component={Login} />
 
           <Route path="/app/admin/users" render={(props) => <AdminView {...props} children={<UsersView />} />} />
-          <Route path="/app/admin/blueprints" render={(props) => <AdminView {...props} children={<BlueprintsView />} />} />
+          <Route path="/app/admin/templates" render={(props) => <AdminView {...props} children={<TemplatesView />} />} />
           <Route path="/app/admin/chat" render={(props) => <AdminView {...props} children={<ChatView />} />} />
 
           <Route path="/app/user/chat" render={(props) => <UserView {...props} children={<ChatView />} />} />

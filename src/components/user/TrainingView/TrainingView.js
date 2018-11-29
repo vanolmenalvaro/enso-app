@@ -22,14 +22,12 @@ class TrainingView extends Component{
       ))
     ))
 
-    var renderReturn = blocksThisDay.length !== 0
-    ? blocksThisDay.map(obj => (
+    var renderReturn = 
+    blocksThisDay.length !== 0 && 
+    blocksThisDay.map(obj => (
       <div key={obj.name}> 
         <ExerciseCard key={obj.name} name={obj.name} shortName={obj.shortName} color={obj.color} exercises={obj.exercises}  />
       </div>))
-    : <Typography variant="h2">
-        Rest Day! <span role="img" aria-label='party emoji'>🎉</span>
-      </Typography>
 
     return(
       <div>
@@ -44,8 +42,8 @@ class TrainingView extends Component{
 
 const mapStateToProps = (state) => {
   return{
-      program: state.cycle.content.program,
-      blocks: state.cycle.content.blocks,
+      program: state.program.cycle.content.program,
+      blocks: state.program.cycle.content.blocks,
       day: state.tab.day
   }
 }
