@@ -8,7 +8,6 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { Clear, Add } from '@material-ui/icons'
 import Fade from '@material-ui/core/Fade'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
@@ -16,10 +15,13 @@ import { compose } from 'redux'
 
 import constants from '../../../config/constants'
 import ExerciseTemplateDialog from './ExerciseTemplateDialog'
-import { getExerciseTemplates } from '../../../store/actions/programActions'
 import ExerciseTemplateCard from './ExerciseTemplateCard'
+import BlockTemplateDialog from './BlockTemplateDialog'
+import BlockTemplateCard from './BlockTemplateCard'
+import { getExerciseTemplates, getBlockTemplates } from '../../../store/actions/programActions'
 
-const styles = theme => ({
+
+const styles = () => ({
   root: {
     flexGrow: 1,
   },
@@ -90,6 +92,7 @@ export class TemplatesView extends Component {
 
   componentDidMount = () => {
     this.props.getExerciseTemplates()
+    this.props.getBlockTemplates()
   }
 
   render() {
@@ -125,7 +128,7 @@ export class TemplatesView extends Component {
                 <Typography variant="h4" className={classes.title} noWrap>
                     {constants.exercises}
                 </Typography>
-                <Tooltip title={constants.addExercise}>
+                <Tooltip title={constants.createExercise}>
                   <IconButton color="primary" className={classes.button} onClick={() => this.handleDialogOpen("exercise")} >
                     <Add className={classes.icon} />
                   </IconButton>
@@ -134,7 +137,7 @@ export class TemplatesView extends Component {
               <Grid container direction="column" alignItems="center">
                 { this.props.exerciseTemplates.length !== 0 ?
                     this.props.exerciseTemplates.map((exerciseTemplate) => 
-                      <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.uid+'-card'}/>) 
+                      <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.uid+'-exercise-card'}/>) 
                   :
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}
@@ -147,16 +150,25 @@ export class TemplatesView extends Component {
                 <Typography variant="h4" className={classes.title} noWrap>
                     {constants.blocks}
                 </Typography>
-                <Tooltip title={constants.addBlock}>
-                  <IconButton color="primary" className={classes.button} onClick={this.handleClickOpen} >
+                <Tooltip title={constants.createBlock}>
+                  <IconButton color="primary" className={classes.button} onClick={() => this.handleDialogOpen("block")} >
                     <Add className={classes.icon} />
                   </IconButton>
                 </Tooltip>
               </Grid>
-              {/* exercises && map */}
-              <Paper className={classes.paper} />
+              <Grid container direction="column" alignItems="center">
+                {/* { this.props.blockTemplates.length !== 0 ?
+                    this.props.blockTemplates.map((blockTemplate) => 
+                      <BlockTemplateCard blockTemplate={blockTemplate} key={blockTemplate.uid+'-block-card'}/>) 
+                  : */}
+                    <Typography variant="h5" noWrap>
+                        <br/>{constants.noResults}
+                    </Typography>
+                {/* } */}
+              </Grid>
             </Grid>
         </Grid>
+        <BlockTemplateDialog open={this.state.blockDialogOpen} handleDialogClose={this.handleDialogClose}/>
         <ExerciseTemplateDialog open={this.state.exerciseDialogOpen} handleDialogClose={this.handleDialogClose}/>
       </div>
     )
@@ -166,12 +178,14 @@ export class TemplatesView extends Component {
 const mapStateToProps = (state) => {
   return{
     exerciseTemplates: state.program.templates.exerciseTemplates,
+    blockTemplates: state.program.templates.blockTemplates,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getExerciseTemplates: () => dispatch(getExerciseTemplates()),
+    getBlockTemplates: () => dispatch(getBlockTemplates())
   }
 }
 

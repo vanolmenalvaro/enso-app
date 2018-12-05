@@ -14,16 +14,12 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Button from '@material-ui/core/Button'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
 
-import { updateExerciseTemplate, deleteExerciseTemplate } from '../../../store/actions/programActions'
 import constants from '../../../config/constants'
 
 const styles = theme => ({
     card: {
-        width: '100%',
-        marginBottom: 5
+        width: '100%'
     },
     actions: {
         display: 'flex',
@@ -42,15 +38,15 @@ const styles = theme => ({
         transform: 'rotate(180deg)',
     },
     expandOpenCard: {
-        marginBottom: 10,
-        marginTop: 3
+        marginBottom: 5,
+        marginTop: 5
     },
     actionsRight: {
         marginLeft: 'auto'
     }
 })
 
-export class ExerciseTemplateCard extends Component {
+export class BlockTemplateCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,17 +60,11 @@ export class ExerciseTemplateCard extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({
-            exerciseName: this.props.exerciseTemplate.exerciseName,
-            videoId: this.props.exerciseTemplate.videoId,
-            start: this.props.exerciseTemplate.start,
-            end: this.props.exerciseTemplate.end,
-            uid: this.props.exerciseTemplate.uid
-        })
+ 
     }
 
     handleDelete = () => {
-        this.props.deleteExerciseTemplate(this.state.uid)
+
     }
 
     handleChange = (event) => {
@@ -82,30 +72,16 @@ export class ExerciseTemplateCard extends Component {
     }
 
     handleEdit = () => {
-        this.setState(state => ({ edit: !state.edit }))
+ 
     }
 
     handleCancel = () => {
-        this.setState({
-            exerciseName: this.props.exerciseTemplate.exerciseName,
-            videoId: this.props.exerciseTemplate.videoId,
-            start: this.props.exerciseTemplate.start,
-            end: this.props.exerciseTemplate.end,
-            uid: this.props.exerciseTemplate.uid,
-            edit: false
-        })
+
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.updateExerciseTemplate({
-            exerciseName: this.state.exerciseName,
-            videoId: this.state.videoId,
-            start: this.state.start,
-            end: this.state.end,
-            uid: this.state.uid 
-        })
-        this.setState({ edit: false })
+
     }
 
     render() {
@@ -177,15 +153,5 @@ export class ExerciseTemplateCard extends Component {
         )
     }
 }
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateExerciseTemplate: (exerciseTemplate) => dispatch(updateExerciseTemplate(exerciseTemplate)),
-        deleteExerciseTemplate: (uid) => dispatch(deleteExerciseTemplate(uid))
-    }
-}
   
-export default compose(
-    connect(null, mapDispatchToProps),
-    withStyles(styles)
-)(ExerciseTemplateCard)
+export default withStyles(styles)(BlockTemplateCard)

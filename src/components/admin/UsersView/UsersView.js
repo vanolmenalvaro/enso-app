@@ -142,7 +142,7 @@ class UsersView extends Component {
         {this.state.accessLevel === 2 && //only superadmins can manage users
           <Fragment>
             {this.props.admin.users && 
-              <Tooltip title={constants.addUser}>
+              <Tooltip title={constants.createUser}>
                 <Button color="primary" variant="fab" className={this.props.classes.fab} onClick={this.handleClickOpen} >
                   <Add className={this.props.classes.icon} />
                 </Button>
@@ -153,10 +153,10 @@ class UsersView extends Component {
               onClose={this.handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">{constants.addUser}</DialogTitle>
+              <DialogTitle id="form-dialog-title">{constants.createUser}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                {constants.addUserText}
+                {constants.createUserText}
                 </DialogContentText>
                 <TextField
                   autoFocus

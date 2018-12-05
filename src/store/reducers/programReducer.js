@@ -23,13 +23,11 @@ var templatesCopy
 const programReducer = (state = initState, action) => {
     switch (action.type) {
         case 'CREATE_CYCLE_SUCCESS':
-            //console.log('created cycle', action.cycle)
             return state
         case 'CREATE_CYCLE_ERROR':
             console.log('create cycle error', action.error)
             return state
         case 'GET_CYCLE_SUCCESS':
-            //console.log('got cycle', action.cycle)
             return {
                 ...state,
                 cycle: {
@@ -40,6 +38,17 @@ const programReducer = (state = initState, action) => {
             }
         case 'GET_CYCLE_ERROR':
             console.log('getting cycle error', action.error)
+            return state
+        case 'GET_EXERCISE_TEMPLATES_SUCCESS':
+            return {
+                ...state,
+                templates: {
+                    ...state.templates,
+                    exerciseTemplates: action.data
+                }
+            }
+        case 'GET_EXERCISE_TEMPLATES_ERROR':
+            console.log('getting exercise templates error', action.error)
             return state
         case 'CREATE_EXERCISE_TEMPLATE_SUCCESS':
             console.log('created exercise template', action.exerciseTemplate)
@@ -61,7 +70,6 @@ const programReducer = (state = initState, action) => {
             console.log('create exercise template error', action.error)
             return state
         case 'UPDATE_EXERCISE_TEMPLATE_SUCCESS':
-            //console.log('updated exercise template', action.exerciseTemplate)
             templatesCopy = []
             state.templates.exerciseTemplates.forEach(template => {
                 if(template.uid === action.exerciseTemplate.uid){
@@ -81,7 +89,6 @@ const programReducer = (state = initState, action) => {
             console.log('update exercise template error', action.error)
             return state
         case 'DELETE_EXERCISE_TEMPLATE_SUCCESS':
-            //console.log('deleted exercise template', action.exerciseTemplate)
             templatesCopy = []
             state.templates.exerciseTemplates.forEach(template => {
                 if(template.uid === action.uid){
@@ -100,17 +107,35 @@ const programReducer = (state = initState, action) => {
         case 'DELETE_EXERCISE_TEMPLATE_ERROR':
             console.log('delete exercise template error', action.error)
             return state
-        case 'GET_EXERCISE_TEMPLATES_SUCCESS':
-            //console.log('get exercise templates success', action.data)
+        case 'GET_BLOCK_TEMPLATES_SUCCESS':
             return {
                 ...state,
                 templates: {
                     ...state.templates,
-                    exerciseTemplates: action.data
+                    blockTemplates: action.data
                 }
             }
-        case 'GET_EXERCISE_TEMPLATES_ERROR':
-            console.log('getting exercise templates error', action.error)
+        case 'GET_BLOCK_TEMPLATES_ERROR':
+            console.log('getting block templates error', action.error)
+            return state
+        case 'CREATE_BLOCK_TEMPLATE_SUCCESS':
+            console.log('created block template', action.blockTemplate)
+            return {
+                ...state,
+                templates: {
+                    ...state.templates,
+                    blockTemplates: [
+                        ...state.templates.blockTemplates,
+                        {
+                            ...action.blockTemplate,
+                            uid: action.result.id //set the creation uid to redux state
+                        }
+                        
+                    ]
+                }
+            }
+        case 'CREATE_BLOCK_TEMPLATE_ERROR':
+            console.log('create block template error', action.error)
             return state
         default:
             return state

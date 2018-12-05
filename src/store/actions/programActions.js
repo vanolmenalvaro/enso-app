@@ -24,18 +24,6 @@ export const getCycle = () => {
     }
 }
 
-export const openExerciseTemplateDialog = (exerciseTemplate) => {
-    return(dispatch, getState) => {     
-        dispatch({ type: 'OPEN_NEW_EXERCISE_TEMPLATE_DIALOG'})
-    }
-}
-
-export const closeExerciseTemplateDialog = (exerciseTemplate) => {
-    return(dispatch, getState) => {     
-        dispatch({ type: 'CLOSE_EXERCISE_TEMPLATE_DIALOG'})
-    }
-}
-
 export const getExerciseTemplates = () => {
     return(dispatch, getState, { getFirebase, getFirestore }) => {
         let data = []
@@ -83,6 +71,35 @@ export const deleteExerciseTemplate = (uid) => {
             dispatch({ type: 'DELETE_EXERCISE_TEMPLATE_SUCCESS', uid})
         }).catch((error) => {
             dispatch({ type: 'DELETE_EXERCISE_TEMPLATE_ERROR', error})
+        })
+    }
+}
+
+export const getBlockTemplates = () => {
+    return(dispatch, getState, { getFirebase, getFirestore }) => {
+        let data = []
+        const firestore = getFirestore()
+        firestore.collection('blockTemplates').get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                data.push(doc.data())
+            })
+            dispatch({ type: 'GET_BLOCK_TEMPLATES_SUCCESS', data })
+        }).catch((err) => {
+            dispatch({ type: 'GET_BLOCK_TEMPLATES_ERROR', err })
+        })
+    }
+}
+
+export const createBlockTemplate = (blockTemplate) => {
+    return(dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore()
+        firestore.collection('blockTemplates').add(blockTemplate).then((result) => {
+            firestore.collection('blockTemplates').doc(result.id).set({ 
+                ...blockTemplate,
+                uid: result.id 
+            }).then(() => dispatch({ type: 'CREATE_BLOCK_TEMPLATE_SUCCESS', blockTemplate, result}) )
+        }).catch((error) => {
+            dispatch({ type: 'CREATE_BLOCK_TEMPLATE_ERROR', error})
         })
     }
 }

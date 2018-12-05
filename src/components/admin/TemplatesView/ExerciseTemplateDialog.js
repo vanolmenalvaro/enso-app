@@ -55,7 +55,7 @@ export class ExerciseTemplateDialog extends Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <form>    
-                        <DialogTitle id="form-dialog-title">{constants.addExercise}</DialogTitle>
+                        <DialogTitle id="form-dialog-title">{constants.createExercise}</DialogTitle>
                         <DialogContent>
                             <FormControl required fullWidth>
                                 <InputLabel>{constants.name}</InputLabel>
