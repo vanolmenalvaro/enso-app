@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { connect } from 'react-redux'
 
 import constants from '../../../config/constants'
-import { createExerciseTemplate } from '../../../store/actions/programActions'
+import { setExerciseTemplate } from '../../../store/actions/programActions'
 
 export class ExerciseTemplateDialog extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ export class ExerciseTemplateDialog extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.createExerciseTemplate(this.state)
+        this.props.setExerciseTemplate(this.state)
         this.handleClose()
     }
 
@@ -94,7 +94,7 @@ export class ExerciseTemplateDialog extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createExerciseTemplate: (exerciseTemplate) => dispatch(createExerciseTemplate(exerciseTemplate))
+        setExerciseTemplate: (exerciseTemplate) => dispatch(setExerciseTemplate(exerciseTemplate))
     }
 }
 

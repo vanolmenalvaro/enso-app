@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
-import { ExpandMore, Edit, Delete } from '@material-ui/icons'
+import { ExpandMore, Delete } from '@material-ui/icons'
 import classnames from 'classnames'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 
-import { updateExerciseTemplate, deleteExerciseTemplate } from '../../../store/actions/programActions'
+import { setExerciseTemplate, deleteExerciseTemplate } from '../../../store/actions/programActions'
 import constants from '../../../config/constants'
 
 const styles = theme => ({
@@ -74,15 +74,14 @@ export class ExerciseTemplateCard extends Component {
     }
 
     handleDelete = () => {
-        this.props.deleteExerciseTemplate(this.state.uid)
+        this.props.deleteExerciseTemplate(this.state.exerciseName)
     }
 
     handleChange = (event) => {
-        this.setState({[event.target.id]: event.target.value})
-    }
-
-    handleEdit = () => {
-        this.setState(state => ({ edit: !state.edit }))
+        this.setState({
+            [event.target.id]: event.target.value,
+            edit: true
+        })
     }
 
     handleCancel = () => {
@@ -91,19 +90,17 @@ export class ExerciseTemplateCard extends Component {
             videoId: this.props.exerciseTemplate.videoId,
             start: this.props.exerciseTemplate.start,
             end: this.props.exerciseTemplate.end,
-            uid: this.props.exerciseTemplate.uid,
             edit: false
         })
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.updateExerciseTemplate({
+        this.props.setExerciseTemplate({
             exerciseName: this.state.exerciseName,
             videoId: this.state.videoId,
             start: this.state.start,
-            end: this.state.end,
-            uid: this.state.uid 
+            end: this.state.end
         })
         this.setState({ edit: false })
     }
@@ -131,21 +128,21 @@ export class ExerciseTemplateCard extends Component {
                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
                     <CardContent>
                         <form>    
-                            <FormControl fullWidth disabled={!this.state.edit}>
+                            <FormControl fullWidth>
                                 <InputLabel>{constants.name}</InputLabel>
                                 <Input id="exerciseName" name="exerciseName" value={this.state.exerciseName} onChange={this.handleChange}/>
                             </FormControl>
-                            <FormControl fullWidth disabled={!this.state.edit}>
+                            <FormControl fullWidth>
                                 <InputLabel>{constants.videoId}</InputLabel>
                                 <Input id="videoId" name="videoId" value={this.state.videoId} onChange={this.handleChange}/>
                                 <FormHelperText>{constants.videoIdHelper}</FormHelperText>
                             </FormControl>
-                            <FormControl fullWidth disabled={!this.state.edit}>
+                            <FormControl fullWidth>
                                 <InputLabel>{constants.start}</InputLabel>
                                 <Input id="start" name="start" type="number" value={this.state.start} onChange={this.handleChange}/>
                                 <FormHelperText>{constants.startHelper}</FormHelperText>
                             </FormControl>
-                            <FormControl fullWidth disabled={!this.state.edit}>
+                            <FormControl fullWidth>
                                 <InputLabel htmlFor="number">{constants.end}</InputLabel>
                                 <Input id="end" name="end" type="number" value={this.state.end} onChange={this.handleChange}/>
                                 <FormHelperText>{constants.endHelper}</FormHelperText>
@@ -153,13 +150,6 @@ export class ExerciseTemplateCard extends Component {
                         </form>
                     </CardContent>
                     <CardActions className={classes.actions} disableActionSpacing>
-                        <IconButton 
-                            onClick={this.handleEdit}
-                            aria-label="Edit"
-                            color={this.state.edit ? "primary" : "default"}
-                        >
-                            <Edit />
-                        </IconButton>
                         <IconButton onClick={this.handleDelete} aria-label="Delete">
                             <Delete />
                         </IconButton>
@@ -180,8 +170,8 @@ export class ExerciseTemplateCard extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateExerciseTemplate: (exerciseTemplate) => dispatch(updateExerciseTemplate(exerciseTemplate)),
-        deleteExerciseTemplate: (uid) => dispatch(deleteExerciseTemplate(uid))
+        setExerciseTemplate: (exerciseTemplate) => dispatch(setExerciseTemplate(exerciseTemplate)),
+        deleteExerciseTemplate: (exerciseName) => dispatch(deleteExerciseTemplate(exerciseName))
     }
 }
   

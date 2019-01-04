@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
+import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -15,9 +14,9 @@ import AutoSuggestInput from './AutoSuggestInput'
 
 const styles = () => ({
   cellSm: {
-      width: 75,
-      paddingBottom: 17,
-      marginLeft: 2
+    width: 75,
+    paddingBottom: 17,
+    marginLeft: 2
   }
 })
 
@@ -26,32 +25,51 @@ class ExerciseRow extends Component {
     const { classes } = this.props
 
     return (
-      <TableRow>
-        <TableCell>
+      <Grid container direction="row" alignItems='center'>
+        <Grid item>
           <FormControl className={classes.cellSm}>
             <InputLabel>{constants.block}</InputLabel>
-            <Input id="block" name="block" disableUnderline value={this.props.exercise.block} onChange={(event) => this.props.handleChange(event, this.props.index)}/>
+            <Input 
+              id={'block'+this.props.index} 
+              name="block" 
+              disableUnderline 
+              value={this.props.exercise.block} 
+              onKeyDown={(event) => this.props.handleChange(event.key, this.props.index, 'block')}
+              autoComplete="off"
+            />
           </FormControl>
-        </TableCell>
-        <TableCell>
+        </Grid>
+        <Grid item>
           <FormControl>
-            <AutoSuggestInput index={this.props.index} value={this.props.exercise.name} options={this.props.options} handleChange={this.props.handleChange}/>
+            <AutoSuggestInput 
+              index={this.props.index} 
+              value={this.props.exercise.name} 
+              options={this.props.options} 
+              handleChange={this.props.handleChange}
+            />
           </FormControl>
-        </TableCell>
-        <TableCell>
+        </Grid>
+        <Grid item>
           <FormControl className={classes.cellSm}>
             <InputLabel>{constants.assignation}</InputLabel>
-            <Input id="assignation" name="assignation" disableUnderline value={this.props.exercise.assignation} onChange={(event) => this.props.handleChange(event, this.props.index)}/>
+            <Input 
+              id={"assignation"+this.props.index} 
+              name="assignation" 
+              disableUnderline 
+              value={this.props.exercise.assignation} 
+              onKeyDown={(event) => this.props.handleChange(event.key, this.props.index, 'assignation')}
+              autoComplete="off"
+            />
           </FormControl>
-        </TableCell>
-        <TableCell>
+        </Grid>
+        <Grid item>
           <Tooltip title={constants.delete}>
-            <IconButton className={classes.button} onClick={() => this.props.deleteRow(this.props.index)} >
-              <Delete className={classes.icon} />
+            <IconButton onClick={() => this.props.deleteRow(this.props.index)} >
+              <Delete />
             </IconButton>
           </Tooltip>
-        </TableCell>
-      </TableRow>
+        </Grid>
+      </Grid>
     )
   }
 }

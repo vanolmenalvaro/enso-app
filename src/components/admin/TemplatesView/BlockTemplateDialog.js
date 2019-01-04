@@ -11,15 +11,14 @@ import FormControl from '@material-ui/core/FormControl'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
 import { Add } from '@material-ui/icons'
+import { arrayMove } from 'react-sortable-hoc'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import constants from '../../../config/constants'
-import { createBlockTemplate } from '../../../store/actions/programActions'
-import ExerciseRow from './ExerciseRow'
+import { setBlockTemplate } from '../../../store/actions/programActions'
+import ExerciseList from './ExerciseList'
 
 const styles = () => ({
     form: {
@@ -43,7 +42,7 @@ export class ExerciseTemplateDialog extends Component {
         this.state = {
             name: "",
             shortName: "",
-            color: "",
+            color: "#000000",
             exercises: [{
                 name: "",
                 block: "",
@@ -54,7 +53,12 @@ export class ExerciseTemplateDialog extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.createBlockTemplate(this.state)
+        this.props.setBlockTemplate({
+            name: this.state.name,
+            shortName: this.state.shortName,
+            color: this.state.color,
+            exercises: this.state.exercises
+        })
         this.handleClose()
     }
 
@@ -63,7 +67,7 @@ export class ExerciseTemplateDialog extends Component {
         this.setState({
             name: "",
             shortName: "",
-            color: "",
+            color: "#000000",
             exercises: [{
                 name: "",
                 block: "",
@@ -71,26 +75,55 @@ export class ExerciseTemplateDialog extends Component {
             }]
         })
     }
-
-    handleChange = (event, index) => {
+    
+    handleChangeRow = (event, index, name) => {
         let newState = null
-        
         if(index !== null) { 
-            if(event.value) { //comes from exercise select
-                console.log('comes from exercise select', event)
-                newState = this.state.exercises
-                newState[index] = { ...newState[index], name: event.value }
-                this.setState({ exercises: newState })
+            if(event !== null && event.value) { //comes from exercise select
+                newState = this.state.exercises.map((a, ind) => {
+                    var returnValue = {...a};
+                    if (ind === index) {
+                      returnValue.name = event.value
+                    }
+                    return returnValue
+                })
+                this.setState({ 
+                    exercises: newState,
+                    edit: true 
+                })
             } else { //comes from exercise row inputs
-                console.log('comes from exercise row inputs', event)
-                newState = this.state.exercises
-                newState[index] = { ...newState[index], [event.target.id]: event.target.value }
-                this.setState({ exercises: newState })
+                newState = this.state.exercises.map((a, ind) => {
+                    var returnValue = {...a};
+                    if (ind === index) {
+                        if(event === 'Backspace') {
+                            returnValue[name] = returnValue[name].slice(0, -1)
+                        }
+                        else if(event.length === 1) {
+                            returnValue[name] = returnValue[name].valueOf()+event
+                        }
+                    }
+                    return returnValue
+                })
+                this.setState({ 
+                    exercises: newState,
+                    edit: true 
+                })
             }      
-        } else { //comes from blockName input
-            console.log('comes from blockName input', event)
-            this.setState({ [event.target.id]: event.target.value })
         }
+    }
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.id]: event.target.value,
+            edit: true
+        })
+    }
+
+    handleSort = (oldIndex, newIndex) => {
+        this.setState((state) => ({
+            exercises: arrayMove(state.exercises, oldIndex, newIndex),
+            edit: true
+        }))
     }
 
     addRow = () => {
@@ -128,18 +161,12 @@ export class ExerciseTemplateDialog extends Component {
         
     }
 
-    onDragEnd = result => {
-        console.log('onDragEnd')
-    }
-
     render() {
         const { classes } = this.props
         const options = this.props.exerciseTemplates && this.props.exerciseTemplates.map(option => ({
             value: option.exerciseName,
             label: option.exerciseName,
         }))
-
-        console.log(this.state)
 
         return (
             <div> 
@@ -153,31 +180,24 @@ export class ExerciseTemplateDialog extends Component {
                         <form className={classes.form}>
                             <FormControl required fullWidth>
                                 <InputLabel>{constants.name}</InputLabel>
-                                <Input id="name" name="name" autoFocus required value={this.state.name} onChange={(event) => this.handleChange(event, null)}/>
+                                <Input id="name" name="name" autoFocus required value={this.state.name} onChange={this.handleChange}/>
                             </FormControl>
                             <FormControl required fullWidth>
                                 <InputLabel>{constants.shortName}</InputLabel>
-                                <Input id="shortName" name="shortName" required value={this.state.shortName} onChange={(event) => this.handleChange(event, null)}/>
+                                <Input id="shortName" name="shortName" required value={this.state.shortName} onChange={this.handleChange}/>
                             </FormControl>
                             <FormControl required>
                                 <Typography variant="subtitle1" className={classes.subtitle}>{constants.color}: </Typography>
-                                <input id="color" name="color" type="color" required value={this.state.color} onChange={(event) => this.handleChange(event, null)}/>
+                                <input id="color" name="color" type="color" required value={this.state.color} onChange={this.handleChange}/>
                             </FormControl>
                             <Typography variant="subtitle1" className={classes.subtitle}>{constants.exercises}:</Typography>
-                            <Table padding='none'>    
-                                <TableBody>
-                                    {this.state.exercises && this.state.exercises.map((exercise, index) => (
-                                        <ExerciseRow 
-                                        exercise={exercise} 
-                                        index={index} 
-                                        key={exercise.name+index+'-row'} 
-                                        options={options} 
-                                        handleChange={this.handleChange} 
-                                        deleteRow={this.deleteRow}
-                                        />
-                                    ))}
-                                </TableBody>
-                            </Table>
+                            <ExerciseList
+                                exercises={this.state.exercises}
+                                options={options}
+                                handleChange={this.handleChangeRow}
+                                handleSort={this.handleSort}
+                                deleteRow={this.deleteRow}
+                            />
                             <Tooltip title={constants.addExercise}>
                                 <div className={classes.addButton}> {/** necessary for tooltip to behave when button is disabled */}
                                     <IconButton color="primary" onClick={this.addRow} disabled={this.state.exercises[this.state.exercises.length - 1].name === ""}>
@@ -212,19 +232,13 @@ export class ExerciseTemplateDialog extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return{
-      exerciseTemplates: state.program.templates.exerciseTemplates,
-    }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
-        createBlockTemplate: (blockTemplate) => dispatch(createBlockTemplate(blockTemplate))
+        setBlockTemplate: (blockTemplate) => dispatch(setBlockTemplate(blockTemplate))
     }
 }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(null, mapDispatchToProps),
     withStyles(styles)
 )(ExerciseTemplateDialog)

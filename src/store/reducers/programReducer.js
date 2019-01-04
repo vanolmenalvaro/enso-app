@@ -58,11 +58,7 @@ const programReducer = (state = initState, action) => {
                     ...state.templates,
                     exerciseTemplates: [
                         ...state.templates.exerciseTemplates,
-                        {
-                            ...action.exerciseTemplate,
-                            uid: action.result.id //set the creation uid to redux state
-                        }
-                        
+                        action.exerciseTemplate,        
                     ]
                 }
             }
@@ -72,8 +68,8 @@ const programReducer = (state = initState, action) => {
         case 'UPDATE_EXERCISE_TEMPLATE_SUCCESS':
             templatesCopy = []
             state.templates.exerciseTemplates.forEach(template => {
-                if(template.uid === action.exerciseTemplate.uid){
-                   templatesCopy.push(action.exerciseTemplate) //switch old themplate with the new one
+                if(template.exerciseName === action.exerciseTemplate.exerciseName){
+                   templatesCopy.push(action.exerciseTemplate) //switch old template with the new one
                 } else {
                     templatesCopy.push(template)
                 }
@@ -89,9 +85,10 @@ const programReducer = (state = initState, action) => {
             console.log('update exercise template error', action.error)
             return state
         case 'DELETE_EXERCISE_TEMPLATE_SUCCESS':
+            console.log('deleted exercise template', action.exerciseName)
             templatesCopy = []
             state.templates.exerciseTemplates.forEach(template => {
-                if(template.uid === action.uid){
+                if(template.exerciseName === action.exerciseName){
                     //don't push the deleted template
                 } else {
                     templatesCopy.push(template)
@@ -119,23 +116,60 @@ const programReducer = (state = initState, action) => {
             console.log('getting block templates error', action.error)
             return state
         case 'CREATE_BLOCK_TEMPLATE_SUCCESS':
-            console.log('created block template', action.blockTemplate)
+            console.log('set block template', action.blockTemplate)
             return {
                 ...state,
                 templates: {
                     ...state.templates,
                     blockTemplates: [
                         ...state.templates.blockTemplates,
-                        {
-                            ...action.blockTemplate,
-                            uid: action.result.id //set the creation uid to redux state
-                        }
-                        
+                        action.blockTemplate                        
                     ]
                 }
             }
         case 'CREATE_BLOCK_TEMPLATE_ERROR':
-            console.log('create block template error', action.error)
+            console.log('set block template error', action.error)
+            return state
+
+        case 'UPDATE_BLOCK_TEMPLATE_SUCCESS':
+            console.log('update block template', action.blockTemplate)
+            templatesCopy = []
+            state.templates.blockTemplates.forEach(template => {
+                if(template.name === action.blockTemplate.name){
+                   templatesCopy.push(action.blockTemplate) //switch old template with the new one
+                } else {
+                    templatesCopy.push(template)
+                }
+            }) 
+            return {
+                ...state,
+                templates: {
+                    ...state.templates,
+                    blockTemplates: templatesCopy
+                }
+            }  
+        case 'UPDATE_BLOCK_TEMPLATE_ERROR':
+            console.log('update block template error', action.error)
+            return state
+        case 'DELETE_BLOCK_TEMPLATE_SUCCESS':
+            console.log('deleted block template', action.name)
+            templatesCopy = []
+            state.templates.blockTemplates.forEach(template => {
+                if(template.name === action.name){
+                    //don't push the deleted template
+                } else {
+                    templatesCopy.push(template)
+                }
+            }) 
+            return {
+                ...state,
+                templates: {
+                    ...state.templates,
+                    blockTemplates: templatesCopy
+                }
+            }  
+        case 'DELETE_BLOCK_TEMPLATE_ERROR':
+            console.log('delete block template error', action.error)
             return state
         default:
             return state

@@ -50,7 +50,7 @@ const constants = {
     user: "Usuario",
     users: "Usuarios",
     videoId: "YouTube Id",
-    videoIdHelper: "Id del video, no la URL entera. P. ej.: KnoncdQSzp0",
+    videoIdHelper: "Id del vídeo, no la URL entera. P. ej.: KnoncdQSzp0",
     userView: "Vista Usuario",
     weekDays: ["LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM"],
 }

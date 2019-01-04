@@ -137,7 +137,7 @@ export class TemplatesView extends Component {
               <Grid container direction="column" alignItems="center">
                 { this.props.exerciseTemplates.length !== 0 ?
                     this.props.exerciseTemplates.map((exerciseTemplate) => 
-                      <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.uid+'-exercise-card'}/>) 
+                      <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.exerciseName+'-exercise-card'}/>) 
                   :
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}
@@ -157,18 +157,22 @@ export class TemplatesView extends Component {
                 </Tooltip>
               </Grid>
               <Grid container direction="column" alignItems="center">
-                {/* { this.props.blockTemplates.length !== 0 ?
+                { this.props.blockTemplates.length !== 0 ?
                     this.props.blockTemplates.map((blockTemplate) => 
-                      <BlockTemplateCard blockTemplate={blockTemplate} key={blockTemplate.uid+'-block-card'}/>) 
-                  : */}
+                      <BlockTemplateCard 
+                      blockTemplate={blockTemplate} 
+                      key={blockTemplate.name+'-block-card'}
+                      exerciseTemplates={this.props.exerciseTemplates}
+                      />) 
+                  : 
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}
                     </Typography>
-                {/* } */}
+                } 
               </Grid>
             </Grid>
         </Grid>
-        <BlockTemplateDialog open={this.state.blockDialogOpen} handleDialogClose={this.handleDialogClose}/>
+        <BlockTemplateDialog open={this.state.blockDialogOpen} handleDialogClose={this.handleDialogClose} exerciseTemplates={this.props.exerciseTemplates}/>
         <ExerciseTemplateDialog open={this.state.exerciseDialogOpen} handleDialogClose={this.handleDialogClose}/>
       </div>
     )

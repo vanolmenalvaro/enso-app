@@ -21,7 +21,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
     flex: 1,
     alignItems: 'center',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   singleValue: {
     fontSize: 16,
@@ -36,6 +36,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
+    zIndex: 100
   }
 })
 
