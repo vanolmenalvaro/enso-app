@@ -136,8 +136,10 @@ export class TemplatesView extends Component {
               </Grid>
               <Grid container direction="column" alignItems="center">
                 { this.props.exerciseTemplates.length !== 0 ?
-                    this.props.exerciseTemplates.map((exerciseTemplate) => 
-                      <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.exerciseName+'-exercise-card'}/>) 
+                    this.props.exerciseTemplates.filter(template => 
+                      template.exerciseName.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1).map((exerciseTemplate) => (
+                        <ExerciseTemplateCard exerciseTemplate={exerciseTemplate} key={exerciseTemplate.exerciseName+'-exercise-card'}/>) 
+                      )
                   :
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}
@@ -158,12 +160,14 @@ export class TemplatesView extends Component {
               </Grid>
               <Grid container direction="column" alignItems="center">
                 { this.props.blockTemplates.length !== 0 ?
-                    this.props.blockTemplates.map((blockTemplate) => 
-                      <BlockTemplateCard 
-                      blockTemplate={blockTemplate} 
-                      key={blockTemplate.name+'-block-card'}
-                      exerciseTemplates={this.props.exerciseTemplates}
-                      />) 
+                    this.props.blockTemplates.filter(template => 
+                      template.name.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1).map((blockTemplate) => (
+                        <BlockTemplateCard 
+                        blockTemplate={blockTemplate} 
+                        key={blockTemplate.name+'-block-card'}
+                        exerciseTemplates={this.props.exerciseTemplates}
+                        />) 
+                      )
                   : 
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}
