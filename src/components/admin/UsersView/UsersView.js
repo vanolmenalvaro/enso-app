@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '@material-ui/core/Tooltip'
+import Fab from '@material-ui/core/Fab'
 import Add  from '@material-ui/icons/Add'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -143,9 +144,9 @@ class UsersView extends Component {
           <Fragment>
             {this.props.admin.users && 
               <Tooltip title={constants.createUser}>
-                <Button color="primary" variant="fab" className={this.props.classes.fab} onClick={this.handleClickOpen} >
+                <Fab color="primary" className={this.props.classes.fab} onClick={this.handleClickOpen} >
                   <Add className={this.props.classes.icon} />
-                </Button>
+                </Fab>
               </Tooltip>
             }
             <Dialog
