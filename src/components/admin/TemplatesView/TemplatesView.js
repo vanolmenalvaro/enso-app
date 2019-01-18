@@ -20,7 +20,6 @@ import BlockTemplateDialog from './BlockTemplateDialog'
 import BlockTemplateCard from './BlockTemplateCard'
 import { getExerciseTemplates, getBlockTemplates } from '../../../store/actions/programActions'
 
-
 const styles = () => ({
   root: {
     flexGrow: 1,
@@ -51,7 +50,7 @@ const styles = () => ({
   icon: {
     fontSize: 28
   }
-});
+})
 
 export class TemplatesView extends Component {
   state = {

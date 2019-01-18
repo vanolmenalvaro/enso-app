@@ -60,34 +60,35 @@ class DayDetails extends Component {
     
     return (
       <div className={classNames(
-                    classes.cell,
-                    moment(this.props.day, constants.dateFormat).isSame(new Date(), "day") && classes.cellSelected
-                  )} 
-                  key={this.props.day}>
+          classes.cell,
+          moment(this.props.day, constants.dateFormat).isSame(new Date(), "day") && classes.cellSelected
+        )} 
+        key={this.props.day}
+      >
           {this.props.blocks !== undefined && 
-          <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <Typography variant="subtitle1" className={classes.typography} noWrap>
-                  {moment(this.props.day, constants.dateFormat).format('D')}
-                  {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
-                      moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
-                  
-              </Typography>
-              {this.props.blocks.map(obj => (
-                <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
-                  <Typography variant="subtitle1" className={classes.typographySm} noWrap>
-                    <Hidden mdUp> {obj.shortName} </Hidden>
-                    <Hidden smDown> {obj.name} </Hidden>
-                  </Typography>
-                </div>
-              ))}
-            </Grid>
-          </ButtonBase>
+            <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+              >
+                <Typography variant="subtitle1" className={classes.typography} noWrap>
+                    {moment(this.props.day, constants.dateFormat).format('D')}
+                    {moment(this.props.day, constants.dateFormat).format('D')==="1" &&
+                        moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
+                    
+                </Typography>
+                {this.props.blocks.map(obj => (
+                  <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
+                    <Typography variant="subtitle1" className={classes.typographySm} noWrap>
+                      <Hidden mdUp> {obj.shortName} </Hidden>
+                      <Hidden smDown> {obj.name} </Hidden>
+                    </Typography>
+                  </div>
+                ))}
+              </Grid>
+            </ButtonBase>
           }
           {this.props.blocks === undefined &&
             <Typography variant="subtitle1" className={classes.typography} noWrap>

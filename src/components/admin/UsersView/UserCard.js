@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
 import CardHeader from '@material-ui/core/CardHeader'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
@@ -17,6 +18,7 @@ import { MoreVert, SupervisorAccount, SupervisedUserCircle, AccountCircle} from 
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { getFirebase } from 'react-redux-firebase'
+import { withRouter } from 'react-router-dom'
 
 import { enableUser, 
     disableUser, 
@@ -55,11 +57,20 @@ export class UserCard extends Component {
     }
 
     handleMenuClick = event => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.setState({ anchorEl: event.currentTarget })
     }
 
-    handleMenuClose = () => {
+    handleMenuClose = event => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.setState({ anchorEl: null })
+    }
+
+    handleCardClick = () => {
+        this.props.history.push({
+            pathname: "/app/admin/users/"+this.props.user.email,
+            state: {user: this.props.user}
+        })
     }
 
     handleDeleteDialogOpen = (uid) => {
@@ -208,40 +219,42 @@ export class UserCard extends Component {
         return (
             <Fragment>
                 <Card className={this.props.classes.card} key={user.uid+'-card'}>
-                    <CardHeader
-                    avatar={
-                        <Avatar aria-label="Status" className={this.returnClass(user)}>
-                            { user.customClaims.accessLevel === 0 && <AccountCircle/> }
-                            { user.customClaims.accessLevel === 1 && <SupervisedUserCircle/> }
-                            { user.customClaims.accessLevel === 2 && <SupervisorAccount/> }                  
-                        </Avatar>
-                    }
-                    action={
-                        this.state.accessLevel === 2 && //only superadmins can manage users
-                            <Fragment>
-                                <IconButton 
-                                    id={user.email+'-button'}
-                                    color="inherit"
-                                    aria-label="More"
-                                    aria-owns={open ? 'long-menu' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleMenuClick}
-                                >
-                                    <MoreVert />
-                                </IconButton>
-                                <Menu
-                                    id={user.email+'-'}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={this.handleMenuClose}
-                                >
-                                    {this.returnMenuItems(user)}
-                                </Menu>
-                            </Fragment>
-                    }
-                    title={user.email}
-                    subheader={this.returnSubheader(user)}
-                    />
+                    <CardActionArea component='div' onClick={this.handleCardClick} disableRipple>
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label="Status" className={this.returnClass(user)}>
+                                    { user.customClaims.accessLevel === 0 && <AccountCircle/> }
+                                    { user.customClaims.accessLevel === 1 && <SupervisedUserCircle/> }
+                                    { user.customClaims.accessLevel === 2 && <SupervisorAccount/> }                  
+                                </Avatar>
+                            }
+                            action={
+                                this.state.accessLevel === 2 && //only superadmins can manage users
+                                    <Fragment>
+                                        <IconButton 
+                                            id={user.email+'-button'}
+                                            color="inherit"
+                                            aria-label="More"
+                                            aria-owns={open ? 'long-menu' : undefined}
+                                            aria-haspopup="true"
+                                            onClick={this.handleMenuClick}
+                                        >
+                                            <MoreVert />
+                                        </IconButton>
+                                        <Menu
+                                            id={user.email+'-'}
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={this.handleMenuClose}
+                                        >
+                                            {this.returnMenuItems(user)}
+                                        </Menu>
+                                    </Fragment>
+                            }
+                            title={user.email}
+                            subheader={this.returnSubheader(user)}
+                        /> 
+                    </CardActionArea>
                 </Card>
                 {this.state.accessLevel === 2 && //only superadmins can manage users
                     <Dialog
@@ -288,5 +301,6 @@ export class UserCard extends Component {
   
   export default compose(
     connect(null, mapDispatchToProps),
-    withStyles(styles)
+    withStyles(styles),
+    withRouter
   )(UserCard)

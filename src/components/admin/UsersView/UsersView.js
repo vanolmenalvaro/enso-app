@@ -3,13 +3,13 @@ import { withStyles } from '@material-ui/core/styles'
 import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import Tooltip from '@material-ui/core/Tooltip'
 import Fab from '@material-ui/core/Fab'
 import Add  from '@material-ui/icons/Add'
@@ -92,7 +92,7 @@ class UsersView extends Component {
     this.sortUsers(this.props.admin.users)
     //show a card for each user
     return this.props.admin.users.map(user => (
-      <UserCard className={this.props.classes.card} key={user.uid} user={user}/> 
+      <UserCard key={user.uid} user={user}/> 
     ))
   }
 

@@ -46,7 +46,8 @@ export class AdminView extends Component {
       <Fragment>
         <main>
           <CssBaseline />
-        <AppBar children={this.props.children}/></main>
+          <AppBar children={this.props.children}/>
+        </main>
       </Fragment>
     )
   }

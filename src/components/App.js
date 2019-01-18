@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Login from './login/Login'
 import AdminView from './admin/AdminView'
 import UsersView from './admin/UsersView/UsersView'
+import UserDetailView from './admin/UserDetailView/UserDetailView'
 import TemplatesView from './admin/TemplatesView/TemplatesView'
 import UserView from './user/UserView'
 import ChatView from './user/ChatView/ChatView'
@@ -20,7 +21,8 @@ class App extends React.Component {
         <Switch>
           <Route path="/app/login" component={Login} />
 
-          <Route path="/app/admin/users" render={(props) => <AdminView {...props} children={<UsersView />} />} />
+          <Route exact path="/app/admin/users" render={(props) => <AdminView {...props} children={<UsersView />} />} />
+          <Route path="/app/admin/users/:user" render={(props) => <AdminView {...props} children={<UserDetailView />} />} />
           <Route path="/app/admin/templates" render={(props) => <AdminView {...props} children={<TemplatesView />} />} />
           <Route path="/app/admin/chat" render={(props) => <AdminView {...props} children={<ChatView />} />} />
 
@@ -28,7 +30,7 @@ class App extends React.Component {
           <Route exact path="/app/user/calendar" render={(props) => <UserView {...props} children={<CalendarView />} />} />
           <Route path="/app/user/calendar/:day" render={(props) => <UserView {...props} children={<TrainingView />} />} />
           <Route path="/app/user/tools" render={(props) => <UserView {...props} children={<ToolsView />} />} />
-          <Redirect to="/app/user/calendar" />
+          <Redirect to="/app/user/calendar" /> {/* TODO: add 404 page */}
         </Switch>
       </BrowserRouter>
     )
