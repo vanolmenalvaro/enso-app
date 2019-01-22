@@ -9,17 +9,18 @@ export const createCycle = (cycle) => {
     }
 }
 
-export const getCycle = () => {
+export const getCycles = (uid) => {
     return(dispatch, getState, { getFirebase, getFirestore }) => {
         let data = []
         const firestore = getFirestore()
-        firestore.collection('cycles').where("current", "==", true).get().then((querySnapshot) => {
+        firestore.collection('cycles').where("user.uid", "==", uid).orderBy("user.ref", "desc").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 data.push(doc.data())
             })
-            dispatch({ type: 'GET_CYCLE_SUCCESS', cycle: data[0] })
+            console.log(data)
+            dispatch({ type: 'GET_CYCLES_SUCCESS', data })
         }).catch((error) => {
-            dispatch({ type: 'GET_CYCLE_ERROR', error})
+            dispatch({ type: 'GET_CYCLES_ERROR', error})
         })
     }
 }

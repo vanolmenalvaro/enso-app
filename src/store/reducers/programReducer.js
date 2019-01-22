@@ -1,17 +1,14 @@
  const initState = {
-    cycle: {
+    cycles: [{
         initialDate: '22/10/2018',
-        user: {
-        },
+        user: {},
         current: true,
         content: {
             blocks: [],
             program: {}
         }
-    },
+    }],
     templates : {
-        openExerciseTemplateDialog: false,
-        openBlockTemplateDialog: false,
         exerciseTemplates: [],
         blockTemplates: []
     }
@@ -27,16 +24,13 @@ const programReducer = (state = initState, action) => {
         case 'CREATE_CYCLE_ERROR':
             console.log('create cycle error', action.error)
             return state
-        case 'GET_CYCLE_SUCCESS':
+        case 'GET_CYCLES_SUCCESS':
+            console.log('got cycles', action)
             return {
                 ...state,
-                cycle: {
-                    program: {...action.cycle.program},
-                    blocks: {...action.cycle.blocks},
-                    ...action.cycle
-                } 
+                cycles: action.data
             }
-        case 'GET_CYCLE_ERROR':
+        case 'GET_CYCLES_ERROR':
             console.log('getting cycle error', action.error)
             return state
         case 'GET_EXERCISE_TEMPLATES_SUCCESS':

@@ -8,13 +8,13 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import Chip from '@material-ui/core/Chip'
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { MoreVert, SupervisorAccount, SupervisedUserCircle, AccountCircle} from '@material-ui/icons';
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import { MoreVert, SupervisorAccount, SupervisedUserCircle, AccountCircle} from '@material-ui/icons'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { getFirebase } from 'react-redux-firebase'

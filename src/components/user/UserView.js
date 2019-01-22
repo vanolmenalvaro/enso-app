@@ -7,13 +7,13 @@ import { withRouter, Redirect } from "react-router-dom"
 import AppBar from './layout/AppBar'
 import BottomNav from './layout/BottomNav'
 import { switchTab } from '../../store/actions/tabActions'
-import { getCycle } from '../../store/actions/programActions'
+import { getCycles } from '../../store/actions/programActions'
 
 
 class UserView extends React.Component {
 
   componentDidMount = () => {
-    this.props.getCycle()
+    this.props.getCycles(this.props.auth.uid)
   
     switch (this.props.location.pathname) {
       case '/app/user/chat':
@@ -54,7 +54,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCycle: () => dispatch(getCycle()),
+    getCycles: (uid) => dispatch(getCycles(uid)),
     switchTab: (tab, props) => dispatch(switchTab(tab, props))
   }
 }
