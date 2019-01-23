@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from "@material-ui/core/Typography";
+import React, { Component, Fragment } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import Typography from "@material-ui/core/Typography"
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment';
+import moment from 'moment'
 
 import DayDetails from './DayDetails'
 import constants from '../../../config/constants'
@@ -101,18 +100,12 @@ class CalendarView extends Component {
     }
 }
 
-CalendarView.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
 const mapStateToProps = (state) => {
-
     return{
-        initialDate: state.program.cycle.initialDate,
-        program: state.program.cycle.content.program,
-        blocks: state.program.cycle.content.blocks,
+        initialDate: state.program.cycles[0].content.initialDate,
+        program: state.program.cycles[0].content.program,
+        blocks: state.program.cycles[0].content.blocks,
     }
-
 }
 
 const mapDispatchToProps = (dispatch) => {

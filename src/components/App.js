@@ -5,6 +5,7 @@ import Login from './login/Login'
 import AdminView from './admin/AdminView'
 import UsersView from './admin/UsersView/UsersView'
 import UserDetailView from './admin/UserDetailView/UserDetailView'
+import CycleDetailView from './admin/CycleDetailView/CycleDetailView'
 import TemplatesView from './admin/TemplatesView/TemplatesView'
 import UserView from './user/UserView'
 import ChatView from './user/ChatView/ChatView'
@@ -22,7 +23,8 @@ class App extends React.Component {
           <Route path="/app/login" component={Login} />
 
           <Route exact path="/app/admin/users" render={(props) => <AdminView {...props} children={<UsersView />} />} />
-          <Route path="/app/admin/users/:user" render={(props) => <AdminView {...props} children={<UserDetailView />} />} />
+          <Route exact path="/app/admin/users/:user" render={(props) => <AdminView {...props} children={<UserDetailView />} />} />
+          <Route path="/app/admin/users/:user/:cycle" render={(props) => <AdminView {...props} children={<CycleDetailView />} />} />
           <Route path="/app/admin/templates" render={(props) => <AdminView {...props} children={<TemplatesView />} />} />
           <Route path="/app/admin/chat" render={(props) => <AdminView {...props} children={<ChatView />} />} />
 

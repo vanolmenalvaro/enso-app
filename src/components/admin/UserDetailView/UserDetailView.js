@@ -72,17 +72,23 @@ export class UserDetailView extends Component {
         if(!this.props.admin.users){
           this.props.getUsers()
         }
+        if(this.props.admin.users && (this.state.user === null || this.state.user.email !== this.props.match.params.user)) {
+            var user = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
+            this.setState({ user: user[0] }) //filter() returns an array
+        }
     }
 
     componentDidUpdate = () => {
-        if(this.props.admin.users && this.state.user === null) {
+        if(this.props.admin.users && (this.state.user === null || this.state.user.email !== this.props.match.params.user)) {
             var user = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
             this.setState({ user: user[0] }) //filter() returns an array
         }
 
-        if(this.state.user !== null && this.props.cycles[0].current === true) {
-            console.log("hello")
-            this.props.getCycles(this.state.user.uid)
+        if(this.state.user !== null && 
+            this.state.user.email === this.props.match.params.user && 
+            (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid)) {
+                console.log("hello")
+                this.props.getCycles(this.state.user.uid)
         }
     }
 
@@ -144,7 +150,7 @@ export class UserDetailView extends Component {
                     </Tooltip>
                 </Grid>
                 <Grid container direction="column" alignItems="center">
-                    { this.props.cycles ?
+                    { this.props.cycles && !this.props.cycles[0].isInitState ?
                         this.props.cycles.map(cycle => 
                             <Card className={this.props.classes.card} key={cycle.user.ref+'-card'}>
                                 <CardActionArea component='div' onClick={() => this.handleCycleCardClick(cycle)} disableRipple>

@@ -1,9 +1,12 @@
- const initState = {
+const date = new Date()
+const firstDay = "01/"+(date.getMonth()+1)+"/"+date.getFullYear()
+
+const initState = {
     cycles: [{
-        initialDate: '22/10/2018',
         user: {},
-        current: true,
+        isInitState: true,
         content: {
+            initialDate: firstDay,
             blocks: [],
             program: {}
         }
@@ -25,10 +28,16 @@ const programReducer = (state = initState, action) => {
             console.log('create cycle error', action.error)
             return state
         case 'GET_CYCLES_SUCCESS':
-            console.log('got cycles', action)
-            return {
-                ...state,
-                cycles: action.data
+            if(action.data.length !== 0){
+                return {
+                    ...state,
+                    cycles: action.data
+                }
+            } else {
+                return {
+                    ...state,
+                    cycles: initState.cycles
+                }
             }
         case 'GET_CYCLES_ERROR':
             console.log('getting cycle error', action.error)
