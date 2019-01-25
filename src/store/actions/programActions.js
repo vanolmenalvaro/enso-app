@@ -17,7 +17,6 @@ export const getCycles = (uid) => {
             querySnapshot.forEach((doc) => {
                 data.push(doc.data())
             })
-            console.log(data)
             dispatch({ type: 'GET_CYCLES_SUCCESS', data })
         }).catch((error) => {
             dispatch({ type: 'GET_CYCLES_ERROR', error})

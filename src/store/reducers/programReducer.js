@@ -1,5 +1,14 @@
 const date = new Date()
-const firstDay = "01/"+(date.getMonth()+1)+"/"+date.getFullYear()
+const month = date.getMonth()
+
+date.setDate(1)
+
+// Get the first Monday in the month
+while (date.getDay() !== 1) {
+    date.setDate(date.getDate() + 1);
+}
+
+const firstDay = date.getDate()+"/"+(month+1)+"/"+date.getFullYear()
 
 const initState = {
     cycles: [{
