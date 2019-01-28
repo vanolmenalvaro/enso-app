@@ -87,7 +87,6 @@ export class UserDetailView extends Component {
         if(this.state.user !== null && 
             this.state.user.email === this.props.match.params.user && 
             (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid)) {
-                console.log("hello")
                 this.props.getCycles(this.state.user.uid)
         }
     }
@@ -105,7 +104,7 @@ export class UserDetailView extends Component {
     handleCycleCardClick = (cycle) => {
         this.props.history.push({
             pathname: "/app/admin/users/"+this.state.user.email+"/"+cycle.user.ref,
-            state: {cycle: cycle}
+            state: { cycle, uid: this.state.user.uid }
         })
     }
 
@@ -126,9 +125,6 @@ export class UserDetailView extends Component {
         const { classes } = this.props
         const { anchorEl } = this.state
         const open = Boolean(anchorEl)
-
-        console.log("state", this.state)
-        console.log("props", this.props)
         
         return (
         <div>
@@ -174,10 +170,10 @@ export class UserDetailView extends Component {
                                                     onClose={this.handleMenuClose}
                                                 >
                                                     <MenuItem onClick={() => this.handleCycleCardClick(cycle)} key={cycle.user.ref+'-edit'}>
-                                                        {constants.Edit}
+                                                        {constants.edit}
                                                     </MenuItem>
                                                     <MenuItem onClick={() => this.handleDeleteDialogOpen(cycle)} key={cycle.user.ref+'-delete'}>
-                                                        {constants.Delete}
+                                                        {constants.delete}
                                                     </MenuItem>
                                                 </Menu>
                                             </Fragment>

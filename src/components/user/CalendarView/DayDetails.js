@@ -57,7 +57,7 @@ class DayDetails extends Component {
 
   render() { 
     const { classes } = this.props
-    
+
     return (
       <div className={classNames(
           classes.cell,
@@ -65,7 +65,7 @@ class DayDetails extends Component {
         )} 
         key={this.props.day}
       >
-          {this.props.blocks !== undefined && 
+          {this.props.blocks && this.props.blocks !== undefined && 
             <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
               <Grid
                 container

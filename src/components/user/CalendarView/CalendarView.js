@@ -8,6 +8,7 @@ import moment from 'moment'
 import DayDetails from './DayDetails'
 import constants from '../../../config/constants'
 import { switchTab } from '../../../store/actions/tabActions'
+import { getCycles } from '../../../store/actions/programActions'
 
 const styles = theme => ({
   paper: {
@@ -16,7 +17,6 @@ const styles = theme => ({
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     border: '1px solid',
     backgroundColor: 'white',
-    position: 'absolute',
     marginRight: 8,
     marginBottom: 65
   },
@@ -56,11 +56,9 @@ class CalendarView extends Component {
         let days = []
         //Inner loop to create each day
         for (let j = 0; j < 7; j++) { 
-            if(this.props.initialDate && this.props.program){
-                dayNumber = moment(this.props.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
-                if(this.props.program){
-                    blocks = this.props.program[dayNumber]
-                }
+            if(this.props.cycle.content){
+                dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
+                blocks = this.props.cycle.content.program[dayNumber] 
             }
             days.push(<DayDetails day={dayNumber} key={j + i * 7} blocks={blocks} switchTab={this.props.switchTab}/>)
         }
@@ -75,10 +73,14 @@ class CalendarView extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
+        if(this.props.uid) {
+            this.props.getCycles(this.props.uid)
+        } else {
+            this.props.getCycles(this.props.auth.uid)
+        }
     }
 
     render() {
-        
         const { classes } = this.props;
 
         return (
@@ -102,14 +104,14 @@ class CalendarView extends Component {
 
 const mapStateToProps = (state) => {
     return{
-        initialDate: state.program.cycles[0].content.initialDate,
-        program: state.program.cycles[0].content.program,
-        blocks: state.program.cycles[0].content.blocks,
+        cycle: state.program.cycles[0],
+        auth: state.firebase.auth
     }
-}
+  }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getCycles: (uid) => dispatch(getCycles(uid)),
         switchTab: (day, props, route) => dispatch(switchTab(day, props, route))
     }
 }
