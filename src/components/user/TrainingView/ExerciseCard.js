@@ -97,7 +97,7 @@ class CheckboxList extends React.Component {
                                         {obj.block}{obj.block && ' - '}{obj.name}
                                     </Typography>
                                 </TableCell>
-                                <TableCell className={classes.cellMd} numeric>
+                                <TableCell className={classes.cellMd}>
                                     <Typography className={classes.heading}>
                                         {obj.sets}x{obj.reps}
                                     </Typography>

@@ -26,7 +26,7 @@ export class CycleDetailView extends Component {
     return (
       <Grid container direction="row" spacing={8}>
         <Grid item xs={12} lg={8}>
-          <CalendarView cycle={this.props.location.state.cycle} uid={this.props.location.state.uid} />
+          <CalendarView cycle={this.props.location.state.cycle} uid={this.props.location.state.uid} edit={true} />
         </Grid>
         <Grid item xs={12} lg={4}>
           <Paper className={classes.paper}>xs=12 sm=6</Paper>

@@ -54,13 +54,14 @@ class CalendarView extends Component {
         // Outer loop to create week row
         for (let i = 0; i < 6; i++) {
         let days = []
+
         //Inner loop to create each day
         for (let j = 0; j < 7; j++) { 
             if(this.props.cycle.content){
                 dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
                 blocks = this.props.cycle.content.program[dayNumber] 
             }
-            days.push(<DayDetails day={dayNumber} key={j + i * 7} blocks={blocks} switchTab={this.props.switchTab}/>)
+            days.push(<DayDetails initialDate={this.props.cycle.content.initialDate} day={dayNumber} key={j + i * 7} blocks={blocks} switchTab={this.props.switchTab} edit={this.props.edit} />)
         }
         //Create the week and add the days
         weeks.push(

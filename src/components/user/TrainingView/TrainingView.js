@@ -10,6 +10,10 @@ class TrainingView extends Component{
 
   componentDidMount() {
     window.scrollTo(0, 0)
+
+    if(!this.props.program || !this.props.blocks) {
+      this.props.getCycles(this.props.auth.uid)
+    }
   }
 
   render() {
@@ -42,8 +46,8 @@ class TrainingView extends Component{
 
 const mapStateToProps = (state) => {
   return{
-      program: state.program.cycle.content.program,
-      blocks: state.program.cycle.content.blocks,
+      program: state.program.cycles[0].content.program,
+      blocks: state.program.cycles[0].content.blocks,
       day: state.tab.day
   }
 }
