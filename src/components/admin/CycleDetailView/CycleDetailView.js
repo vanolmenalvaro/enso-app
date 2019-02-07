@@ -99,7 +99,7 @@ export class CycleDetailView extends Component {
     //console.log(this.state.cycle)
     return (
       <Grid container direction="row" spacing={8}>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={6}>
           <Calendar 
             cycle={this.state.cycle} 
             uid={this.state.uid} 
@@ -108,7 +108,7 @@ export class CycleDetailView extends Component {
             deleteChip={this.deleteChip}
           />
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} lg={6}>
           {this.state.cycle.content.blocks.length !== 0 ?
             this.state.cycle.content.blocks.map((block) => (
               <BlockTemplateCard 

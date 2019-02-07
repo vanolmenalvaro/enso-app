@@ -18,22 +18,26 @@ const styles = () => ({
     },
     chip: {
       fontSize: 10,
-      width: '100%',
       borderRadius: 8,
-      margin: 1
+      width: '100%',
+      borderRadius: 14,
+      marginTop: 1,
+      marginBottom: 1,
+      paddingTop: 4
     },
     icon: {
       color: 'white',
       fontSize: 15,
-      margin: 2
+      margin: 2,
+      marginRight: 6
     }
   });
 
-const DragHandle = SortableHandle(() => <DragIcon style={{color: 'white'}}/>)
+const DragHandle = SortableHandle(() => <DragIcon style={{color: 'white', marginTop: -3, marginLeft: 2}}/>)
 
 const SortableItem = SortableElement(({ block, deleteChip, indexProp, day, classes }) => {
   return (
-    <Grid  container direction="row" className={classes.chip} alignItems="center" justify="space-between" style={{ backgroundColor: block.color }} key={block.name}> 
+    <Grid  container direction="row" className={classes.chip} justify="space-between" align="center" style={{ backgroundColor: block.color }} key={block.name}> 
       <Grid item>
         <DragHandle className={classes.icon}/>
       </Grid>
