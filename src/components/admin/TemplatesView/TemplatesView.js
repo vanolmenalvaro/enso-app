@@ -165,8 +165,8 @@ export class TemplatesView extends Component {
                         blockTemplate={blockTemplate} 
                         key={blockTemplate.name+'-block-card'}
                         exerciseTemplates={this.props.exerciseTemplates}
-                        />) 
-                      )
+                      />) 
+                    )
                   : 
                     <Typography variant="h5" noWrap>
                         <br/>{constants.noResults}

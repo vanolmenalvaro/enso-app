@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 
 import constants from '../../../config/constants'
+import ChipsList from '../../admin/CycleDetailView/ChipsList'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
@@ -57,7 +58,70 @@ const styles = () => ({
 class DayDetails extends Component {
 
   handleClick = () => {
-    if(this.props.blocks !== undefined && (!this.props.edit || this.props.edit!==true)) this.props.switchTab(3, this.props, '/app/user/calendar/'+this.props.day.replace(/\//g, '-'))
+    if(this.props.blocks !== undefined) this.props.switchTab(3, this.props, '/app/user/calendar/'+this.props.day.replace(/\//g, '-'))
+  }
+
+  returnDayDetails = (classes) => {
+    const dayTypography = 
+      <Typography 
+        variant="subtitle1" 
+        className={classNames(
+          classes.typography,
+          moment(this.props.day, constants.dateFormat).format('M') !== moment(this.props.initialDate, constants.dateFormat).format('M') && classes.grey
+        )} 
+        noWrap
+      >
+          {moment(this.props.day, constants.dateFormat).format('D')}
+          {(moment(this.props.day, constants.dateFormat).format('D')==="1" || this.props.day === this.props.initialDate) &&
+            ' ' + moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}  
+      </Typography>
+
+    if(this.props.blocks && this.props.blocks !== undefined) {
+      const chips = this.props.blocks.map(obj => (
+        <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
+          <Typography variant="subtitle1" className={classes.typographySm} noWrap>
+            <Hidden mdUp> {obj.shortName} </Hidden>
+            <Hidden smDown> {obj.name} </Hidden>
+          </Typography>
+        </div>
+      ))
+
+      if(!this.props.edit || this.props.edit===false) {
+        return (
+          <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+              >
+                {dayTypography}
+                {chips}
+              </Grid>
+          </ButtonBase>
+        )
+      } else {
+        return (
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="stretch"
+          >
+            {dayTypography}
+            <ChipsList 
+              blocks={this.props.blocks} 
+              handleSortChips={this.props.handleSortChips}
+              deleteChip={this.props.deleteChip}
+              day={this.props.day}
+            />
+          </Grid>
+        )
+      }
+    } else {
+      return dayTypography
+    }
+    
   }
 
   render() { 
@@ -70,52 +134,7 @@ class DayDetails extends Component {
         )} 
         key={this.props.day}
       >
-          {this.props.blocks && this.props.blocks !== undefined && 
-            <ButtonBase onClick={this.handleClick} className={classes.cellChildren}>
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <Typography 
-                  variant="subtitle1" 
-                  className={classNames(
-                    classes.typography,
-                    moment(this.props.day, constants.dateFormat).format('M') !== moment(this.props.initialDate, constants.dateFormat).format('M') && classes.grey
-                  )} 
-                  noWrap
-                >
-                    {moment(this.props.day, constants.dateFormat).format('D')}
-                    {(moment(this.props.day, constants.dateFormat).format('D')==="1" || this.props.day === this.props.initialDate) &&
-                      ' ' + moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
-                    
-                </Typography>
-                {this.props.blocks.map(obj => (
-                  <div className={classes.chip} style={{backgroundColor: obj.color}} key={obj.name}> 
-                    <Typography variant="subtitle1" className={classes.typographySm} noWrap>
-                      <Hidden mdUp> {obj.shortName} </Hidden>
-                      <Hidden smDown> {obj.name} </Hidden>
-                    </Typography>
-                  </div>
-                ))}
-              </Grid>
-            </ButtonBase>
-          }
-          {this.props.blocks === undefined &&
-            <Typography 
-              variant="subtitle1" 
-              className={classNames(
-                classes.typography,
-                moment(this.props.day, constants.dateFormat).format('M') !== moment(this.props.initialDate, constants.dateFormat).format('M') && classes.grey
-              )} 
-              noWrap
-            >
-              {moment(this.props.day, constants.dateFormat).format('D')}
-              {(moment(this.props.day, constants.dateFormat).format('D')==="1" || this.props.day === this.props.initialDate) &&
-                ' ' + moment(this.props.day, constants.dateFormat).locale('es').format('MMM')}
-            </Typography>
-          }
+          {this.returnDayDetails(classes)}
       </div>
     )
   } 
