@@ -120,15 +120,17 @@ class DayDetails extends Component {
                 day={this.props.day}
               />
             </Grid>
-            <Fade in={this.props.chipToAdd !== ""}>
-              <IconButton 
-                color="primary"
-                size="small"
-                onClick={() => this.props.addChip(this.props.day)}
-              >
-                  <Add fontSize="small"/>
-              </IconButton>
-            </Fade>
+            {this.props.chipToAdd !== "" && 
+              <Fade in={this.props.chipToAdd !== ""}>
+                <IconButton 
+                  color="primary"
+                  size="small"
+                  onClick={() => this.props.addChip(this.props.day)}
+                >
+                    <Add fontSize="small"/>
+                </IconButton>
+              </Fade>
+            }
           </Fragment>
         )
       }
