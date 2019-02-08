@@ -40,24 +40,39 @@ const styles = theme => ({
   });
 
 class Calendar extends Component {
+
+    returnBlocksforDay = (dayNumber) => {
+        let blocks = []
+        this.props.cycle.content.program[dayNumber].map(blockId => (
+            blocks.push({
+                color: this.props.cycle.content.blocks[blockId].color,
+                name: this.props.cycle.content.blocks[blockId].name,
+                shortName: this.props.cycle.content.blocks[blockId].shortName
+            })
+        ))
+        return blocks
+    }
     
     createCycle = () => {
         const { classes } = this.props;
         let weeks = []
         let dayNumber = ''
-        let blocks = {}
+        let blocks = []
+        let days = []
         
         // Outer loop to create week row
         for (let i = 0; i < 6; i++) {
-        let days = []
-
-        //Inner loop to create each day
-        for (let j = 0; j < 7; j++) { 
-            if(this.props.cycle.content){
-                dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
-                blocks = this.props.cycle.content.program[dayNumber] 
-            }
-            days.push(<DayDetails 
+            days = []
+            //Inner loop to create each day
+            for (let j = 0; j < 7; j++) { 
+                blocks = []
+                if(this.props.cycle.content){
+                    dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
+                    if(this.props.cycle.content.program[dayNumber]) {
+                        blocks = this.returnBlocksforDay(dayNumber)
+                    }
+                }
+                days.push(<DayDetails 
                     initialDate={this.props.cycle.content.initialDate} 
                     day={dayNumber} key={j + i * 7} 
                     blocks={blocks} 
@@ -66,12 +81,12 @@ class Calendar extends Component {
                     handleSortChips={this.props.handleSortChips}
                     deleteChip={this.props.deleteChip}
                 />)
-        }
-        //Create the week and add the days
-        weeks.push(
-            <div className={classes.row} key={i}>
-                {days}
-            </div>)
+            }
+            //Create the week and add the days
+            weeks.push(
+                <div className={classes.row} key={i}>
+                    {days}
+                </div>)
         }
         return weeks
     }

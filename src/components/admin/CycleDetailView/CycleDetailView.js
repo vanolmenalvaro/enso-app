@@ -9,8 +9,8 @@ import { arrayMove } from 'react-sortable-hoc'
 
 import constants from '../../../config/constants'
 import Calendar from '../../user/CalendarView/Calendar'
-import BlockTemplateCard from '../TemplatesView/BlockTemplateCard'
-import { getExerciseTemplates, getBlockTemplates } from '../../../store/actions/programActions'
+import BlockCard from './BlockCard'
+import { getExerciseTemplates, getBlockTemplates, createCycle } from '../../../store/actions/programActions'
 
 const styles = theme => ({
   root: {
@@ -36,8 +36,8 @@ export class CycleDetailView extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getExerciseTemplates()
-    this.props.getBlockTemplates()
+    if(this.props.exerciseTemplates.length === 0) this.props.getExerciseTemplates()
+    if(this.props.blockTemplates.length === 0) this.props.getBlockTemplates()
   }
 
   addChip = (day) => {
@@ -95,8 +95,23 @@ export class CycleDetailView extends Component {
     })
   }
 
-  render() {  
-    //console.log(this.state.cycle)
+  updateState = (newState, id) => {
+    let newBlocks = this.state.cycle.content.blocks
+    newBlocks[id] = newState
+
+    this.setState({
+      cycle: {
+        ...this.state.cycle,
+        content: {
+          ...this.state.cycle.content,
+          blocks: newBlocks
+        }
+      },
+      edit: true
+    })
+  }
+
+  render() { 
     return (
       <Grid container direction="row" spacing={8}>
         <Grid item xs={12} lg={6}>
@@ -110,11 +125,13 @@ export class CycleDetailView extends Component {
         </Grid>
         <Grid item xs={12} lg={6}>
           {this.state.cycle.content.blocks.length !== 0 ?
-            this.state.cycle.content.blocks.map((block) => (
-              <BlockTemplateCard 
-                blockTemplate={block} 
-                key={block.name+'-block-card'}
+            Object.keys(this.state.cycle.content.blocks).map((blockId, index) => (
+              <BlockCard 
+                block={this.state.cycle.content.blocks[blockId]} 
+                key={this.state.cycle.content.blocks[blockId].name+'-block-card'}
                 exerciseTemplates={this.props.exerciseTemplates}
+                updateState={this.updateState}
+                index={index}
               />) 
             )
           : 
@@ -138,7 +155,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getExerciseTemplates: () => dispatch(getExerciseTemplates()),
-    getBlockTemplates: () => dispatch(getBlockTemplates())
+    getBlockTemplates: () => dispatch(getBlockTemplates()),
+    createCycle: (cycle) => dispatch(createCycle(cycle))
   }
 }
 

@@ -18,7 +18,6 @@ const styles = () => ({
     },
     chip: {
       fontSize: 10,
-      borderRadius: 8,
       width: '100%',
       borderRadius: 14,
       marginTop: 1,
