@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import 'moment/locale/es'
 import PropTypes from 'prop-types'
@@ -7,7 +7,10 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from "@material-ui/core/Typography"
 import Hidden from '@material-ui/core/Hidden'
 import ButtonBase from '@material-ui/core/ButtonBase'
+import IconButton from '@material-ui/core/IconButton'
+import { Add } from '@material-ui/icons'
 import Grid from '@material-ui/core/Grid'
+import Fade from '@material-ui/core/Fade'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 
@@ -102,20 +105,31 @@ class DayDetails extends Component {
         )
       } else {
         return (
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="stretch"
-          >
-            {dayTypography}
-            <ChipsList 
-              blocks={this.props.blocks} 
-              handleSortChips={this.props.handleSortChips}
-              deleteChip={this.props.deleteChip}
-              day={this.props.day}
-            />
-          </Grid>
+          <Fragment>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="stretch"
+            >
+              {dayTypography}
+              <ChipsList 
+                blocks={this.props.blocks} 
+                handleSortChips={this.props.handleSortChips}
+                deleteChip={this.props.deleteChip}
+                day={this.props.day}
+              />
+            </Grid>
+            <Fade in={this.props.chipToAdd !== ""}>
+              <IconButton 
+                color="primary"
+                size="small"
+                onClick={() => this.props.addChip(this.props.day)}
+              >
+                  <Add fontSize="small"/>
+              </IconButton>
+            </Fade>
+          </Fragment>
         )
       }
     } else {

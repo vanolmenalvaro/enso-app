@@ -80,6 +80,8 @@ class Calendar extends Component {
                     edit={this.props.edit}
                     handleSortChips={this.props.handleSortChips}
                     deleteChip={this.props.deleteChip}
+                    addChip={this.props.addChip}
+                    chipToAdd={this.props.chipToAdd}
                 />)
             }
             //Create the week and add the days

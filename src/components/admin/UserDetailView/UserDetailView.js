@@ -196,11 +196,6 @@ export class UserDetailView extends Component {
                     <Typography variant="h4" className={classes.title} noWrap>
                         {constants.reports}
                     </Typography>
-                    <Tooltip title={constants.createBlock}>
-                    <IconButton color="primary" className={classes.button} >
-                        <Add className={classes.icon} />
-                    </IconButton>
-                    </Tooltip>
                 </Grid>
                 <Grid container direction="column" alignItems="center">
 

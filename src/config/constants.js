@@ -3,6 +3,7 @@ const constants = {
     addBlock: "Añadir bloque",
     addCycle: "Añadir mesociclo",
     addExercise: "Añadir ejercicio",
+    addToCalendar: "Añadir al calendario",
     admin: "Admin",
     adminView: "Vista Admin",
     assignation: "Asignación",

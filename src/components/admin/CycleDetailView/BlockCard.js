@@ -6,11 +6,13 @@ import classnames from 'classnames'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import Collapse from '@material-ui/core/Collapse'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { arrayMove } from 'react-sortable-hoc'
@@ -77,7 +79,8 @@ export class BlockCard extends Component {
             name: this.state.name,
             shortName: this.state.shortName,
             color: this.state.color,
-            exercises: this.state.exercises
+            exercises: this.state.exercises,
+            id: this.state.id
         }, this.state.id)
     }
 
@@ -241,6 +244,20 @@ export class BlockCard extends Component {
                         </form>
                     </CardContent>
                 </Collapse>
+                <CardActions>
+                    <Button 
+                        size="small" 
+                        color="primary" 
+                        onClick={() => this.props.addBlock(this.state.id)}
+                        disabled={this.props.chipToAdd !== "" && this.props.chipToAdd !== this.state.id}
+                        variant={this.props.chipToAdd !== "" && this.props.chipToAdd === this.state.id ? "contained" : "text"}
+                    >
+                        {this.props.chipToAdd !== "" && this.props.chipToAdd === this.state.id  ? constants.accept : constants.addToCalendar}
+                    </Button>
+                    <Button size="small">
+                        {constants.delete}
+                    </Button>
+                </CardActions>
             </Card>   
         )
     }

@@ -31,7 +31,7 @@ export class CycleDetailView extends Component {
       cycle: this.props.location.state.cycle,
       uid: this.props.location.state.uid,
       edit: false,
-      chipToAdd: {}
+      chipToAdd: ""
     }
   }
 
@@ -41,7 +41,11 @@ export class CycleDetailView extends Component {
   }
 
   addChip = (day) => {
-    var newDay = {...this.state.cycle.content.program[day]}
+    var newDay = []
+    if(this.state.cycle.content.program[day]) {
+      newDay =this.state.cycle.content.program[day].slice()
+    }
+
     newDay.push(this.state.chipToAdd)
 
     this.setState({ 
@@ -111,7 +115,15 @@ export class CycleDetailView extends Component {
     })
   }
 
-  render() { 
+  addBlock = (id) => {
+    if(this.state.chipToAdd !== "") {
+      this.setState({ chipToAdd: "" })
+    } else {
+      this.setState({ chipToAdd: id })
+    }
+  }
+
+  render() {
     return (
       <Grid container direction="row" spacing={8}>
         <Grid item xs={12} lg={6}>
@@ -120,7 +132,9 @@ export class CycleDetailView extends Component {
             uid={this.state.uid} 
             edit={true}
             handleSortChips={this.handleSortChips}
+            addChip={this.addChip}
             deleteChip={this.deleteChip}
+            chipToAdd={this.state.chipToAdd}
           />
         </Grid>
         <Grid item xs={12} lg={6}>
@@ -132,6 +146,8 @@ export class CycleDetailView extends Component {
                 exerciseTemplates={this.props.exerciseTemplates}
                 updateState={this.updateState}
                 index={index}
+                chipToAdd={this.state.chipToAdd}
+                addBlock={this.addBlock}
               />) 
             )
           : 
