@@ -73,8 +73,9 @@ export class UserCard extends Component {
         })
     }
 
-    handleDeleteDialogOpen = (uid) => {
-        this.setState({ deleteDialogOpen: true, anchorEl: null, uid })
+    handleDeleteDialogOpen = (event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
+        this.setState({ deleteDialogOpen: true, anchorEl: null })
     }
     
     handleDeleteDialogClose = () => {
@@ -86,32 +87,38 @@ export class UserCard extends Component {
         this.handleDeleteDialogClose()
     }
 
-    sendPasswordResetEmail = (email) => {
+    sendPasswordResetEmail = (email, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.sendPasswordResetEmail(email)
         this.setState({ anchorEl: null })
     }
 
-    disableUser = (uid) => {
+    disableUser = (uid, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.disableUser(uid)
         this.setState({ anchorEl: null })
     }
 
-    enableUser = (uid) => {
+    enableUser = (uid, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.enableUser(uid)
         this.setState({ anchorEl: null })
     }
 
-    setSuperAdminPrivileges = (uid) => {
+    setSuperAdminPrivileges = (uid, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.setSuperAdminPrivileges(uid)
         this.setState({ anchorEl: null })
     }
 
-    setAdminPrivileges = (uid) => {
+    setAdminPrivileges = (uid, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.setAdminPrivileges(uid)
         this.setState({ anchorEl: null })
     }
 
-    setUserPrivileges = (uid) => {
+    setUserPrivileges = (uid, event) => {
+        event.stopPropagation() //so Card onClick event does not fire too
         this.props.setUserPrivileges(uid)
         this.setState({ anchorEl: null })
     }
@@ -150,47 +157,47 @@ export class UserCard extends Component {
         let items = []
         if(user.disabled === false ) {
             items.push(
-                <MenuItem onClick={() => this.sendPasswordResetEmail(user.email)} key={user.uid+'-send-email'}>
+                <MenuItem onClick={(event) => this.sendPasswordResetEmail(user.email, event)} key={user.uid+'-send-email'}>
                     {constants.sendPasswordRetrievingEmail}
                 </MenuItem>
             )
 
             if(user.customClaims.accessLevel !== 2) {
                 items.push(
-                    <MenuItem onClick={() => this.setSuperAdminPrivileges(user.uid)} key={user.uid+'-set-superadmin-item'}>
+                    <MenuItem onClick={(event) => this.setSuperAdminPrivileges(user.uid, event)} key={user.uid+'-set-superadmin-item'}>
                         {constants.setAsSuperadmin}
                     </MenuItem>
                 )
             }
             if(user.customClaims.accessLevel !== 1) {
                 items.push(
-                    <MenuItem onClick={() => this.setAdminPrivileges(user.uid)} key={user.uid+'-set-admin-item'}>
+                    <MenuItem onClick={(event) => this.setAdminPrivileges(user.uid, event)} key={user.uid+'-set-admin-item'}>
                         {constants.setAsAdmin}
                     </MenuItem>
                 )
             }
             if(user.customClaims.accessLevel !== 0) {
                 items.push(
-                    <MenuItem onClick={() => this.setUserPrivileges(user.uid)} key={user.uid+'-set-user-item'}>
+                    <MenuItem onClick={(event) => this.setUserPrivileges(user.uid, event)} key={user.uid+'-set-user-item'}>
                         {constants.setAsUser}
                     </MenuItem>
                 )
             }
 
             items.push(
-                <MenuItem onClick={() => this.disableUser(user.uid)} key={user.uid+'-disable-user-item'}>
+                <MenuItem onClick={(event) => this.disableUser(user.uid, event)} key={user.uid+'-disable-user-item'}>
                     {constants.disableUser}
                 </MenuItem>
             )
         }else {
             items.push(
-                <MenuItem onClick={() => this.enableUser(user.uid)} key={user.uid+'-enable-user-item'}>
+                <MenuItem onClick={(event) => this.enableUser(user.uid, event)} key={user.uid+'-enable-user-item'}>
                     {constants.enableUser}
                 </MenuItem>
             )
         }
         items.push(
-            <MenuItem onClick={() => this.handleDeleteDialogOpen()} key={user.uid+'-delete-user-item'}>
+            <MenuItem onClick={(event) => this.handleDeleteDialogOpen(event)} key={user.uid+'-delete-user-item'}>
                 {constants.deleteUser}
             </MenuItem>
         )
