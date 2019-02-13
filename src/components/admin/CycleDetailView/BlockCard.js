@@ -61,7 +61,6 @@ export class BlockCard extends Component {
         super()
         this.state = {
             expanded: false,
-            edit: false,
             name: "",
             shortName: "",
             color: "#000000",
@@ -144,8 +143,7 @@ export class BlockCard extends Component {
                     return returnValue
                 })
                 this.setState({ 
-                    exercises: newState,
-                    edit: true 
+                    exercises: newState
                 }, () => this.updateParentState())
             } else { //comes from exercise row inputs
                 newState = this.state.exercises.map((a, ind) => {
@@ -161,8 +159,7 @@ export class BlockCard extends Component {
                     return returnValue
                 })
                 this.setState({ 
-                    exercises: newState,
-                    edit: true 
+                    exercises: newState
                 }, () => this.updateParentState())
             }  
         }
@@ -170,15 +167,13 @@ export class BlockCard extends Component {
 
     handleChange = (event) => {
         this.setState({
-            [event.target.id]: event.target.value,
-            edit: true
+            [event.target.id]: event.target.value
         }, () => this.updateParentState())
     }
 
     handleSort = (oldIndex, newIndex) => {
         this.setState((state) => ({
-            exercises: arrayMove(state.exercises, oldIndex, newIndex),
-            edit: true
+            exercises: arrayMove(state.exercises, oldIndex, newIndex)
         }), () => this.updateParentState())
     }
 

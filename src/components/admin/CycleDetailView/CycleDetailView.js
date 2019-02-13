@@ -142,7 +142,7 @@ export class CycleDetailView extends Component {
             Object.keys(this.state.cycle.content.blocks).map((blockId, index) => (
               <BlockCard 
                 block={this.state.cycle.content.blocks[blockId]} 
-                key={this.state.cycle.content.blocks[blockId].name+'-block-card'}
+                key={'block-' + blockId + '-card'}
                 exerciseTemplates={this.props.exerciseTemplates}
                 updateState={this.updateState}
                 index={index}
