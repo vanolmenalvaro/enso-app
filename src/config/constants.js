@@ -1,6 +1,7 @@
 const constants = {
     accept: "Aceptar",
     addBlock: "Añadir bloque",
+    addBlockText: "Seleccione la plantilla de bloque a añadir",
     addCycle: "Añadir mesociclo",
     addExercise: "Añadir ejercicio",
     addToCalendar: "Añadir al calendario",
@@ -37,6 +38,8 @@ const constants = {
     email: "Correo electrónico",
     exercise: "Ejercicio",
     exercises: "Ejercicios",
+    fromTemplate: "Desde plantilla",
+    fromScratch: "Desde cero",
     name: "Nombre",
     noResults: "No hay resultados...",
     login: "Login",

@@ -198,7 +198,7 @@ export class BlockCard extends Component {
                             <ExpandMore />
                         </div>
                     }
-                    title={this.props.block.name}
+                    title={this.state.name}
                     />
                 </CardActionArea>
                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
@@ -249,7 +249,7 @@ export class BlockCard extends Component {
                     >
                         {this.props.chipToAdd !== "" && this.props.chipToAdd === this.state.id  ? constants.accept : constants.addToCalendar}
                     </Button>
-                    <Button size="small">
+                    <Button size="small" onClick={() => this.props.deleteBlock(this.state.id)}>
                         {constants.delete}
                     </Button>
                 </CardActions>

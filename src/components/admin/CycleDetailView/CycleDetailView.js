@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import Fab from '@material-ui/core/Fab'
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip'
+import { Add } from '@material-ui/icons'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Grid from '@material-ui/core/Grid'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Input from '@material-ui/core/Input'
+import Select from '@material-ui/core/Select'
 import { withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -31,7 +44,10 @@ export class CycleDetailView extends Component {
       cycle: this.props.location.state.cycle,
       uid: this.props.location.state.uid,
       edit: false,
-      chipToAdd: ""
+      anchorEl: null,
+      open: false,
+      chipToAdd: "",
+      blockToAdd: { name: ""}
     }
   }
 
@@ -42,7 +58,7 @@ export class CycleDetailView extends Component {
 
   addChip = (day) => {
     var newDay = []
-    if(this.state.cycle.content.program[day]) {
+    if(this.state.cycle.content.program[day] && this.state.cycle.content.program[day].length !== 0) {
       newDay =this.state.cycle.content.program[day].slice()
     }
 
@@ -100,7 +116,7 @@ export class CycleDetailView extends Component {
   }
 
   updateState = (newState, id) => {
-    let newBlocks = this.state.cycle.content.blocks
+    let newBlocks = JSON.parse(JSON.stringify(this.state.cycle.content.blocks)) //deep copy
     newBlocks[id] = newState
 
     this.setState({
@@ -115,7 +131,7 @@ export class CycleDetailView extends Component {
     })
   }
 
-  addBlock = (id) => {
+  addBlockToCalendar = (id) => {
     if(this.state.chipToAdd !== "") {
       this.setState({ chipToAdd: "" })
     } else {
@@ -123,7 +139,100 @@ export class CycleDetailView extends Component {
     }
   }
 
+  addBlock = ( 
+    name = "", 
+    shortName = "", 
+    color = "#000000", 
+    exercises = [{
+      name: "",
+      block: "",
+      assignation: ""
+    }], 
+    id = Math.random().toString(36)
+  ) => {
+    let newBlock = {
+      name: name,
+      shortName: shortName,
+      color: color,
+      exercises: exercises,
+      id: id
+    }
+  
+    this.setState({
+      cycle: {
+        ...this.state.cycle,
+        content: {
+          ...this.state.cycle.content,
+          blocks: {
+            ...this.state.cycle.content.blocks,
+            [id]: newBlock
+          }
+        }
+      },
+      edit: true
+    })
+    this.handleMenuClose()
+  }
+
+  deleteBlock = (id) => {
+    let newBlocks = JSON.parse(JSON.stringify(this.state.cycle.content.blocks)) //deep copy
+    let newProgram = {}
+
+    //delete block from Blocks
+    delete newBlocks[id]
+
+    //delete blocks from Program
+    Object.keys(this.state.cycle.content.program).map(day => {
+      newProgram[day] = this.state.cycle.content.program[day].filter(block => block !== id)
+      if(newProgram[day].length === 0) {
+        delete newProgram[day] 
+      }
+      return null
+    })
+
+    this.setState({
+      cycle: {
+        ...this.state.cycle,
+        content: {
+          ...this.state.cycle.content,
+          blocks: newBlocks,
+          program: newProgram
+        }
+      },
+      edit: true
+    })
+  }
+
+  handleMenuClick = event => {
+    this.setState({ anchorEl: event.currentTarget })
+  }
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null })
+  }
+
+  handleDialogOpen = () => {
+    this.handleMenuClose()
+    this.setState({ open: true })
+  }
+
+  handleDialogAccept = () => {
+    this.handleDialogClose()
+    this.addBlock(this.state.blockToAdd.name, this.state.blockToAdd.shortName, this.state.blockToAdd.color, this.state.blockToAdd.exercises)
+  }
+
+  handleDialogClose = () => {
+    this.handleMenuClose()
+    this.setState({ open: false })
+  }
+
+  handleSelectChange =  event => {
+    this.setState({ blockToAdd: (this.props.blockTemplates.filter(blocktemplate => blocktemplate.name === event.target.value))[0] })
+  }
+
   render() {
+    const { anchorEl } = this.state
+
     return (
       <Grid container direction="row" spacing={8}>
         <Grid item xs={12} lg={6}>
@@ -147,7 +256,8 @@ export class CycleDetailView extends Component {
                 updateState={this.updateState}
                 index={index}
                 chipToAdd={this.state.chipToAdd}
-                addBlock={this.addBlock}
+                addBlock={this.addBlockToCalendar}
+                deleteBlock={this.deleteBlock}
               />) 
             )
           : 
@@ -155,7 +265,60 @@ export class CycleDetailView extends Component {
                 <br/>{constants.noResults}
             </Typography>
           }
+          <Grid container justify="center">
+            <Tooltip title={constants.addBlock}>
+              <Fab 
+                color="primary" 
+                aria-owns={anchorEl ? 'simple-menu' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenuClick} 
+              >
+                <Add />
+              </Fab>
+            </Tooltip>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleMenuClose}
+            >
+              <MenuItem onClick={this.handleDialogOpen}>{constants.fromTemplate}</MenuItem>
+              <MenuItem onClick={() => this.addBlock()}>{constants.fromScratch}</MenuItem>
+            </Menu>
+          </Grid>
         </Grid>
+      
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleDialogClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">{constants.addBlock}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {constants.addBlockText}
+            </DialogContentText>
+            <Select
+              native
+              value={this.state.blockToAdd.name}
+              onChange={this.handleSelectChange}
+              input={<Input/>}
+            >
+              <option value={{}} />
+              {this.props.blockTemplates && this.props.blockTemplates.map(block => 
+                <option value={block.name} key={block.name}>{block.name}</option>
+              )}
+            </Select>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleDialogClose} color="primary">
+              {constants.cancel}
+            </Button>
+            <Button onClick={this.handleDialogAccept} color="primary">
+              {constants.accept}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     )
   }
