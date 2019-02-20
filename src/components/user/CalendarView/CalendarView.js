@@ -19,7 +19,7 @@ class CalendarView extends Component {
 
     render() {
         return (
-            <Calendar cycle={this.props.cycle} />
+            <Calendar cycle={this.props.cycle} switchTab={this.props.switchTab} />
         )
     }
 }

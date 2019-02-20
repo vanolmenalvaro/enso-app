@@ -104,7 +104,7 @@ export class UserDetailView extends Component {
     handleCycleCardClick = (cycle) => {
         this.props.history.push({
             pathname: "/app/admin/users/"+this.state.user.email+"/"+cycle.user.ref,
-            state: { cycle, uid: this.state.user.uid }
+            state: { cycleId: cycle.id, uid: this.state.user.uid }
         })
     }
 

@@ -1,14 +1,18 @@
 const date = new Date()
-const month = date.getMonth()
-
 date.setDate(1)
 
 // Get the first Monday in the month
 while (date.getDay() !== 1) {
-    date.setDate(date.getDate() + 1);
+    date.setDate(date.getDate() + 1)
 }
 
-const firstDay = date.getDate()+"/"+(month+1)+"/"+date.getFullYear()
+let month = date.getMonth()+1
+let day = date.getDate()
+
+if (month < 10) month = '0' + month
+if (day < 10) day = '0' + day
+
+const firstDay = date.getFullYear()+"-"+month+"-"+day
 
 const initState = {
     cycles: [{
@@ -32,9 +36,35 @@ var templatesCopy
 const programReducer = (state = initState, action) => {
     switch (action.type) {
         case 'CREATE_CYCLE_SUCCESS':
-            return state
+            return {
+                ...state,
+                cycles: [action.cycle]
+            }
         case 'CREATE_CYCLE_ERROR':
             console.log('create cycle error', action.error)
+            return state
+        case 'UPDATE_CYCLE_SUCCESS':
+            return {
+                ...state,
+                cycles: [action.cycle]
+            }
+        case 'UPDATE_CYCLE_ERROR':
+            console.log('create cycle error', action.error)
+            return state
+        case 'GET_CYCLE_SUCCESS':
+            if(action.cycle.length !== 0){
+                return {
+                    ...state,
+                    cycles: [{...action.cycle}]
+                }
+            } else {
+                return {
+                    ...state,
+                    cycles: initState.cycles
+                }
+            }
+        case 'GET_CYCLE_ERROR':
+            console.log('getting cycle error', action.error)
             return state
         case 'GET_CYCLES_SUCCESS':
             if(action.data.length !== 0){
@@ -49,7 +79,7 @@ const programReducer = (state = initState, action) => {
                 }
             }
         case 'GET_CYCLES_ERROR':
-            console.log('getting cycle error', action.error)
+            console.log('getting cycles error', action.error)
             return state
         case 'GET_EXERCISE_TEMPLATES_SUCCESS':
             return {

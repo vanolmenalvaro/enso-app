@@ -12,9 +12,7 @@ const styles = theme => ({
       color: theme.palette.text.secondary,
       boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
       border: '1px solid',
-      backgroundColor: 'white',
-      marginRight: 8,
-      marginBottom: 65
+      backgroundColor: 'white'
     },
     headerRow: {
       display: 'table',
@@ -67,7 +65,7 @@ class Calendar extends Component {
             for (let j = 0; j < 7; j++) { 
                 blocks = []
                 if(this.props.cycle.content){
-                    dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format('DD/MM/YYYY')
+                    dayNumber = moment(this.props.cycle.content.initialDate, constants.dateFormat).add(j + i * 7, 'days').format(constants.dateFormat)
                     if(this.props.cycle.content.program[dayNumber]) {
                         blocks = this.returnBlocksforDay(dayNumber)
                     }
