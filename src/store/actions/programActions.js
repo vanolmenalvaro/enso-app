@@ -1,25 +1,67 @@
 export const setCycle = (cycle) => {
     return(dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore()
-        var ref = firestore.collection('cycles').doc(cycle.id)
+        var ref
         
-        ref.get().then((doc) => {
-            if (doc.exists) {
-                ref.set(cycle).then(() => {
-                    dispatch({ type: 'UPDATE_CYCLE_SUCCESS', cycle})
+        if(cycle.id) {
+            ref = firestore.collection('cycles').doc(cycle.id)
+
+            ref.get().then((doc) => {
+                if (doc.exists) {
+                    ref.set(cycle).then(() => {
+                        dispatch({ type: 'UPDATE_CYCLE_SUCCESS', cycle})
+                    }).catch((error) => {
+                        dispatch({ type: 'UPDATE_CYCLE_ERROR', error})
+                    })
+                } else {
+                    ref.set(cycle).then(() => {
+                        dispatch({ type: 'CREATE_CYCLE_SUCCESS', cycle})
+                    }).catch((error) => {
+                        dispatch({ type: 'CREATE_CYCLE_ERROR', error})
+                    })
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            })
+        } else {
+            ref = firestore.collection('cycles')
+
+            ref.add(cycle).then((resp) => {
+                dispatch({ type: 'CREATE_CYCLE_SUCCESS', cycle})
+                
+                let newCycle = {
+                    ...cycle,
+                    id: resp.id
+                }
+
+                ref = firestore.collection('cycles').doc(resp.id)
+
+                ref.update(newCycle).then(() => {
+                    dispatch({ type: 'UPDATE_CYCLE_SUCCESS', cycle: newCycle})
                 }).catch((error) => {
                     dispatch({ type: 'UPDATE_CYCLE_ERROR', error})
                 })
-            } else {
-                ref.set(cycle).then(() => {
-                    dispatch({ type: 'CREATE_CYCLE_SUCCESS', cycle})
-                }).catch((error) => {
-                    dispatch({ type: 'CREATE_CYCLE_ERROR', error})
-                })
-            }
+            }).catch((error) => {
+                dispatch({ type: 'CREATE_CYCLE_ERROR', error})
+            })
+        }
+    }
+}
+
+export const deleteCycle = (id) => {
+    return(dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore()
+        firestore.collection('cycles').doc(id).delete().then(() => {
+            dispatch({ type: 'DELETE_CYCLE_SUCCESS', id})
         }).catch((error) => {
-            console.log("Error getting document:", error);
+            dispatch({ type: 'DELETE_CYCLE_ERROR', error})
         })
+    }
+}
+
+export const clearCurrentCycle = () => {
+    return(dispatch) => {
+        dispatch({ type: 'CLEAR_CURR_CYCLE_SUCCESS' })
     }
 }
 

@@ -24,6 +24,15 @@ const initState = {
             program: {}
         }
     }],
+    currCycle: {
+        user: {},
+        isInitState: true,
+        content: {
+            initialDate: firstDay,
+            blocks: [],
+            program: {}
+        }
+    },
     templates : {
         exerciseTemplates: [],
         blockTemplates: []
@@ -31,40 +40,67 @@ const initState = {
     
 }
 
-var templatesCopy
+let templatesCopy, newCycles
 
 const programReducer = (state = initState, action) => {
     switch (action.type) {
         case 'CREATE_CYCLE_SUCCESS':
             return {
                 ...state,
-                cycles: [action.cycle]
+                cycles: [
+                    action.cycle,
+                    ...state.cycles                    
+                ],
+                currCycle: action.cycle
             }
         case 'CREATE_CYCLE_ERROR':
             console.log('create cycle error', action.error)
             return state
-        case 'UPDATE_CYCLE_SUCCESS':
+        case 'CLEAR_CURR_CYCLE_SUCCESS':
             return {
                 ...state,
-                cycles: [action.cycle]
+                currCycle: initState.currCycle
+                }
+        case 'UPDATE_CYCLE_SUCCESS':
+            newCycles = []
+            state.cycles.forEach(cycle => {
+                if(!cycle.id){
+                    newCycles.push(action.cycle)
+                } else {
+                    newCycles.push(cycle)
+                }
+            })
+            return {
+                ...state,
+                cycles: newCycles,
+                currCycle: action.cycle
             }
         case 'UPDATE_CYCLE_ERROR':
-            console.log('create cycle error', action.error)
+            console.log('update cycle error', action.error)
             return state
         case 'GET_CYCLE_SUCCESS':
             if(action.cycle.length !== 0){
                 return {
                     ...state,
-                    cycles: [{...action.cycle}]
+                    currCycle: action.cycle
                 }
             } else {
                 return {
                     ...state,
-                    cycles: initState.cycles
+                    currCycle: initState.currCycle
                 }
             }
         case 'GET_CYCLE_ERROR':
             console.log('getting cycle error', action.error)
+            return state
+        case 'DELETE_CYCLE_SUCCESS':
+            newCycles = state.cycles.filter(cycle => cycle.id !== action.id)
+            return {
+                ...state,
+                cycles: newCycles
+            }
+        case 'DELETE_CYCLE_ERROR':
+            console.log('deleting cycle error', action.error)
             return state
         case 'GET_CYCLES_SUCCESS':
             if(action.data.length !== 0){

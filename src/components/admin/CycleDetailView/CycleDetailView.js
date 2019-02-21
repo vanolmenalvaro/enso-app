@@ -58,7 +58,11 @@ export class CycleDetailView extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getCycle(this.state.cycleId)
+    if(this.props.location.state.cycleId !== null) {
+      this.props.getCycle(this.props.location.state.cycleId)
+    } else {
+      this.handleStartFromScratch(this.props.location.state.ref)
+    }
     if(this.props.exerciseTemplates.length === 0) this.props.getExerciseTemplates()
     if(this.props.blockTemplates.length === 0) this.props.getBlockTemplates()
   }
@@ -67,6 +71,10 @@ export class CycleDetailView extends Component {
     if(this.state.cycle.isInitState === true && !this.props.cycle.isInitState){
       this.setState({cycle: this.props.cycle})
     }
+  }
+
+  componentWillUnmount = () => {
+    this.handleStartFromScratch()
   }
 
   addChip = (day) => {
@@ -285,7 +293,7 @@ export class CycleDetailView extends Component {
     this.setState({ edit: false })
   }
 
-  handleStartFromScratch = () => {
+  handleStartFromScratch = (ref) => {
     const date = new Date()
     date.setDate(1)
 
@@ -304,7 +312,10 @@ export class CycleDetailView extends Component {
 
     this.setState({ 
       cycle: {
-        user: this.state.cycle.user,
+        user: {
+          uid: this.state.uid,
+          ref: ref || this.state.cycle.user.ref
+        },
         content: {
           initialDate: firstDay,
           blocks: [],
@@ -328,8 +339,6 @@ export class CycleDetailView extends Component {
         }
       }
     }
-
-    console.log(newProgram)
 
     this.setState({ 
       cycle: {
@@ -503,7 +512,7 @@ const mapStateToProps = (state) => {
   return{
     exerciseTemplates: state.program.templates.exerciseTemplates,
     blockTemplates: state.program.templates.blockTemplates,
-    cycle: state.program.cycles[0]
+    cycle: state.program.currCycle
   }
 }
 

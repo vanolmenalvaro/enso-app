@@ -23,7 +23,7 @@ import { withStyles } from '@material-ui/core/styles'
 import constants from '../../../config/constants'
 import UserCard from '../UsersView/UserCard'
 import { getUsers } from '../../../store/actions/adminActions'
-import { getCycles } from '../../../store/actions/programActions'
+import { getCycles, deleteCycle } from '../../../store/actions/programActions'
 
 const styles = () => ({
     root: {
@@ -86,18 +86,17 @@ export class UserDetailView extends Component {
 
         if(this.state.user !== null && 
             this.state.user.email === this.props.match.params.user && 
-            (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid)) {
+            (this.props.cycles && this.props.cycles[0] && (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid))) {
                 this.props.getCycles(this.state.user.uid)
         }
     }
 
-    handleMenuClick = event => {
+    handleMenuClick = (event, cycle) => {
         event.stopPropagation() //so Card onClick event does not fire too
-        this.setState({ anchorEl: event.currentTarget })
+        this.setState({ anchorEl: event.currentTarget, cycle: cycle })
     }
 
-    handleMenuClose = event => {
-        event.stopPropagation() //so Card onClick event does not fire too
+    handleMenuClose = () => {
         this.setState({ anchorEl: null })
     }
 
@@ -108,8 +107,24 @@ export class UserDetailView extends Component {
         })
     }
 
-    handleDeleteDialogOpen = (cycle) => {
-        this.setState({ deleteDialogOpen: true, anchorEl: null, cycle: cycle })
+    handleNewCycle = () => {
+        let ref
+
+        if(this.props.cycles && this.props.cycles[0] && !this.props.cycles[0].isInitState){
+            ref = this.props.cycles[0].user.ref
+            ref++
+        } else {
+            ref = 1
+        }
+
+        this.props.history.push({
+            pathname: "/app/admin/users/"+this.state.user.email+"/"+ref,
+            state: { cycleId: null,ref: ref, uid: this.state.user.uid }
+        })
+    }
+
+    handleDeleteDialogOpen = () => {
+        this.setState({ deleteDialogOpen: true, anchorEl: null})
     }
     
     handleDeleteDialogClose = () => {
@@ -117,7 +132,7 @@ export class UserDetailView extends Component {
     }
 
     handleDeleteDialogAccept = () => {
-        console.log("delete cycle "+this.state.cycle.user.ref)
+        this.props.deleteCycle(this.state.cycle.id)
         this.handleDeleteDialogClose()
     }
 
@@ -125,7 +140,7 @@ export class UserDetailView extends Component {
         const { classes } = this.props
         const { anchorEl } = this.state
         const open = Boolean(anchorEl)
-        
+
         return (
         <div>
             <Grid container className={classes.root} justify="space-evenly" spacing={8}>
@@ -140,13 +155,13 @@ export class UserDetailView extends Component {
                         {constants.cycles}
                     </Typography>
                     <Tooltip title={constants.addCycle}>
-                    <IconButton color="primary" className={classes.button} >
+                    <IconButton color="primary" className={classes.button} onClick={this.handleNewCycle}>
                         <Add className={classes.icon} />
                     </IconButton>
                     </Tooltip>
                 </Grid>
                 <Grid container direction="column" alignItems="center">
-                    { this.props.cycles && !this.props.cycles[0].isInitState ?
+                    { this.props.cycles && this.props.cycles[0] && !this.props.cycles[0].isInitState ?
                         this.props.cycles.map(cycle => 
                             <Card className={this.props.classes.card} key={cycle.user.ref+'-card'}>
                                 <CardActionArea component='div' onClick={() => this.handleCycleCardClick(cycle)} disableRipple>
@@ -154,28 +169,15 @@ export class UserDetailView extends Component {
                                         action={
                                             <Fragment>
                                                 <IconButton 
-                                                    id={cycle.user.ref+'-button'}
+                                                    id={cycle.id+'-button'}
                                                     color="inherit"
                                                     aria-label="More"
                                                     aria-owns={open ? 'long-menu' : undefined}
                                                     aria-haspopup="true"
-                                                    onClick={this.handleMenuClick}
+                                                    onClick={(event) => this.handleMenuClick(event, cycle)}
                                                 >
                                                     <MoreVert />
                                                 </IconButton>
-                                                <Menu
-                                                    id={cycle.user.ref+'-menu'}
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={this.handleMenuClose}
-                                                >
-                                                    <MenuItem onClick={() => this.handleCycleCardClick(cycle)} key={cycle.user.ref+'-edit'}>
-                                                        {constants.edit}
-                                                    </MenuItem>
-                                                    <MenuItem onClick={() => this.handleDeleteDialogOpen(cycle)} key={cycle.user.ref+'-delete'}>
-                                                        {constants.delete}
-                                                    </MenuItem>
-                                                </Menu>
                                             </Fragment>
                                         }
                                         title={constants.cycle + " " + cycle.user.ref}
@@ -205,6 +207,18 @@ export class UserDetailView extends Component {
                 </Grid>
                 </Grid>
             </Grid>
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={this.handleMenuClose}
+            >
+                <MenuItem onClick={() => this.handleCycleCardClick(this.state.cycle)}>
+                    {constants.edit}
+                </MenuItem>
+                <MenuItem onClick={() => this.handleDeleteDialogOpen(this.state.cycle)}>
+                    {constants.delete}
+                </MenuItem>
+            </Menu>
             <Dialog
                 open={this.state.deleteDialogOpen}
                 onClose={this.handleDeleteDialogClose}
@@ -212,10 +226,10 @@ export class UserDetailView extends Component {
                 aria-describedby="alert-delete-dialog-description"
                 key={this.state.user && this.state.user.uid+'-delete-dialog'}
                 >
-                <DialogTitle id="alert-delete-dialog-title">{constants.deleteUserQuestion}</DialogTitle>
+                <DialogTitle id="alert-delete-dialog-title">{constants.deleteCycleQuestion}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-delete-dialog-description">
-                        {constants.deleteUserText}
+                        {constants.deleteCycleText}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -242,7 +256,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
       getUsers: () => dispatch(getUsers()),
-      getCycles: (uid) => dispatch(getCycles(uid))
+      getCycles: (uid) => dispatch(getCycles(uid)),
+      deleteCycle: (id) => dispatch(deleteCycle(id))
     }
   }
 
