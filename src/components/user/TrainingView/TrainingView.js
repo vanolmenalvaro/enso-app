@@ -5,40 +5,39 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import ExerciseCard from './ExerciseCard'
+import { getCycles } from '../../../store/actions/programActions'
 
 class TrainingView extends Component{
 
   componentDidMount() {
-    window.scrollTo(0, 0)
-
-    if(!this.props.program || !this.props.blocks) {
+    if(!this.props.program || !this.props.blocks || this.props.cycle.isInitState) {
       this.props.getCycles(this.props.auth.uid)
     }
   }
 
   render() {
-    const day = this.props.match.params.day.replace(/-/g, '/')
-    let blocksThisDay = []
-    this.props.blocks.map(block => (
-      this.props.program[day] && this.props.program[day].map(programBlock => (
-        programBlock.name === block.name &&
-          blocksThisDay.push(block)
-      ))
-    ))
-
-    var renderReturn = 
-    blocksThisDay.length !== 0 && 
-    blocksThisDay.map(obj => (
-      <div key={obj.name}> 
-        <ExerciseCard key={obj.name} name={obj.name} shortName={obj.shortName} color={obj.color} exercises={obj.exercises}  />
-      </div>))
+    const day = this.props.match.params.day
+    const formattedDay = day.replace(/-/g, '/')    
 
     return(
       <div>
         <Typography variant="h4" align='center'>
-          {day}
+          {formattedDay}
         </Typography> 
-        {renderReturn}
+          {this.props.program[day] && this.props.program[day].map(blockId => {
+            let block = this.props.blocks[blockId]
+            return (
+                <div key={block.name}> 
+                    <ExerciseCard 
+                      key={block.name} 
+                      name={block.name} 
+                      shortName={block.shortName} 
+                      color={block.color} 
+                      exercises={block.exercises}
+                    />
+                </div>
+            )
+          })}
       </div>
     )
   }
@@ -48,11 +47,19 @@ const mapStateToProps = (state) => {
   return{
       program: state.program.cycles[0].content.program,
       blocks: state.program.cycles[0].content.blocks,
-      day: state.tab.day
+      cycle: state.program.cycles[0],
+      day: state.tab.day,
+      auth: state.firebase.auth
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCycles: (uid) => dispatch(getCycles(uid))
   }
 }
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter
 )(TrainingView)

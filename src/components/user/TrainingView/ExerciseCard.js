@@ -1,15 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import React from "react"
+import { withStyles } from "@material-ui/core/styles"
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import Typography from "@material-ui/core/Typography"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
 
 const styles = theme => ({
   root: {
@@ -50,48 +49,36 @@ const styles = theme => ({
   }
 });
 
-class CheckboxList extends React.Component {
-  state = {
-    checked: [0]
-  };
+class ExerciseCard extends React.Component {
+  constructor() {
+    super()
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
-
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
+    this.state = {
+      open: true
     }
+  }
 
-    this.setState({
-      checked: newChecked
-    });
-  };
+  handleToggle = () => {
+    this.setState(prevState => ({ open: !prevState.open}))
+  }
 
   render() {
     const { classes } = this.props;
 
     return (
         <div className={classes.root}>
-            <ExpansionPanel key={this.props.name} className={classes.panel}>
+            <ExpansionPanel key={this.props.name} className={classes.panel} expanded={this.state.open} onChange={this.handleToggle}>
                 <ExpansionPanelSummary
                 className={classes.panelSummary}
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={!this.props.alwaysOpen && <ExpandMoreIcon />}
                 >
                     <Typography className={classes.display1} >{this.props.name}</Typography>  
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Table padding="none">
                         <TableBody>
-                        {this.props.exercises && this.props.exercises.map(obj => (
-                            <TableRow key={obj.name}>
+                        {this.props.exercises && this.props.exercises.map((obj, index) => (
+                            <TableRow key={obj.name+index}>
                                 <TableCell component="th" scope="row" className={classes.cellLg}>
                                     <Typography className={classes.heading}>
                                         {obj.block}{obj.block && ' - '}{obj.name}
@@ -99,16 +86,9 @@ class CheckboxList extends React.Component {
                                 </TableCell>
                                 <TableCell className={classes.cellMd}>
                                     <Typography className={classes.heading}>
-                                        {obj.sets}x{obj.reps}
+                                        {obj.assignation}
                                     </Typography>
-                                </TableCell>
-                                <TableCell className={classes.cellSm}>
-                                    {obj.tempo && 
-                                        <Typography className={classes.heading} noWrap>
-                                            {obj.tempo}
-                                        </Typography>
-                                    }
-                                </TableCell>          
+                                </TableCell>         
                             </TableRow>
                         ))}
                         </TableBody>
@@ -116,12 +96,8 @@ class CheckboxList extends React.Component {
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         </div>
-    );
+    )
   }
 }
 
-CheckboxList.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(CheckboxList);
+export default withStyles(styles)(ExerciseCard);
