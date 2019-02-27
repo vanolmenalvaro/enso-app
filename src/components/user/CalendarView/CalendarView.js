@@ -92,7 +92,7 @@ class CalendarView extends Component {
                                     this.props.cycle && Object.keys(this.props.cycle.content.blocks).map(blockId => {
                                         let block = this.props.cycle.content.blocks[blockId]
                                         return ( 
-                                            <div key={block.name+'frag'} style={{margin: 3}}>
+                                            <div key={block.name+'parent'} style={{margin: 3}}>
                                                 <ExerciseCard 
                                                     key={block.name+'block'} 
                                                     name={block.name} 

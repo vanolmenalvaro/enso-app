@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import Avatar from '@material-ui/core/Avatar'
 import Typography from "@material-ui/core/Typography"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import Table from '@material-ui/core/Table'
@@ -19,9 +20,13 @@ const styles = theme => ({
     height: 80,
     margin: 5
   },
+  avatar: {
+    left: -10
+  },
   display1: {
     fontSize: 18,
-    opacity: 0.9
+    opacity: 0.9,
+    marginTop: 7
   },
   heading: {
     fontSize: 14,
@@ -72,7 +77,8 @@ class ExerciseCard extends React.Component {
                 className={classes.panelSummary}
                 expandIcon={!this.props.alwaysOpen && <ExpandMoreIcon />}
                 >
-                    <Typography className={classes.display1} >{this.props.name}</Typography>  
+                  <Avatar style={{ backgroundColor: this.props.color }} className={classes.avatar}/>
+                  <Typography className={classes.display1} >{this.props.name}</Typography>  
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Table padding="none">
@@ -81,12 +87,12 @@ class ExerciseCard extends React.Component {
                             <TableRow key={obj.name+index}>
                                 <TableCell component="th" scope="row" className={classes.cellLg}>
                                     <Typography className={classes.heading}>
-                                        {obj.block}{obj.block && ' - '}{obj.name}
+                                      {obj.block}{obj.block && ' - '}{obj.name}
                                     </Typography>
                                 </TableCell>
                                 <TableCell className={classes.cellMd}>
                                     <Typography className={classes.heading}>
-                                        {obj.assignation}
+                                      {obj.assignation}
                                     </Typography>
                                 </TableCell>         
                             </TableRow>
