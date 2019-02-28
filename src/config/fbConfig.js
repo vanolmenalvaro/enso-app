@@ -13,10 +13,7 @@ var config = {
     messagingSenderId: "936216175252"
   }
 
-  const settings = {timestampsInSnapshots: true};
-
   firebase.initializeApp(config)
-  firebase.firestore().settings(settings)
   firebase.functions()
   firebase.firestore().enablePersistence()
     .then(function() {
