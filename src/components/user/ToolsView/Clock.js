@@ -13,7 +13,7 @@ const styles = {
     note: {
         position: 'absolute',
         right: 5,
-        top: 60
+        top: 65
     }
 }
 

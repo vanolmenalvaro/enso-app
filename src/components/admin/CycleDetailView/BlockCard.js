@@ -68,7 +68,8 @@ export class BlockCard extends Component {
             exercises: [{
                 name: "",
                 block: "",
-                assignation: ""
+                assignation: "",
+                videoId: ""
             }]        
         }
     }

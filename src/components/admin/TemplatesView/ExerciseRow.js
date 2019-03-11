@@ -43,7 +43,7 @@ class ExerciseRow extends Component {
           <FormControl>
             <AutoSuggestInput 
               index={this.props.index} 
-              value={this.props.exercise.name} 
+              value={this.props.exercise.name}
               options={this.props.options} 
               handleChange={this.props.handleChange}
             />

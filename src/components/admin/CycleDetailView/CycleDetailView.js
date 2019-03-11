@@ -289,7 +289,39 @@ export class CycleDetailView extends Component {
   }
 
   handleAccept = () => {
-    this.props.setCycle(this.state.cycle)
+    let newBlocks = []
+    Object.keys(this.state.cycle.content.blocks).forEach(block => {
+      let newBlock = JSON.parse(JSON.stringify(this.state.cycle.content.blocks[block])) //deep copy
+
+      newBlock.exercises.forEach((newBlockExercise, ind )=> {
+        let completeExercise = 
+          this.props.exerciseTemplates.filter(exerciseTemplateExercise => 
+          exerciseTemplateExercise.exerciseName === newBlockExercise.name)[0]
+
+        if(completeExercise && completeExercise.videoId) {
+          newBlock.exercises[ind] = {
+            videoId: completeExercise.videoId,
+            end: completeExercise.end,
+            start: completeExercise.start,
+            ...newBlock.exercises[ind],
+          }
+        }
+      })
+
+      newBlocks = {
+        ...newBlocks,
+        [newBlock.id]: newBlock
+      }
+    })
+     
+    this.props.setCycle({
+       ...this.state.cycle,
+        content: {
+          ...this.state.cycle.content,
+          blocks: newBlocks
+        }
+    })
+
     this.setState({ edit: false })
   }
 
