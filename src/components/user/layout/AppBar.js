@@ -17,7 +17,7 @@ import { ChevronLeft, MoreVert } from '@material-ui/icons/'
 import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { Chat, 
+import { Assignment, 
         Today,
         Build} from '@material-ui/icons/'
 import { compose } from 'redux'
@@ -248,17 +248,17 @@ class AppBar extends React.Component {
               </div>
               <Divider />
               <List>
-                <MenuItem button onClick={() => this.props.switchTab(0, this.props, '/app/user/chat')} selected={this.props.tab === 0}>
-                  <ListItemIcon>
-                    <Chat />
-                  </ListItemIcon>
-                  <ListItemText primary={constants.chat} />
-                </MenuItem>
-                <MenuItem button onClick={() => this.props.switchTab(1, this.props, '/app/user/calendar')} selected={this.props.tab === 1}>
+                <MenuItem button onClick={() => this.props.switchTab(0, this.props, '/app/user/calendar')} selected={this.props.tab === 0}>
                   <ListItemIcon>
                     <Today />
                   </ListItemIcon>
                   <ListItemText primary={constants.calendar} />
+                </MenuItem>
+                <MenuItem button onClick={() => this.props.switchTab(1, this.props, '/app/user/reports')} selected={this.props.tab === 1}>
+                  <ListItemIcon>
+                    <Assignment />
+                  </ListItemIcon>
+                  <ListItemText primary={constants.reports} />
                 </MenuItem>
                 <MenuItem button onClick={() => this.props.switchTab(2, this.props, '/app/user/tools')} selected={this.props.tab === 2}>
                   <ListItemIcon>

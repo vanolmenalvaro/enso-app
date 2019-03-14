@@ -29,8 +29,6 @@ export class AdminView extends Component {
         return this.props.switchTab(0)
       case '/app/admin/templates':
         return this.props.switchTab(1)
-      case '/app/admin/chat':
-        return this.props.switchTab(2)
       default:
         return this.props.switchTab(0)
     }

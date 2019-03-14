@@ -8,10 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
-import {  MoreVert, 
-        People,
-        LibraryBooks,
-        Chat } from '@material-ui/icons/'
+import {  MoreVert, People, LibraryBooks} from '@material-ui/icons/'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -138,10 +135,6 @@ class AppBar extends Component {
                         <ListItem onClick={() => this.props.switchTab(1, this.props, '/app/admin/templates')} selected={this.props.tab === 1}>
                             <ListItemIcon><LibraryBooks /></ListItemIcon>
                             <ListItemText primary={constants.templates} />
-                        </ListItem>
-                        <ListItem onClick={() => this.props.switchTab(2, this.props, '/app/admin/chat')} selected={this.props.tab === 2}>
-                            <ListItemIcon><Chat /></ListItemIcon>
-                            <ListItemText primary={constants.chat} />
                         </ListItem>
                     </List>
                 </Drawer>

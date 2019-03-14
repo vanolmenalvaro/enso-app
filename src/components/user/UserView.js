@@ -13,14 +13,14 @@ class UserView extends React.Component {
 
   componentDidMount = () => {
     switch (this.props.location.pathname) {
-      case '/app/user/chat':
-        return this.props.switchTab(0)
       case '/app/user/calendar':
+        return this.props.switchTab(0)
+      case '/app/user/reports':
         return this.props.switchTab(1)
       case '/app/user/tools':
         return this.props.switchTab(2)
       default:
-        return this.props.switchTab(1)
+        return this.props.switchTab(0)
       }
   }
 

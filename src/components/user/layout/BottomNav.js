@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Hidden from '@material-ui/core/Hidden';
-import { Chat, 
+import { Assignment, 
     Today,
     Build} from '@material-ui/icons/';
 import { compose } from 'redux'
@@ -36,8 +36,8 @@ class BottomNav extends React.Component {
                 showLabels
                 className={classes.stickToBottom}
             >
-                <BottomNavigationAction label={constants.chat} icon={<Chat />} onClick={() => this.props.switchTab(0, this.props, '/app/user/chat')} />
-                <BottomNavigationAction label={constants.calendar} icon={<Today />} onClick={() => this.props.switchTab(1, this.props, '/app/user/calendar')} />
+                <BottomNavigationAction label={constants.calendar} icon={<Today />} onClick={() => this.props.switchTab(0, this.props, '/app/user/calendar')} />
+                <BottomNavigationAction label={constants.reports} icon={<Assignment />} onClick={() => this.props.switchTab(1, this.props, '/app/user/reports')} />
                 <BottomNavigationAction label={constants.tools} icon={<Build />} onClick={() => this.props.switchTab(2, this.props, '/app/user/tools')} />
             </BottomNavigation>
         </Hidden>
