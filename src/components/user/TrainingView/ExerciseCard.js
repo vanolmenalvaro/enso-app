@@ -100,61 +100,62 @@ class ExerciseCard extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
-        <ExpansionPanel key={this.props.name} className={classes.panel} expanded={this.state.open} onChange={this.handleToggle}>
-          <ExpansionPanelSummary
-          className={classes.panelSummary}
-          expandIcon={!this.props.alwaysOpen && <ExpandMoreIcon />}
-          >
-            <Avatar style={{ backgroundColor: this.props.color }} className={classes.avatar}/>
-            <Typography className={classes.display1} >{this.props.name}</Typography>  
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className={classes.details}>
-            <Table padding="none">
-              <TableBody>
-              {this.props.exercises && this.props.exercises.map((obj, index) => (
-                <TableRow key={obj.name+index}>
-                  <TableCell component="th" scope="row" className={classes.cellLg}>
-                    <Typography className={classes.heading}>
-                      {obj.block}{obj.block && ' - '}
-                      {(obj.videoId && obj.videoId !== '') ?
-                        <Link
-                          component="button"
-                          variant="body2"
-                          onClick={this.handleModalOpen}
-                        >
-                          {obj.name}
-                        </Link>
-                        :
-                        obj.name
-                      }
-                    </Typography>
-                  </TableCell>
-                  <TableCell className={classes.cellMd}>
-                    <Typography className={classes.heading}>
-                      {obj.assignation}
-                    </Typography>
-                  </TableCell>
-                  {obj.videoId && obj.videoId !== '' &&       
-                    <Modal
-                    open={this.state.modalOpen}
-                    onClose={this.handleModalClose}
-                    disableAutoFocus
-                    >
-                      <YouTube
-                        videoId={obj.videoId}
-                        opts={opts}
-                        className={classes.player}
-                      />
-                    </Modal>
-                  }
-                </TableRow>
-              ))}
-              </TableBody>
-            </Table>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </div>
+      this.props.exercises && this.props.exercises[0].name !== '' &&
+        <div className={classes.root}>
+          <ExpansionPanel key={this.props.name} className={classes.panel} expanded={this.state.open} onChange={this.handleToggle}>
+            <ExpansionPanelSummary
+            className={classes.panelSummary}
+            expandIcon={!this.props.alwaysOpen && <ExpandMoreIcon />}
+            >
+              <Avatar style={{ backgroundColor: this.props.color }} className={classes.avatar}/>
+              <Typography className={classes.display1} >{this.props.name}</Typography>  
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.details}>
+              <Table padding="none">
+                <TableBody>
+                {this.props.exercises.map((obj, index) => (
+                  <TableRow key={obj.name+index}>
+                    <TableCell component="th" scope="row" className={classes.cellLg}>
+                      <Typography className={classes.heading}>
+                        {obj.block}{obj.block && ' - '}
+                        {(obj.videoId && obj.videoId !== '') ?
+                          <Link
+                            component="button"
+                            variant="body2"
+                            onClick={this.handleModalOpen}
+                          >
+                            {obj.name}
+                          </Link>
+                          :
+                          obj.name
+                        }
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cellMd}>
+                      <Typography className={classes.heading}>
+                        {obj.assignation}
+                      </Typography>
+                    </TableCell>
+                    {obj.videoId && obj.videoId !== '' &&       
+                      <Modal
+                      open={this.state.modalOpen}
+                      onClose={this.handleModalClose}
+                      disableAutoFocus
+                      >
+                        <YouTube
+                          videoId={obj.videoId}
+                          opts={opts}
+                          className={classes.player}
+                        />
+                      </Modal>
+                    }
+                  </TableRow>
+                ))}
+                </TableBody>
+              </Table>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
     )
   }
 }
