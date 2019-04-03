@@ -27,7 +27,6 @@ export const setCycle = (cycle) => {
             ref = firestore.collection('cycles')
 
             ref.add(cycle).then((resp) => {
-                dispatch({ type: 'CREATE_CYCLE_SUCCESS', cycle})
                 
                 let newCycle = {
                     ...cycle,
