@@ -39,7 +39,7 @@ const styles = (theme) => ({
     position: 'absolute',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
-  },
+  }
 })
 
 class UsersView extends Component {

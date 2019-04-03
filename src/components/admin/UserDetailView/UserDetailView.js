@@ -22,8 +22,10 @@ import { withStyles } from '@material-ui/core/styles'
 
 import constants from '../../../config/constants'
 import UserCard from '../UsersView/UserCard'
+import ReportCard from '../../user/ReportsView/ReportCard'
 import { getUsers } from '../../../store/actions/adminActions'
 import { getCycles, deleteCycle } from '../../../store/actions/programActions'
+import { getReports } from '../../../store/actions/reportActions'
 
 const styles = () => ({
     root: {
@@ -35,9 +37,6 @@ const styles = () => ({
     },
     paper: {
       padding: 5
-    },
-    control: {
-      marginBottom: 40,
     },
     title: {
       textAlign: 'center',
@@ -73,21 +72,29 @@ export class UserDetailView extends Component {
           this.props.getUsers()
         }
         if(this.props.admin.users && (this.state.user === null || this.state.user.email !== this.props.match.params.user)) {
-            var user = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
-            this.setState({ user: user[0] }) //filter() returns an array
+            var [ user ] = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
+            this.setState({ user: user })
+
+            this.props.getReports(user.uid)
         }
+        
     }
 
     componentDidUpdate = () => {
         if(this.props.admin.users && (this.state.user === null || this.state.user.email !== this.props.match.params.user)) {
-            var user = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
-            this.setState({ user: user[0] }) //filter() returns an array
+            var [ user ] = this.props.admin.users.filter((user) => user.email === this.props.match.params.user)
+            this.setState({ user: user })
         }
 
         if(this.state.user !== null && 
-            this.state.user.email === this.props.match.params.user && 
-            (this.props.cycles && this.props.cycles[0] && (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid))) {
+        this.state.user.email === this.props.match.params.user && 
+        (this.props.cycles && this.props.cycles[0] && (this.props.cycles[0].isInitState === true || this.props.cycles[0].user.uid !== this.state.user.uid))) {
                 this.props.getCycles(this.state.user.uid)
+        }
+
+        if(this.state.user !== null && this.state.user.email === this.props.match.params.user && 
+        (!this.props.reports.reports || !this.props.reports.reports.length > 0)){
+            this.props.getReports(this.state.user.uid)
         }
     }
 
@@ -150,61 +157,65 @@ export class UserDetailView extends Component {
             </Grid>
             <Grid container className={classes.root} justify="space-evenly" spacing={8}>
                 <Grid xs={6} item>
-                <Grid container direction="row">
-                    <Typography variant="h4" className={classes.title} noWrap>
-                        {constants.cycles}
-                    </Typography>
-                    <Tooltip title={constants.addCycle}>
-                    <IconButton color="primary" className={classes.button} onClick={this.handleNewCycle}>
-                        <Add className={classes.icon} />
-                    </IconButton>
-                    </Tooltip>
-                </Grid>
-                <Grid container direction="column" alignItems="center">
-                    { this.props.cycles && this.props.cycles[0] && !this.props.cycles[0].isInitState ?
-                        this.props.cycles.map(cycle => 
-                            <Card className={this.props.classes.card} key={cycle.user.ref+'-card'}>
-                                <CardActionArea component='div' onClick={() => this.handleCycleCardClick(cycle)} disableRipple>
-                                    <CardHeader
-                                        action={
-                                            <Fragment>
-                                                <IconButton 
-                                                    id={cycle.id+'-button'}
-                                                    color="inherit"
-                                                    aria-label="More"
-                                                    aria-owns={open ? 'long-menu' : undefined}
-                                                    aria-haspopup="true"
-                                                    onClick={(event) => this.handleMenuClick(event, cycle)}
-                                                >
-                                                    <MoreVert />
-                                                </IconButton>
-                                            </Fragment>
-                                        }
-                                        title={constants.cycle + " " + cycle.user.ref}
-                                        titleTypographyProps={{ align: 'center' }}
-                                    /> 
-                                </CardActionArea>
-                            </Card>
-                        )
-                    : 
-                        <Typography variant="h5" noWrap>
-                            <br/>{constants.noResults}
+                    <Grid container direction="row">
+                        <Typography variant="h4" className={classes.title} noWrap>
+                            {constants.cycles}
                         </Typography>
-                    } 
-                </Grid>
+                        <Tooltip title={constants.addCycle}>
+                        <IconButton color="primary" className={classes.button} onClick={this.handleNewCycle}>
+                            <Add className={classes.icon} />
+                        </IconButton>
+                        </Tooltip>
+                    </Grid>
+                    <Grid container direction="column" alignItems="center">
+                        { this.props.cycles && this.props.cycles[0] && !this.props.cycles[0].isInitState ?
+                            this.props.cycles.map(cycle => 
+                                <Card className={this.props.classes.card} key={cycle.user.ref+'-card'}>
+                                    <CardActionArea component='div' onClick={() => this.handleCycleCardClick(cycle)} disableRipple>
+                                        <CardHeader
+                                            action={
+                                                <Fragment>
+                                                    <IconButton 
+                                                        id={cycle.id+'-button'}
+                                                        color="inherit"
+                                                        aria-label="More"
+                                                        aria-owns={open ? 'long-menu' : undefined}
+                                                        aria-haspopup="true"
+                                                        onClick={(event) => this.handleMenuClick(event, cycle)}
+                                                    >
+                                                        <MoreVert />
+                                                    </IconButton>
+                                                </Fragment>
+                                            }
+                                            title={constants.cycle + " " + cycle.user.ref}
+                                            titleTypographyProps={{ align: 'center' }}
+                                        /> 
+                                    </CardActionArea>
+                                </Card>
+                            )
+                        : 
+                            <Typography variant="h5" noWrap>
+                                <br/>{constants.noResults}
+                            </Typography>
+                        } 
+                    </Grid>
                 </Grid>
                 <Grid xs={6} item>
-                <Grid container direction="row">
-                    <Typography variant="h4" className={classes.title} noWrap>
-                        {constants.reports}
-                    </Typography>
-                </Grid>
-                <Grid container direction="column" alignItems="center">
-
-                        <Typography variant="h5" noWrap>
-                            <br/>{constants.noResults}
+                    <Grid container direction="row">
+                        <Typography variant="h4" className={classes.title} style={{marginBottom: 10}} noWrap>
+                            {constants.reports}
                         </Typography>
-                </Grid>
+                    </Grid>
+                    <Grid container direction="column" alignItems="center">
+                        { this.props.reports.reports && this.props.reports.reports.length > 0 
+                            ? this.props.reports.reports.map(report => 
+                                <ReportCard id={report.id} key={report.id} date={report.date} text={report.text} /> )
+                            :
+                            <Typography variant='h5' align='center'>
+                                <br/>{constants.noReports}
+                            </Typography> 
+                        }
+                    </Grid>
                 </Grid>
             </Grid>
             <Menu
@@ -249,7 +260,8 @@ export class UserDetailView extends Component {
 const mapStateToProps = (state) => {
     return{
         admin: state.admin,
-        cycles: state.program.cycles
+        cycles: state.program.cycles,
+        reports: state.reports
     }
 }
 
@@ -257,7 +269,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
       getUsers: () => dispatch(getUsers()),
       getCycles: (uid) => dispatch(getCycles(uid)),
-      deleteCycle: (id) => dispatch(deleteCycle(id))
+      deleteCycle: (id) => dispatch(deleteCycle(id)),
+      getReports: (uid) => dispatch(getReports(uid))
     }
   }
 

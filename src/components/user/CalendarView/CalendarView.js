@@ -89,12 +89,12 @@ class CalendarView extends Component {
                         <Grid item xs={12} className={classes.parent}>
                             <Grid container spacing={8} className={classes.horList}>
                                 {
-                                    this.props.cycle && Object.keys(this.props.cycle.content.blocks).map(blockId => {
+                                    this.props.cycle && Object.keys(this.props.cycle.content.blocks).map((blockId, ind) => {
                                         let block = this.props.cycle.content.blocks[blockId]
                                         return ( 
-                                            <div key={block.name+'parent'} style={{margin: 3}}>
+                                            <div key={block.name+ind+'parent'} style={{margin: 3}}>
                                                 <ExerciseCard 
-                                                    key={block.name+'block'} 
+                                                    key={block.name+ind+'block'} 
                                                     name={block.name} 
                                                     shortName={block.shortName} 
                                                     color={block.color} 
