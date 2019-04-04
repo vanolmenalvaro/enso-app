@@ -122,7 +122,7 @@ export class TemplatesView extends Component {
             />
         </FormControl>
         <Grid container className={classes.root} justify="space-evenly" spacing={8}>
-            <Grid xs={6} item >
+            <Grid xs={12} md={6} item >
               <Grid container direction="row">
                 <Typography variant="h4" className={classes.title} noWrap>
                     {constants.exercises}
@@ -146,7 +146,7 @@ export class TemplatesView extends Component {
                 }
               </Grid>
             </Grid>
-            <Grid xs={6} item>
+            <Grid xs={12} md={6} item>
               <Grid container direction="row">
                 <Typography variant="h4" className={classes.title} noWrap>
                     {constants.blocks}

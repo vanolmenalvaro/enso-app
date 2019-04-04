@@ -68,7 +68,7 @@ export class CycleDetailView extends Component {
   }
 
   componentDidUpdate = () => {
-    if(this.state.cycle.isInitState === true && !this.props.cycle.isInitState ||
+    if((this.state.cycle.isInitState === true && !this.props.cycle.isInitState) ||
       this.state.cycle.id !== this.props.cycle.id){
       this.setState({cycle: this.props.cycle})
     }

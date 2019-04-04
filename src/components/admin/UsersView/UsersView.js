@@ -37,8 +37,13 @@ const styles = (theme) => ({
   },
   fab: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
+    [theme.breakpoints.down('xs')]: {
+      bottom: theme.spacing.unit * 8
+    },
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing.unit * 2
+    }
   }
 })
 

@@ -7,6 +7,7 @@ import { getFirebase } from 'react-redux-firebase'
 import { withRouter } from "react-router-dom"
 
 import AppBar from './layout/AppBar'
+import BottomNav from './layout/BottomNav'
 import { switchTab } from '../../store/actions/tabActions'
 
 export class AdminView extends Component {
@@ -45,6 +46,7 @@ export class AdminView extends Component {
         <main>
           <CssBaseline />
           <AppBar children={this.props.children}/>
+          <BottomNav />
         </main>
       </Fragment>
     )

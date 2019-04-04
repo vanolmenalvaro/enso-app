@@ -44,7 +44,6 @@ class UserView extends React.Component {
 
 const mapStateToProps = (state) => {
   return{
-    tab: state.tab.tab,
     auth: state.firebase.auth
   }
 }

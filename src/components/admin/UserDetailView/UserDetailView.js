@@ -151,12 +151,12 @@ export class UserDetailView extends Component {
         return (
         <div>
             <Grid container className={classes.root} justify="space-evenly" spacing={8}>
-                <Grid xs={4} item>
+                <Grid xs={12} md={4} item>
                     {this.state.user && <UserCard user={this.state.user} />}
                 </Grid>
             </Grid>
             <Grid container className={classes.root} justify="space-evenly" spacing={8}>
-                <Grid xs={6} item>
+                <Grid xs={12} md={6} item>
                     <Grid container direction="row">
                         <Typography variant="h4" className={classes.title} noWrap>
                             {constants.cycles}
@@ -200,7 +200,7 @@ export class UserDetailView extends Component {
                         } 
                     </Grid>
                 </Grid>
-                <Grid xs={6} item>
+                <Grid xs={12} md={6} item>
                     <Grid container direction="row">
                         <Typography variant="h4" className={classes.title} style={{marginBottom: 10}} noWrap>
                             {constants.reports}
