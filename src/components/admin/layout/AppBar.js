@@ -149,8 +149,8 @@ class AppBar extends React.Component {
     this.props.signOut()
   };
 
-  handleAdmin = () => {
-    this.props.history.push('/app/admin/users');
+  handleUser = () => {
+    this.props.history.push('/app/user/calendar');
   };
 
   isAdmin = () => {
